@@ -1,4 +1,6 @@
-<h1 align="center">Welcome to bankcorps 👋![image](https://github.com/wangdabin1216/bankcorps/raw/master/large_bankcorps_0.png)</h1>
+
+![image](https://github.com/wangdabin1216/bankcorps/raw/master/large_bankcorps_0.png)
+<h1 align="center">Welcome to bankcorps 👋</h1>
 
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
