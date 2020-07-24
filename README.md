@@ -1,5 +1,5 @@
- ![image](https://github.com/wangdabin1216/bankcorps/raw/master/large_bankcorps_0.png)
 <h1 align="center">Welcome to bankcorps 👋</h1>
+ ![image](https://github.com/wangdabin1216/bankcorps/raw/master/large_bankcorps_0.png)
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
   <a href="https://github.com/wangdabin1216/bankcorps#redmine" target="_blank">
@@ -60,4 +60,3 @@ Copyright © 2020 [wangdabin](https://github.com/wangdabin).<br />
 This project is [MIT](https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE) licensed.
 
 ***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
