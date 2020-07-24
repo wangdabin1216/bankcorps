@@ -1,5 +1,5 @@
 <h1 align="center">Welcome to bankcorps 👋</h1>
- ![image](https://github.com/wangdabin1216/bankcorps/raw/master/large_bankcorps_0.png)
+![image](https://github.com/wangdabin1216/bankcorps/raw/master/large_bankcorps_0.png)
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
   <a href="https://github.com/wangdabin1216/bankcorps#redmine" target="_blank">
