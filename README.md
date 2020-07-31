@@ -22,23 +22,44 @@
 
 ### 🏠 [Homepage](https://github.com/wangdabin1216/bankcorps#redmine)
 
-## Install
 
-```sh
-npm install
-```
+## 大数据基础平台建设方案
 
-## Usage
+#### 调度工具
+1. [Apache Airflow](https://github.com/apache/airflow)
+2. [Apache DolphinScheduler](https://github.com/apache/incubator-dolphinscheduler)
 
-```sh
-npm run start
-```
 
-## Run tests
+## 数据同步方案
 
-```sh
-npm run test
-```
+1. 离线数据同步方案
+2. 实时数据同步方案
+
+
+## 数据仓库建设
+
+|  层级  | 英文名称  | 中文名称 |
+|  ----  | ----  | ----  |
+| ITL  | INTEGRATE TECHNOLOGY LEVEL | 技术缓冲层|
+| IOL  | INTEGRATE ODS LEVEL |偏源模型层|
+| IML  | INTEGRATE MODEL LEVEL |主题模型层|
+| ICL  | INTEGRATE COMMON LEVEL |共性加工层|
+| DB  | DATAMART BASE|数据集市层|
+| RDB  |RISK DATAMART BASE|风险数据集市层|
+
+
+## 数据治理建设
+1. 数据标准
+2. 数据质量
+3. 元数据
+
+## 数据应用建设
+
+1. 风险智能检测系统
+2. 客户360画像、知识图谱系统
+3. 智能风控评分卡系统
+4. 智能报表系统
+5. 历史数据在线查询系统
 
 ## Author
 
