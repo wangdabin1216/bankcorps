@@ -1,0 +1,8 @@
+import pyodbc
+import sys
+import pandas as pd
+
+
+my_oracle = pyodbc.connect("DSN=transwarp-hs2-ldap;USER=dw;PASSWORD=dw")
+
+

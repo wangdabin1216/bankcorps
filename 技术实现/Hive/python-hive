@@ -1,0 +1,56 @@
+我们是基于pyhive这个包来连接python和hive。网上关于pyhive这个包的使用经验比较少，然后这个包也没有相关文档，所以当时我们就主要是基于源码和测试，打通了python和hive的连接：首先是pyhive的安装：pyhive这个包依 赖于sasl，thrift,thrift-sasl这三个包，因此请参照下面的顺序安装，pip不行的时候，可以换用conda安装pip install sasl
+pip install thrift
+pip install thrift-sasl
+pip install PyHive然后是网上的例子一般都是下面类似的demo:
+import sys
+from pyhive import hive
+
+def dhive():
+    try:
+        conn = hive.connect(host="server_ip",port=10000, auth="...", database="...",username="...",password="...")
+        cursor = conn.cursor()
+        cursor.execute("select * from table_name")
+        res = cursor.fetchall()
+        conn.close()
+        for item in res:
+            print(item)
+    except Exception:
+        print('excepion happen')
+
+if __name__ == "__main__":
+    dhive()这个demo比较简单，但是体现了python连接hive的一般流程：创建连接，获取游标，执行sql语句，获取结果，关闭连接。但是在项目中，对hive常常有很多必要的设置，这在上面的demo中没法展示出来，通过查看源码， 我们再Connection这个类的构造函数中找到了configuration参数：param configuration: A dictionary of Hive settings (functionally same as the `set` command)，由此可知这个参数就是配置hive。class Connection(object):
+     def __init__(self, host=None, port=None, username=None, database='default', auth=None,
+                  configuration=None, kerberos_service_name=None, password=None, thrift_transport=None):因此，我们可以用如下的方式配置hive:hive_config = {
+    'mapreduce.job.queuename': 'my_hive',
+    'hive.exec.compress.output': 'false',
+    'hive.exec.compress.intermediate': 'true',
+    'mapred.min.split.size.per.node': '1',
+    'mapred.min.split.size.per.rack': '1',
+    'hive.map.aggr': 'true',
+    'hive.groupby.skewindata': 'true'
+}
+
+conn = hive.connect(host="server_ip",port=10000, auth="...", database="...",username="...",
+                    password="...", configuration=hive_config)然后是上面的游标执行之后，通过fetchall()取出的结果是表中单纯的数据，但是呢我们常常还需要知道表头信息。表头这个东西在哪儿呢，还是通过查看源码：在Cursor类中有一个description()方法，通过@property装饰器被装饰成一个属性，在这个方法下面就记录了数据表中每一列对应的列名，数据类型等信息。@property
+def description(self):
+        """This read-only attribute is a sequence of 7-item sequences.
+
+        Each of these sequences contains information describing one result column:
+
+        - name
+        - type_code
+        - display_size (None in current implementation)
+        - internal_size (None in current implementation)
+        - precision (None in current implementation)
+        - scale (None in current implementation)
+        - null_ok (always True in current implementation)
+
+        This attribute will be ``None`` for operations that do not return rows or if the cursor has
+        not had an operation invoked via the :py:meth:`execute` method yet.
+
+        The ``type_code`` can be interpreted by comparing it to the Type Objects specified in the
+        section below.
+        """因此可以通过下面的方式获取列名：columns = cursor.description
+col_names = []
+    for column in columns:
+        col_names.append(column[0])上面就是我们经常需要用到的关于pyhive的一些特性，至于带参数的sql语句啊，通过fomat(**args_dict)的方式传递就好了，这里就不再赘述了。希望基于上面的叙述，可以对python连接hive的相关问题都有所启发，其实多尝试就好了。

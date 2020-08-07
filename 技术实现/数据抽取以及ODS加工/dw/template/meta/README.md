@@ -40,11 +40,11 @@
 
 |  层级  | 英文名称  | 中文名称 |
 |  ----  | ----  | ----  |
-| TBO  | Technical Buffer| 技术缓冲层|
-| OMI  | Original Data Model |偏源历史层|
-| IML  | Integrate Data Mart |主题模型层|
-| ICL  | Summary Data Mart |共性加工层|
-| DMM  | Data Mart Model|数据集市层|
+| ITL  | INTEGRATE TECHNOLOGY LEVEL | 技术缓冲层|
+| IOL  | INTEGRATE ODS LEVEL |偏源模型层|
+| IML  | INTEGRATE MODEL LEVEL |主题模型层|
+| ICL  | INTEGRATE COMMON LEVEL |共性加工层|
+| DB  | DATAMART BASE|数据集市层|
 | RDB  |RISK DATAMART BASE|风险数据集市层|
 
 

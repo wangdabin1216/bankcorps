@@ -1,0 +1,25 @@
+1.修改 config.ini
+
+
+
+
+2.初始化etl数据库
+--mysql
+create database etl
+CHARACTER SET 'utf8'
+COLLATE 'utf8_general_ci';
+
+grant select,insert,update,delete,create,drop on etl.* to 'root'@'%' identified by 'toor';
+grant all privileges on *.* to root@'%';
+
+
+
+
+  1.初始化mysql表结构
+  python init_meta_struct.py /Users/wangdabin1216/git/dw/template/meta/etl_meta_init.xlsx etl_meta_tables 1
+
+  2.初始化对应的元数据
+  python init_server.py -d imp -m meta -c all
+  3.初始化对应的要抽取的表结构
+  python init_server.py -d imp -m load -c all
+  4.通过beeline创建hive表
