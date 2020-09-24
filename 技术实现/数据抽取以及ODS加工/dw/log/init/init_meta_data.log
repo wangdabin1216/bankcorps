@@ -1,0 +1,417 @@
+[INFO 2020-07-24 15:26:47,103 50022 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:30 conn_mysql] 数据库初始化连接创建成功.
+[INFO 2020-07-24 15:26:47,104 50022 init_meta_data.py:109 main] 参数个数正确，开始元表数据初始化. 
+[INFO 2020-07-24 15:26:47,104 50022 init_meta_data.py:113 main] 输入参数为 excel_name:/Users/wangdabin1216/git/dw/template/meta/etl_meta_init.xlsx sheet_name:etl_meta_args del_condition:1=1
+[INFO 2020-07-24 15:26:47,104 50022 init_meta_data.py:47 init_meta_data] 调用方法 - init_meta_data
+[INFO 2020-07-24 15:26:47,304 50022 init_meta_data.py:30 get_tab_cols] 调用方法 - get_tab_cols
+[DEBUG 2020-07-24 15:26:47,306 50022 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select column_name from information_schema.columns where table_name= 'etl_meta_args' order by ordinal_position ;.
+[INFO 2020-07-24 15:26:47,306 50022 init_meta_data.py:39 get_tab_cols] 获取表etl_meta_args字段结构列表成功,字段列表：['parameter', 'para_type', 'para_val', 'remark']
+[INFO 2020-07-24 15:26:47,306 50022 init_meta_data.py:60 init_meta_data] 表 etl_meta_args 开始组装数据初始化语句...... 
+[INFO 2020-07-24 15:26:55,176 50057 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:30 conn_mysql] 数据库初始化连接创建成功.
+[INFO 2020-07-24 15:26:55,176 50057 init_meta_data.py:109 main] 参数个数正确，开始元表数据初始化. 
+[INFO 2020-07-24 15:26:55,177 50057 init_meta_data.py:113 main] 输入参数为 excel_name:/Users/wangdabin1216/git/dw/template/meta/etl_meta_init.xlsx sheet_name:etl_meta_args del_condition:1=1
+[INFO 2020-07-24 15:26:55,177 50057 init_meta_data.py:47 init_meta_data] 调用方法 - init_meta_data
+[INFO 2020-07-24 15:26:55,330 50057 init_meta_data.py:30 get_tab_cols] 调用方法 - get_tab_cols
+[DEBUG 2020-07-24 15:26:55,334 50057 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select column_name from information_schema.columns where table_name= 'etl_meta_args' order by ordinal_position ;.
+[INFO 2020-07-24 15:26:55,334 50057 init_meta_data.py:39 get_tab_cols] 获取表etl_meta_args字段结构列表成功,字段列表：['parameter', 'para_type', 'para_val', 'remark']
+[INFO 2020-07-24 15:26:55,334 50057 init_meta_data.py:60 init_meta_data] 表 etl_meta_args 开始组装数据初始化语句...... 
+[DEBUG 2020-07-24 15:26:55,335 50057 init_meta_data.py:86 init_meta_data] 删除语句：delete from etl_meta_args where 1=1;
+[INFO 2020-07-24 15:26:55,335 50057 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:42 execute_sql] 执行事务类SQL成功,sql：delete from etl_meta_args where 1=1;.
+[DEBUG 2020-07-24 15:26:55,336 50057 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:66 commit] 提交事务类操作成功.
+[INFO 2020-07-24 15:26:55,336 50057 init_meta_data.py:89 init_meta_data] 表 etl_meta_args 存在,数据删除成功. 
+[INFO 2020-07-24 15:26:55,337 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,337 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('etl.home','global','/etl','etl根目录');完成.
+[INFO 2020-07-24 15:26:55,338 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,339 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('load.log.path','load','/etl/dw/log/load','数据加载日志文件路径');完成.
+[INFO 2020-07-24 15:26:55,339 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,339 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('load.src.path','load','/data/src','ETL源系统数据文件存放目录');完成.
+[INFO 2020-07-24 15:26:55,340 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,340 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('load.tar.path','load','/data/put','ETL转换源系统文件存放目录');完成.
+[INFO 2020-07-24 15:26:55,340 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,340 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.copy.single.audt','dsa','yes','本系统数据分发copy时是否生成标识文件');完成.
+[INFO 2020-07-24 15:26:55,341 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,341 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.copy.zip.afcr','dsa','yes','本系统数据分发copy时是否压缩文件');完成.
+[INFO 2020-07-24 15:26:55,341 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,341 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.move.zip.afcr','dsa','yes','本系统数据分发move时是否压缩文件');完成.
+[INFO 2020-07-24 15:26:55,341 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,341 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.dis.path','dsa','/data/dsa','ETL下发文件目录');完成.
+[INFO 2020-07-24 15:26:55,342 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,342 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('serve.log.path','serve','/etl/dw/log/serve','数据卸载日志文件路径');完成.
+[INFO 2020-07-24 15:26:55,342 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,342 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('unload.hdfs.path','unload','/dw/dsa','数据卸载hdfs路径');完成.
+[INFO 2020-07-24 15:26:55,342 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,343 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('sche.jcm.oracle.ip','sche','**.***.**.***','ORACLE服务器IP地址');完成.
+[INFO 2020-07-24 15:26:55,343 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,343 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('sche.jcm.oracle.port','sche',1521,'ORACLE服务器端口');完成.
+[INFO 2020-07-24 15:26:55,343 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,343 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('sche.jcm.oracle.username','sche','xxxxx','ORACLE服务器用户名');完成.
+[INFO 2020-07-24 15:26:55,344 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,344 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('sche.jcm.oracle.pwd','sche','xxxxx','ORACLE服务器密码');完成.
+[INFO 2020-07-24 15:26:55,344 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,344 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('sche.jcm.oracle.sid','sche','xxxxx','ORACLE服务器sid');完成.
+[INFO 2020-07-24 15:26:55,344 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,344 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('unload.file.path','unload','/data/dsa/unld','数据卸载本地文件路径');完成.
+[INFO 2020-07-24 15:26:55,345 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,345 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('load.rdy.file.path','load','/etl/listener/ok','生成OK文件存放目录');完成.
+[INFO 2020-07-24 15:26:55,345 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,345 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('load.sys.data.file','load','$srctablename$currdt.txt','数据加载数据文件格式');完成.
+[INFO 2020-07-24 15:26:55,345 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,345 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.ftp.mid.ip','serve','10.0.72.10','数据服务FTP中间机IP');完成.
+[INFO 2020-07-24 15:26:55,345 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,345 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.ftp.mid.user','serve','root','数据服务FTP中间机用户名');完成.
+[INFO 2020-07-24 15:26:55,346 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,346 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.ftp.mid.pwd','serve','1qaz@WSX','数据服务FTP中间机密码');完成.
+[INFO 2020-07-24 15:26:55,346 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,346 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.ftp.mid.spath','serve','/data/dsa/ext/$sys/$currdt','数据服务FTP中间机源路径');完成.
+[INFO 2020-07-24 15:26:55,346 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,346 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.ftp.mid.tpath','serve','/root','数据服务FTP中间机目标路径');完成.
+[INFO 2020-07-24 15:26:55,346 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,346 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.ftp.tar.ip','serve','10.4.11.110','数据服务FTP目标机IP');完成.
+[INFO 2020-07-24 15:26:55,347 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,347 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.ftp.tar.user','serve','root','数据服务FTP目标机用户名');完成.
+[INFO 2020-07-24 15:26:55,347 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,347 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.ftp.tar.pwd','serve','root123','数据服务FTP目标机密码');完成.
+[INFO 2020-07-24 15:26:55,347 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,348 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.ftp.tar.spath','serve','/data/dsa/ext/$sys/$currdt','数据服务FTP目标机源路径');完成.
+[INFO 2020-07-24 15:26:55,348 50057 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:26:55,348 50057 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.ftp.tar.tpath','serve','/data/bigdata','数据服务FTP目标机目标路径');完成.
+[INFO 2020-07-24 15:26:55,348 50057 init_meta_data.py:100 init_meta_data] 表etl_meta_args数据初始化插入成功. 
+[DEBUG 2020-07-24 15:26:55,504 50057 /Users/wangdabin1216/git/dw/src/init/operate_os.py:83 compile_mysql_file] 文件-/Users/wangdabin1216/git/dw/sql/meta_data.sql编译执行成功
+[INFO 2020-07-24 15:27:28,506 50179 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:30 conn_mysql] 数据库初始化连接创建成功.
+[INFO 2020-07-24 15:27:28,506 50179 init_meta_data.py:109 main] 参数个数正确，开始元表数据初始化. 
+[INFO 2020-07-24 15:27:28,506 50179 init_meta_data.py:113 main] 输入参数为 excel_name:/Users/wangdabin1216/git/dw/template/meta/etl_meta_init.xlsx sheet_name:etl_load_system del_condition:1=1
+[INFO 2020-07-24 15:27:28,506 50179 init_meta_data.py:47 init_meta_data] 调用方法 - init_meta_data
+[DEBUG 2020-07-24 15:27:28,507 50179 /Users/wangdabin1216/git/dw/src/init/operate_os.py:26 delete_file] 文件/Users/wangdabin1216/git/dw/sql/meta_data.sql已删除
+[INFO 2020-07-24 15:27:28,722 50179 init_meta_data.py:30 get_tab_cols] 调用方法 - get_tab_cols
+[DEBUG 2020-07-24 15:27:28,741 50179 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select column_name from information_schema.columns where table_name= 'etl_load_system' order by ordinal_position ;.
+[INFO 2020-07-24 15:27:28,741 50179 init_meta_data.py:39 get_tab_cols] 获取表etl_load_system字段结构列表成功,字段列表：['sys', 'sys_name', 'db_type', 'db_version', 'flag', 'mode', 'db_name', 'schema_name', 'charset', 'ip_addr', 'port', 'user', 'password', 'remark', 'is_compress', 'is_fix_length', 'is_exist_check_file', 'is_exist_ready_file']
+[INFO 2020-07-24 15:27:28,741 50179 init_meta_data.py:60 init_meta_data] 表 etl_load_system 开始组装数据初始化语句...... 
+[DEBUG 2020-07-24 15:27:28,742 50179 init_meta_data.py:86 init_meta_data] 删除语句：delete from etl_load_system where 1=1;
+[INFO 2020-07-24 15:27:28,751 50179 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:42 execute_sql] 执行事务类SQL成功,sql：delete from etl_load_system where 1=1;.
+[DEBUG 2020-07-24 15:27:28,757 50179 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:66 commit] 提交事务类操作成功.
+[INFO 2020-07-24 15:27:28,757 50179 init_meta_data.py:89 init_meta_data] 表 etl_load_system 存在,数据删除成功. 
+[INFO 2020-07-24 15:27:28,758 50179 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:28,758 50179 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_load_system  values ('CB','核心系统','oracle','11.2.0.4.0',1,'file','dr2_hexindb','ensemble','utf8','10.0.128.106',1521,'bdata','dataonly1','1是0否',0,0,0,0);完成.
+[INFO 2020-07-24 15:27:28,758 50179 init_meta_data.py:100 init_meta_data] 表etl_load_system数据初始化插入成功. 
+[DEBUG 2020-07-24 15:27:28,844 50179 /Users/wangdabin1216/git/dw/src/init/operate_os.py:83 compile_mysql_file] 文件-/Users/wangdabin1216/git/dw/sql/meta_data.sql编译执行成功
+[INFO 2020-07-24 15:27:55,855 50284 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:30 conn_mysql] 数据库初始化连接创建成功.
+[INFO 2020-07-24 15:27:55,855 50284 init_meta_data.py:109 main] 参数个数正确，开始元表数据初始化. 
+[INFO 2020-07-24 15:27:55,855 50284 init_meta_data.py:113 main] 输入参数为 excel_name:/Users/wangdabin1216/git/dw/template/meta/etl_meta_init.xlsx sheet_name:etl_meta_type_convert del_condition:1=1
+[INFO 2020-07-24 15:27:55,855 50284 init_meta_data.py:47 init_meta_data] 调用方法 - init_meta_data
+[DEBUG 2020-07-24 15:27:55,856 50284 /Users/wangdabin1216/git/dw/src/init/operate_os.py:26 delete_file] 文件/Users/wangdabin1216/git/dw/sql/meta_data.sql已删除
+[INFO 2020-07-24 15:27:56,071 50284 init_meta_data.py:30 get_tab_cols] 调用方法 - get_tab_cols
+[DEBUG 2020-07-24 15:27:56,073 50284 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select column_name from information_schema.columns where table_name= 'etl_meta_type_convert' order by ordinal_position ;.
+[INFO 2020-07-24 15:27:56,073 50284 init_meta_data.py:39 get_tab_cols] 获取表etl_meta_type_convert字段结构列表成功,字段列表：['db_type', 'col_type', 'tar_db_type', 'tar_col_type', 'length', 'default_val', 'format', 'trans_mode']
+[INFO 2020-07-24 15:27:56,073 50284 init_meta_data.py:60 init_meta_data] 表 etl_meta_type_convert 开始组装数据初始化语句...... 
+[DEBUG 2020-07-24 15:27:56,075 50284 init_meta_data.py:86 init_meta_data] 删除语句：delete from etl_meta_type_convert where 1=1;
+[INFO 2020-07-24 15:27:56,075 50284 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:42 execute_sql] 执行事务类SQL成功,sql：delete from etl_meta_type_convert where 1=1;.
+[DEBUG 2020-07-24 15:27:56,076 50284 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:66 commit] 提交事务类操作成功.
+[INFO 2020-07-24 15:27:56,076 50284 init_meta_data.py:89 init_meta_data] 表 etl_meta_type_convert 存在,数据删除成功. 
+[INFO 2020-07-24 15:27:56,076 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,076 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,CHAR,INCEPTOR,STRING,4000,'''',trim(column_name),1);完成.
+[INFO 2020-07-24 15:27:56,077 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,077 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,VARCHAR,INCEPTOR,STRING,4000,'''',trim(column_name),1);完成.
+[INFO 2020-07-24 15:27:56,077 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,078 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,NCHAR,INCEPTOR,STRING,4000,'''',trim(column_name),1);完成.
+[INFO 2020-07-24 15:27:56,078 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,078 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,VARCHAR2,INCEPTOR,STRING,4000,'''',trim(column_name),1);完成.
+[INFO 2020-07-24 15:27:56,078 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,078 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,NVARCHAR2,INCEPTOR,STRING,4000,'''',trim(column_name),1);完成.
+[INFO 2020-07-24 15:27:56,078 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,078 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,NUMBER(P,S),INCEPTOR,DECIMAL(P,S),100,0,Null,0);完成.
+[INFO 2020-07-24 15:27:56,079 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,079 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,NUMBER,INCEPTOR,DECIMAL(38,0),100,0,Null,0);完成.
+[INFO 2020-07-24 15:27:56,079 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,079 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,NUMBER(P),INCEPTOR,DECIMAL(P,0),100,0,Null,0);完成.
+[INFO 2020-07-24 15:27:56,079 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,079 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,DECIMAL,INCEPTOR,DECIMAL,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,079 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,079 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,BIT,INCEPTOR,BOOLEAN,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,079 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,080 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,BOOLEAN,INCEPTOR,BOOLEAN,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,080 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,080 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,TINYINT,INCEPTOR,TINYINT,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,080 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,080 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,SMALLINT,INCEPTOR,SMALLINT,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,080 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,080 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,INTEGER,INCEPTOR,INT,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,080 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,080 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,LONG,INCEPTOR,BIGINT,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,080 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,081 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,LONG RAW,INCEPTOR,BIGINT,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,081 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,081 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,RAW,INCEPTOR,BINARY,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,081 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,081 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,FLOAT,INCEPTOR,FLOAT,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,081 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,081 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,BINARYFLOAT,INCEPTOR,FLOAT,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,081 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,081 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,DOUBLE,INCEPTOR,DOUBLE,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,081 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,081 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,BINARYDOUBLE,INCEPTOR,DOUBLE,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,082 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,082 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,CLOB,INCEPTOR,CLOB,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,082 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,082 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,NCLOB,INCEPTOR,CLOB,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,082 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,082 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,BLOB,INCEPTOR,BLOB,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,082 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,082 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,BFILE,INCEPTOR,N/A,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,082 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,083 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,DATE,INCEPTOR,DATE,19,cast(from_unixtime(unix_timestamp(''00010101'' , ''yyyyMMdd'')) as date),cast(from_unixtime(unix_timestamp(trim(column_name) , ''yyyy-MM-dd HH:mm:ss'')) as date),1);完成.
+[INFO 2020-07-24 15:27:56,083 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,083 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,TIMESTAMP,INCEPTOR,TIMESTAMP,26,cast(from_unixtime(unix_timestamp(''00010101'' , ''yyyyMMdd'')) as timestamp),cast(from_unixtime(unix_timestamp(trim(column_name) , ''yyyy-MM-dd HH:mm:ss.FFFFFF'')) as timestamp),1);完成.
+[INFO 2020-07-24 15:27:56,083 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,083 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,TIMESTAMP WITH TIMEZONE,INCEPTOR,N/A,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,083 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,083 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,TIMESTAMP WITH LOCAL TIMEZONE,INCEPTOR,N/A,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,083 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,083 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,INTERVAL YEAR TO MONTH,INCEPTOR,INTERVAL_YEAR_MONTH,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,083 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,084 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,INTERVAL DAY TO SECOND,INCEPTOR,INTERVAL_DAY_TIME,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,084 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,084 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,STRUCT,INCEPTOR,STRUCT,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,084 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,084 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,ARRAY,INCEPTOR,ARRAY,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,084 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,084 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,ROWID,INCEPTOR,N/A,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,084 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,084 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (ORACLE,UROWID,INCEPTOR,N/A,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,084 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,085 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,BIGINT(P),INCEPTOR,DECIMAL(2P,0),100,Null,Null,0);完成.
+[INFO 2020-07-24 15:27:56,085 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,085 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,BINARY,INCEPTOR,BINARY,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,085 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,085 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,BIT(P),INCEPTOR,DECIMAL(2P,0),100,Null,Null,0);完成.
+[INFO 2020-07-24 15:27:56,085 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,085 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,CHAR ,INCEPTOR,STRING,4000,'''',trim(column_name),1);完成.
+[INFO 2020-07-24 15:27:56,085 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,086 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,DATETIME,INCEPTOR,DATE,19,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,086 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,086 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,DECIMAL(P),INCEPTOR,DECIMAL(2P,0),100,Null,Null,0);完成.
+[INFO 2020-07-24 15:27:56,086 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,086 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,FLOAT,INCEPTOR,DOUBLE,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,086 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,086 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,IMAGE,INCEPTOR,BINARY,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,087 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,087 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,INT(P)  ,INCEPTOR,DECIMAL(2P,0),100,0,Null,0);完成.
+[INFO 2020-07-24 15:27:56,087 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,087 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,NCHAR,INCEPTOR,STRING,4000,'''',trim(column_name),1);完成.
+[INFO 2020-07-24 15:27:56,087 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,087 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,NTEXT,INCEPTOR,BINARY,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,087 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,087 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,NUMERIC(P),INCEPTOR,DECIMAL(2P,0),100,Null,Null,0);完成.
+[INFO 2020-07-24 15:27:56,087 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,087 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,NVARCHAR,INCEPTOR,STRING,4000,'''',trim(column_name),1);完成.
+[INFO 2020-07-24 15:27:56,088 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,088 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,REAL,INCEPTOR,FLOAT,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,088 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,088 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,SMALLDATETIME,INCEPTOR,DATE,19,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,088 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,088 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,SMALLINT(P),INCEPTOR,DECIMAL(P,0),100,Null,Null,0);完成.
+[INFO 2020-07-24 15:27:56,088 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,088 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,SQL_VARIANT,INCEPTOR,BINARY,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,089 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,089 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,TEXT,INCEPTOR,BINARY,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,089 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,089 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,TIMESTAMP,INCEPTOR,BINARY,100,cast(from_unixtime(unix_timestamp(''00010101'' , ''yyyyMMdd'')) as timestamp),cast(from_unixtime(unix_timestamp(trim(column_name) , ''yyyy-MM-dd HH:mm:ss.FFFFFF'')) as timestamp),1);完成.
+[INFO 2020-07-24 15:27:56,089 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,089 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,TINYINT(P),INCEPTOR,DECIMAL(P,0),100,Null,Null,0);完成.
+[INFO 2020-07-24 15:27:56,089 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,089 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,UNIQUEIDENTIFIER,INCEPTOR,BINARY,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,089 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,089 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,VARBINARY,INCEPTOR,BINARY,100,Null,Null,1);完成.
+[INFO 2020-07-24 15:27:56,090 50284 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:27:56,090 50284 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values (SQLSERVER,VARCHAR,INCEPTOR,STRING,4000,'''',trim(column_name),1);完成.
+[INFO 2020-07-24 15:27:56,090 50284 init_meta_data.py:100 init_meta_data] 表etl_meta_type_convert数据初始化插入成功. 
+[DEBUG 2020-07-24 15:27:56,144 50284 /Users/wangdabin1216/git/dw/src/init/operate_os.py:83 compile_mysql_file] 文件-/Users/wangdabin1216/git/dw/sql/meta_data.sql编译执行成功
+[INFO 2020-07-24 15:28:01,517 50309 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:30 conn_mysql] 数据库初始化连接创建成功.
+[INFO 2020-07-24 15:28:01,517 50309 init_meta_data.py:109 main] 参数个数正确，开始元表数据初始化. 
+[INFO 2020-07-24 15:28:01,518 50309 init_meta_data.py:113 main] 输入参数为 excel_name:/Users/wangdabin1216/git/dw/template/meta/etl_meta_init.xlsx sheet_name:etl_meta_type_convert del_condition:1=1
+[INFO 2020-07-24 15:28:01,518 50309 init_meta_data.py:47 init_meta_data] 调用方法 - init_meta_data
+[DEBUG 2020-07-24 15:28:01,518 50309 /Users/wangdabin1216/git/dw/src/init/operate_os.py:26 delete_file] 文件/Users/wangdabin1216/git/dw/sql/meta_data.sql已删除
+[INFO 2020-07-24 15:28:01,843 50309 init_meta_data.py:30 get_tab_cols] 调用方法 - get_tab_cols
+[DEBUG 2020-07-24 15:28:01,854 50309 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select column_name from information_schema.columns where table_name= 'etl_meta_type_convert' order by ordinal_position ;.
+[INFO 2020-07-24 15:28:01,854 50309 init_meta_data.py:39 get_tab_cols] 获取表etl_meta_type_convert字段结构列表成功,字段列表：['db_type', 'col_type', 'tar_db_type', 'tar_col_type', 'length', 'default_val', 'format', 'trans_mode']
+[INFO 2020-07-24 15:28:01,854 50309 init_meta_data.py:60 init_meta_data] 表 etl_meta_type_convert 开始组装数据初始化语句...... 
+[DEBUG 2020-07-24 15:28:01,857 50309 init_meta_data.py:86 init_meta_data] 删除语句：delete from etl_meta_type_convert where 1=1;
+[INFO 2020-07-24 15:28:01,858 50309 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:42 execute_sql] 执行事务类SQL成功,sql：delete from etl_meta_type_convert where 1=1;.
+[DEBUG 2020-07-24 15:28:01,859 50309 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:66 commit] 提交事务类操作成功.
+[INFO 2020-07-24 15:28:01,859 50309 init_meta_data.py:89 init_meta_data] 表 etl_meta_type_convert 存在,数据删除成功. 
+[INFO 2020-07-24 15:28:01,860 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,860 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','CHAR','INCEPTOR','STRING',4000,'''''','trim(column_name)',1);完成.
+[INFO 2020-07-24 15:28:01,861 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,861 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','VARCHAR','INCEPTOR','STRING',4000,'''''','trim(column_name)',1);完成.
+[INFO 2020-07-24 15:28:01,861 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,861 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','NCHAR','INCEPTOR','STRING',4000,'''''','trim(column_name)',1);完成.
+[INFO 2020-07-24 15:28:01,862 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,862 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','VARCHAR2','INCEPTOR','STRING',4000,'''''','trim(column_name)',1);完成.
+[INFO 2020-07-24 15:28:01,862 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,863 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','NVARCHAR2','INCEPTOR','STRING',4000,'''''','trim(column_name)',1);完成.
+[INFO 2020-07-24 15:28:01,863 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,863 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','NUMBER(P,S)','INCEPTOR','DECIMAL(P,S)',100,0,Null,0);完成.
+[INFO 2020-07-24 15:28:01,863 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,863 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','NUMBER','INCEPTOR','DECIMAL(38,0)',100,0,Null,0);完成.
+[INFO 2020-07-24 15:28:01,864 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,864 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','NUMBER(P)','INCEPTOR','DECIMAL(P,0)',100,0,Null,0);完成.
+[INFO 2020-07-24 15:28:01,864 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,864 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','DECIMAL','INCEPTOR','DECIMAL',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,865 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,865 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','BIT','INCEPTOR','BOOLEAN',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,865 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,865 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','BOOLEAN','INCEPTOR','BOOLEAN',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,866 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,866 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','TINYINT','INCEPTOR','TINYINT',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,866 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,866 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','SMALLINT','INCEPTOR','SMALLINT',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,867 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,867 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','INTEGER','INCEPTOR','INT',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,867 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,867 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','LONG','INCEPTOR','BIGINT',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,868 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,868 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','LONG RAW','INCEPTOR','BIGINT',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,868 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,868 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','RAW','INCEPTOR','BINARY',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,869 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,869 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','FLOAT','INCEPTOR','FLOAT',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,869 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,869 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','BINARYFLOAT','INCEPTOR','FLOAT',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,870 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,870 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','DOUBLE','INCEPTOR','DOUBLE',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,870 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,870 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','BINARYDOUBLE','INCEPTOR','DOUBLE',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,871 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,871 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','CLOB','INCEPTOR','CLOB',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,871 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,871 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','NCLOB','INCEPTOR','CLOB',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,872 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,872 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','BLOB','INCEPTOR','BLOB',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,872 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,872 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','BFILE','INCEPTOR','N/A',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,873 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,873 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','DATE','INCEPTOR','DATE',19,'cast(from_unixtime(unix_timestamp(''00010101'' , ''yyyyMMdd'')) as date)','cast(from_unixtime(unix_timestamp(trim(column_name) , ''yyyy-MM-dd HH:mm:ss'')) as date)',1);完成.
+[INFO 2020-07-24 15:28:01,873 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,873 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','TIMESTAMP','INCEPTOR','TIMESTAMP',26,'cast(from_unixtime(unix_timestamp(''00010101'' , ''yyyyMMdd'')) as timestamp)','cast(from_unixtime(unix_timestamp(trim(column_name) , ''yyyy-MM-dd HH:mm:ss.FFFFFF'')) as timestamp)',1);完成.
+[INFO 2020-07-24 15:28:01,874 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,874 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','TIMESTAMP WITH TIMEZONE','INCEPTOR','N/A',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,874 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,874 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','TIMESTAMP WITH LOCAL TIMEZONE','INCEPTOR','N/A',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,874 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,874 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','INTERVAL YEAR TO MONTH','INCEPTOR','INTERVAL_YEAR_MONTH',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,875 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,875 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','INTERVAL DAY TO SECOND','INCEPTOR','INTERVAL_DAY_TIME',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,875 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,875 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','STRUCT','INCEPTOR','STRUCT',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,875 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,875 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','ARRAY','INCEPTOR','ARRAY',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,876 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,876 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','ROWID','INCEPTOR','N/A',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,876 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,876 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','UROWID','INCEPTOR','N/A',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,876 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,877 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','BIGINT(P)','INCEPTOR','DECIMAL(2P,0)',100,Null,Null,0);完成.
+[INFO 2020-07-24 15:28:01,877 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,877 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','BINARY','INCEPTOR','BINARY',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,878 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,878 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','BIT(P)','INCEPTOR','DECIMAL(2P,0)',100,Null,Null,0);完成.
+[INFO 2020-07-24 15:28:01,878 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,878 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','CHAR ','INCEPTOR','STRING',4000,'''''','trim(column_name)',1);完成.
+[INFO 2020-07-24 15:28:01,879 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,879 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','DATETIME','INCEPTOR','DATE',19,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,879 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,879 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','DECIMAL(P)','INCEPTOR','DECIMAL(2P,0)',100,Null,Null,0);完成.
+[INFO 2020-07-24 15:28:01,880 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,880 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','FLOAT','INCEPTOR','DOUBLE',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,880 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,880 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','IMAGE','INCEPTOR','BINARY',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,881 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,881 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','INT(P)  ','INCEPTOR','DECIMAL(2P,0)',100,0,Null,0);完成.
+[INFO 2020-07-24 15:28:01,881 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,881 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','NCHAR','INCEPTOR','STRING',4000,'''''','trim(column_name)',1);完成.
+[INFO 2020-07-24 15:28:01,881 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,881 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','NTEXT','INCEPTOR','BINARY',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,882 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,882 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','NUMERIC(P)','INCEPTOR','DECIMAL(2P,0)',100,Null,Null,0);完成.
+[INFO 2020-07-24 15:28:01,882 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,882 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','NVARCHAR','INCEPTOR','STRING',4000,'''''','trim(column_name)',1);完成.
+[INFO 2020-07-24 15:28:01,883 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,883 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','REAL','INCEPTOR','FLOAT',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,883 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,883 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','SMALLDATETIME','INCEPTOR','DATE',19,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,884 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,884 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','SMALLINT(P)','INCEPTOR','DECIMAL(P,0)',100,Null,Null,0);完成.
+[INFO 2020-07-24 15:28:01,884 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,884 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','SQL_VARIANT','INCEPTOR','BINARY',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,884 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,884 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','TEXT','INCEPTOR','BINARY',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,885 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,885 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','TIMESTAMP','INCEPTOR','BINARY',100,'cast(from_unixtime(unix_timestamp(''00010101'' , ''yyyyMMdd'')) as timestamp)','cast(from_unixtime(unix_timestamp(trim(column_name) , ''yyyy-MM-dd HH:mm:ss.FFFFFF'')) as timestamp)',1);完成.
+[INFO 2020-07-24 15:28:01,885 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,885 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','TINYINT(P)','INCEPTOR','DECIMAL(P,0)',100,Null,Null,0);完成.
+[INFO 2020-07-24 15:28:01,885 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,885 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','UNIQUEIDENTIFIER','INCEPTOR','BINARY',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,886 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,886 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','VARBINARY','INCEPTOR','BINARY',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:28:01,886 50309 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:28:01,886 50309 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','VARCHAR','INCEPTOR','STRING',4000,'''''','trim(column_name)',1);完成.
+[INFO 2020-07-24 15:28:01,886 50309 init_meta_data.py:100 init_meta_data] 表etl_meta_type_convert数据初始化插入成功. 
+[DEBUG 2020-07-24 15:28:02,214 50309 /Users/wangdabin1216/git/dw/src/init/operate_os.py:83 compile_mysql_file] 文件-/Users/wangdabin1216/git/dw/sql/meta_data.sql编译执行成功
+[INFO 2020-07-24 15:31:26,366 51033 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:30 conn_mysql] 数据库初始化连接创建成功.
+[INFO 2020-07-24 15:31:26,367 51033 init_meta_data.py:109 main] 参数个数正确，开始元表数据初始化. 
+[INFO 2020-07-24 15:31:26,367 51033 init_meta_data.py:113 main] 输入参数为 excel_name:/Users/wangdabin1216/git/dw/template/load/etl_load_cb.xlsx sheet_name:etl_load_table del_condition:1=1
+[INFO 2020-07-24 15:31:26,367 51033 init_meta_data.py:47 init_meta_data] 调用方法 - init_meta_data
+[DEBUG 2020-07-24 15:31:26,368 51033 /Users/wangdabin1216/git/dw/src/init/operate_os.py:26 delete_file] 文件/Users/wangdabin1216/git/dw/sql/meta_data.sql已删除
+[INFO 2020-07-24 15:31:26,419 51033 init_meta_data.py:30 get_tab_cols] 调用方法 - get_tab_cols
+[DEBUG 2020-07-24 15:31:26,422 51033 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select column_name from information_schema.columns where table_name= 'etl_load_table' order by ordinal_position ;.
+[INFO 2020-07-24 15:31:26,422 51033 init_meta_data.py:39 get_tab_cols] 获取表etl_load_table字段结构列表成功,字段列表：['sys', 'tab_name', 'tab_cn_name', 'cond', 'if_flag', 'tab_type', 'chain_type', 'collect_mode', 'file_name', 'check_file', 'file_format', 'encode_format', 'col_separator', 'record_separator', 'trans_path', 'remark', 'is_col_separator', 'partition_set', 'is_valid', 'is_create']
+[INFO 2020-07-24 15:31:26,422 51033 init_meta_data.py:60 init_meta_data] 表 etl_load_table 开始组装数据初始化语句...... 
+[INFO 2020-07-24 15:31:30,383 51051 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:30 conn_mysql] 数据库初始化连接创建成功.
+[INFO 2020-07-24 15:31:30,384 51051 init_meta_data.py:109 main] 参数个数正确，开始元表数据初始化. 
+[INFO 2020-07-24 15:31:30,384 51051 init_meta_data.py:113 main] 输入参数为 excel_name:/Users/wangdabin1216/git/dw/template/load/etl_load_cb.xlsx sheet_name:etl_load_table del_condition:1=1
+[INFO 2020-07-24 15:31:30,384 51051 init_meta_data.py:47 init_meta_data] 调用方法 - init_meta_data
+[INFO 2020-07-24 15:31:30,424 51051 init_meta_data.py:30 get_tab_cols] 调用方法 - get_tab_cols
+[DEBUG 2020-07-24 15:31:30,427 51051 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select column_name from information_schema.columns where table_name= 'etl_load_table' order by ordinal_position ;.
+[INFO 2020-07-24 15:31:30,458 51051 init_meta_data.py:39 get_tab_cols] 获取表etl_load_table字段结构列表成功,字段列表：['sys', 'tab_name', 'tab_cn_name', 'cond', 'if_flag', 'tab_type', 'chain_type', 'collect_mode', 'file_name', 'check_file', 'file_format', 'encode_format', 'col_separator', 'record_separator', 'trans_path', 'remark', 'is_col_separator', 'partition_set', 'is_valid', 'is_create']
+[INFO 2020-07-24 15:31:30,458 51051 init_meta_data.py:60 init_meta_data] 表 etl_load_table 开始组装数据初始化语句...... 
+[DEBUG 2020-07-24 15:31:30,459 51051 init_meta_data.py:86 init_meta_data] 删除语句：delete from etl_load_table where 1=1;
+[INFO 2020-07-24 15:31:30,459 51051 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:42 execute_sql] 执行事务类SQL成功,sql：delete from etl_load_table where 1=1;.
+[DEBUG 2020-07-24 15:31:30,460 51051 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:66 commit] 提交事务类操作成功.
+[INFO 2020-07-24 15:31:30,460 51051 init_meta_data.py:89 init_meta_data] 表 etl_load_table 存在,数据删除成功. 
+[INFO 2020-07-24 15:31:30,461 51051 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:31:30,461 51051 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_load_table  values ('CB','CIF_CLIENT','客户信息表','LAST_CHANGE_DATE','I','ST','chain_add','file','CB_CIF_CLIENT$currdt.txt',Null,'txt','UTF-8','~@~','\\n','/dw/tbo/cb/cb_cif_client',Null,0,Null,1,1);完成.
+[INFO 2020-07-24 15:31:30,461 51051 init_meta_data.py:100 init_meta_data] 表etl_load_table数据初始化插入成功. 
+[DEBUG 2020-07-24 15:31:30,532 51051 /Users/wangdabin1216/git/dw/src/init/operate_os.py:83 compile_mysql_file] 文件-/Users/wangdabin1216/git/dw/sql/meta_data.sql编译执行成功
+[INFO 2020-07-24 15:32:24,488 51247 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:30 conn_mysql] 数据库初始化连接创建成功.
+[INFO 2020-07-24 15:32:24,488 51247 init_meta_data.py:109 main] 参数个数正确，开始元表数据初始化. 
+[INFO 2020-07-24 15:32:24,489 51247 init_meta_data.py:113 main] 输入参数为 excel_name:/Users/wangdabin1216/git/dw/template/load/etl_load_cb.xlsx sheet_name:etl_load_column del_condition:1=1
+[INFO 2020-07-24 15:32:24,489 51247 init_meta_data.py:47 init_meta_data] 调用方法 - init_meta_data
+[DEBUG 2020-07-24 15:32:24,489 51247 /Users/wangdabin1216/git/dw/src/init/operate_os.py:26 delete_file] 文件/Users/wangdabin1216/git/dw/sql/meta_data.sql已删除
+[INFO 2020-07-24 15:32:24,539 51247 init_meta_data.py:30 get_tab_cols] 调用方法 - get_tab_cols
+[DEBUG 2020-07-24 15:32:24,541 51247 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select column_name from information_schema.columns where table_name= 'etl_load_column' order by ordinal_position ;.
+[INFO 2020-07-24 15:32:24,541 51247 init_meta_data.py:39 get_tab_cols] 获取表etl_load_column字段结构列表成功,字段列表：['sys', 'tab_name', 'col_seq', 'col_name', 'col_type', 'col_cn_name', 'is_pk', 'is_null', 'default_val', 'trans_statement', 'is_dk', 'mapping_col_type', 'is_sk']
+[INFO 2020-07-24 15:32:24,542 51247 init_meta_data.py:60 init_meta_data] 表 etl_load_column 开始组装数据初始化语句...... 
+[INFO 2020-07-24 15:32:28,230 51261 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:30 conn_mysql] 数据库初始化连接创建成功.
+[INFO 2020-07-24 15:32:28,231 51261 init_meta_data.py:109 main] 参数个数正确，开始元表数据初始化. 
+[INFO 2020-07-24 15:32:28,231 51261 init_meta_data.py:113 main] 输入参数为 excel_name:/Users/wangdabin1216/git/dw/template/load/etl_load_cb.xlsx sheet_name:etl_load_column del_condition:1=1
+[INFO 2020-07-24 15:32:28,231 51261 init_meta_data.py:47 init_meta_data] 调用方法 - init_meta_data
+[INFO 2020-07-24 15:32:28,270 51261 init_meta_data.py:30 get_tab_cols] 调用方法 - get_tab_cols
+[DEBUG 2020-07-24 15:32:28,272 51261 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select column_name from information_schema.columns where table_name= 'etl_load_column' order by ordinal_position ;.
+[INFO 2020-07-24 15:32:28,272 51261 init_meta_data.py:39 get_tab_cols] 获取表etl_load_column字段结构列表成功,字段列表：['sys', 'tab_name', 'col_seq', 'col_name', 'col_type', 'col_cn_name', 'is_pk', 'is_null', 'default_val', 'trans_statement', 'is_dk', 'mapping_col_type', 'is_sk']
+[INFO 2020-07-24 15:32:28,272 51261 init_meta_data.py:60 init_meta_data] 表 etl_load_column 开始组装数据初始化语句...... 
+[DEBUG 2020-07-24 15:32:28,272 51261 init_meta_data.py:86 init_meta_data] 删除语句：delete from etl_load_column where 1=1;
+[INFO 2020-07-24 15:32:28,273 51261 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:42 execute_sql] 执行事务类SQL成功,sql：delete from etl_load_column where 1=1;.
+[DEBUG 2020-07-24 15:32:28,274 51261 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:66 commit] 提交事务类操作成功.
+[INFO 2020-07-24 15:32:28,274 51261 init_meta_data.py:89 init_meta_data] 表 etl_load_column 存在,数据删除成功. 
+[INFO 2020-07-24 15:32:28,274 51261 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:32:28,274 51261 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_load_column  values ('CB','CIF_CLIENT',1,'CLIENT_KEY','NUMBER(15)','内部Key',1,1,Null,Null,1,Null,Null);完成.
+[INFO 2020-07-24 15:32:28,275 51261 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:32:28,275 51261 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_load_column  values ('CB','CIF_CLIENT',2,'CLIENT_NO','VARCHAR2(20)','客户号',0,0,Null,Null,Null,Null,Null);完成.
+[INFO 2020-07-24 15:32:28,275 51261 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:32:28,276 51261 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_load_column  values ('CB','CIF_CLIENT',3,'CLIENT_TYPE','VARCHAR2(3)','客户类型',0,0,Null,Null,Null,Null,Null);完成.
+[INFO 2020-07-24 15:32:28,276 51261 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:32:28,276 51261 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_load_column  values ('CB','CIF_CLIENT',4,'CATEGORY_TYPE','VARCHAR2(3)','客户细分类型',0,0,Null,Null,Null,Null,Null);完成.
+[INFO 2020-07-24 15:32:28,276 51261 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:32:28,276 51261 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_load_column  values ('CB','CIF_CLIENT',5,'LAST_CHANGE_DATE','VARCHAR2(8)','更新日期',0,0,Null,Null,Null,Null,Null);完成.
+[INFO 2020-07-24 15:32:28,276 51261 init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:32:28,276 51261 init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_load_column  values ('CB','CIF_CLIENT',6,'ROUTER_KEY','VARCHAR2(100)','分库路由关键字',0,0,Null,Null,Null,Null,Null);完成.
+[INFO 2020-07-24 15:32:28,276 51261 init_meta_data.py:100 init_meta_data] 表etl_load_column数据初始化插入成功. 
+[DEBUG 2020-07-24 15:32:28,340 51261 /Users/wangdabin1216/git/dw/src/init/operate_os.py:83 compile_mysql_file] 文件-/Users/wangdabin1216/git/dw/sql/meta_data.sql编译执行成功

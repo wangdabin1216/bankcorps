@@ -1,0 +1,914 @@
+[INFO 2020-07-23 17:48:17,429 13409 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:30 conn_mysql] 数据库初始化连接创建成功.
+[INFO 2020-07-23 17:48:20,735 13409 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:42 execute_sql] 执行事务类SQL成功,sql：update etl_load_table set is_create = 0 ;.
+[INFO 2020-07-23 17:48:20,739 13409 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:42 execute_sql] 执行事务类SQL成功,sql：update etl_load_table set is_create = 1 where is_valid=1 ;.
+[DEBUG 2020-07-23 17:48:20,791 13409 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:66 commit] 提交事务类操作成功.
+[DEBUG 2020-07-23 17:48:21,471 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:213 init_load_tab] 调用方法-init_load_tab
+[DEBUG 2020-07-23 17:48:21,480 13409 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select concat(sys,'_',tab_name) from etl_load_table where is_create=1 and is_valid=1 ;.
+[INFO 2020-07-23 17:48:21,483 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:239 init_load_tab] 获取本次待创建的表列表如下：['CB_CIF_CLIENT'],共1张表.
+[DEBUG 2020-07-23 17:48:21,484 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:30 update_cols_type] 调用方法-update_cols_type
+[INFO 2020-07-23 17:48:21,519 13409 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:42 execute_sql] 执行事务类SQL成功,sql：update         etl_load_column a,         (         select t1.tab_name, t1.col_name, 			( case when t2.trans_mode = '1' then t2.tar_col_type when t2.trans_mode = '0' and t1.col_type = 'NUMBER' then 'DECIMAL(38,0)' 			  else concat( left( t2.tar_col_type, locate( '(', t2.tar_col_type )- 1 ), substring( t1.col_type, locate( '(', t1.col_type ))) 			  end ) as tar_col_type         from 			( select distinct( 						case when col_type like '%char%' then 'VARCHAR' 							when col_type like '%number%' then 'NUMBER' 							else col_type end ) as coltype, 					sys, col_type, col_name, tab_name 				from etl_load_column 			) t1  			inner join etl_load_system t3  			on t1.sys = t3.sys  			inner join etl_meta_type_convert t2  			on upper( t1.coltype )= upper( t2.col_type ) 			and upper( t2.db_type )= upper( t3.db_type )         ) b         set         a.mapping_col_type = b.tar_col_type         where         a.tab_name = b.tab_name         and a.col_name = b.col_name;.
+[DEBUG 2020-07-23 17:48:21,520 13409 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:66 commit] 提交事务类操作成功.
+[INFO 2020-07-23 17:48:21,521 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:62 update_cols_type] 更新etl_load_column表中的mapping_col_type字段成功
+[DEBUG 2020-07-23 17:48:21,521 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:157 assemble_sql] 调用方法-assemble_sql
+[DEBUG 2020-07-23 17:48:21,521 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:130 get_tab_info] 调用方法-get_tab_info
+[DEBUG 2020-07-23 17:48:21,522 13409 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select tab_cn_name,col_separator,trans_path,11 as dk_num from etl_load_table where lower(concat(sys,'_',tab_name))='cb_cif_client';.
+[DEBUG 2020-07-23 17:48:21,522 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:149 get_tab_info] 表CB_CIF_CLIENT信息获取完成：{'tab_name': 'CB_CIF_CLIENT', 'tab_cn_name': '客户信息表', 'col_separator': '~@~', 'trans_path': '/dw/tbo/cb/cb_cif_client', 'dk_num': '11'}
+[DEBUG 2020-07-23 17:48:21,522 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:68 get_cols_info] 调用方法-get_cols_info
+[DEBUG 2020-07-23 17:48:21,530 13409 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select col_name,col_cn_name,is_pk,is_null,default_val,is_dk,mapping_col_type from etl_load_column where lower(concat(sys,'_',tab_name))='cb_cif_client' order by col_seq;.
+[DEBUG 2020-07-23 17:48:21,531 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:122 get_cols_info] 获取表的字段信息,字段子句成功:{'cols_txt': "CLIENT_KEY DECIMAL(15) not null comment '内部Key',\nCLIENT_NO STRING comment '客户号',\nCLIENT_TYPE STRING comment '客户类型',\nCATEGORY_TYPE STRING comment '客户细分类型',\nCLIENT_GRP STRING comment '客户组',\nCLIENT_SHORT STRING not null comment '客户简称',\nCH_CLIENT_NAME STRING comment '客户名称（中）',\nCLIENT_NAME STRING comment '客户名称（英）',\nNAME_SUFFIX STRING comment '客户名后缀',\nCLIENT_MNEMONIC STRING comment '助记名称',\nCLIENT_ALIAS STRING comment '别名',\nADDRESS STRING comment '地址',\nACCT_EXEC STRING comment '客户经理',\nCOUNTRY_LOC STRING comment '国籍',\nSTATE_LOC STRING comment '省州',\nCLIENT_CITY STRING comment '城市代码',\nCOUNTRY_CITIZEN STRING comment '居住国家',\nCOUNTRY_RISK STRING comment '风险控制国家',\nCTRL_BRANCH STRING comment '控制分行',\nPROFIT_CENTRE STRING comment '利润中心',\nCLASS_1 STRING comment '分类1',\nCLASS_2 STRING comment '分类2',\nCLASS_3 STRING comment '分类3',\nCLASS_4 STRING comment '分类4',\nCLASS_5 STRING comment '分类5',\nNARRATIVE STRING comment '摘要',\nINTERNAL_IND STRING comment '是否为内部客户',\nTAXABLE_IND STRING comment '是否收税',\nCLIENT_SPREAD DECIMAL(15,8) comment '客户汇率优惠比例',\nRISK_WEIGHT DECIMAL(5,2) comment '风险权重',\nSTATUS_INFO STRING comment '状态描述',\nCLIENT_STATUS STRING comment '客户状态',\nTRAN_STATUS STRING comment '客户交易状态',\nCLOSED_DATE STRING comment '关闭日期',\nCLIENT_INDICATOR STRING not null comment '客户标识',\nDISTRICT STRING comment '地区',\nPOSTAL_CODE STRING comment '邮政代码',\nCONTROL_DEPT STRING comment '部门',\nSOURCE_TYPE STRING comment '渠道',\nWRITTEN_LANGUAGE STRING comment '书写语言',\nSPOKEN_LANGUAGE STRING comment '交流语言',\nPRINT_LANGUAGE STRING comment '打印语言',\nINLAND_OFFSHORE STRING comment '境内境外',\nTEMP_CLIENT STRING comment '是否为临时客户',\nPEP_IND STRING comment '资料不全标识',\nINFO_LACK STRING comment 'PEP标识',\nCLASS_LEVEL STRING comment '综合评级',\nCLASS_LEVEL_DATE STRING comment '评级日期',\nOLD_CLIENT_NO STRING comment '原系统客户号',\nCREATION_USER_ID STRING comment '创建用户',\nCREATION_DATE STRING comment '创建日期',\nLAST_CHANGE_USER_ID STRING comment '更新用户',\nLAST_CHANGE_DATE STRING comment '更新日期',\nBLACKLIST_IND STRING comment '是否黑名单客户',\nCOMPANY STRING comment '法人代码',\nINDUSTRY STRING comment '通用行业代码',\nBUSINESS STRING comment '行业代码',\nCR_RATING STRING comment '客户等级',\nVOUCHER_TYPE STRING comment '开票类型',\nTAXPAYER_TYPE STRING comment '纳税人类型',\nIS_FORMAL STRING comment '是否弱实名客户',\nTRAN_TIMESTAMP STRING comment '交易时间戳',\nTRAN_TIME DECIMAL(11) comment '交易时间',\nROUTER_KEY STRING comment '分库路由关键字'", 'pk_txt': 'CLIENT_KEY', 'dk_txt': 'CLUSTERED BY (CLIENT_KEY)'}
+[DEBUG 2020-07-23 17:48:21,531 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:179 assemble_sql] 执行ORC类型拼装.
+[DEBUG 2020-07-23 17:48:21,531 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:184 assemble_sql] orc表OMI.CB_CIF_CLIENT的结构语句拼接完成.
+[INFO 2020-07-23 17:48:21,531 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:208 assemble_sql] 表OMI.CB_CIF_CLIENT的结构语句组装完成.
+[DEBUG 2020-07-23 17:48:21,531 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:254 init_load_tab] ["----TABLE:CB_CIF_CLIENT---------\nDROP TABLE IF EXISTS OMI.CB_CIF_CLIENT;\nCREATE TABLE OMI.CB_CIF_CLIENT( \nCLIENT_KEY DECIMAL(15) not null comment '内部Key',\nCLIENT_NO STRING comment '客户号',\nCLIENT_TYPE STRING comment '客户类型',\nCATEGORY_TYPE STRING comment '客户细分类型',\nCLIENT_GRP STRING comment '客户组',\nCLIENT_SHORT STRING not null comment '客户简称',\nCH_CLIENT_NAME STRING comment '客户名称（中）',\nCLIENT_NAME STRING comment '客户名称（英）',\nNAME_SUFFIX STRING comment '客户名后缀',\nCLIENT_MNEMONIC STRING comment '助记名称',\nCLIENT_ALIAS STRING comment '别名',\nADDRESS STRING comment '地址',\nACCT_EXEC STRING comment '客户经理',\nCOUNTRY_LOC STRING comment '国籍',\nSTATE_LOC STRING comment '省州',\nCLIENT_CITY STRING comment '城市代码',\nCOUNTRY_CITIZEN STRING comment '居住国家',\nCOUNTRY_RISK STRING comment '风险控制国家',\nCTRL_BRANCH STRING comment '控制分行',\nPROFIT_CENTRE STRING comment '利润中心',\nCLASS_1 STRING comment '分类1',\nCLASS_2 STRING comment '分类2',\nCLASS_3 STRING comment '分类3',\nCLASS_4 STRING comment '分类4',\nCLASS_5 STRING comment '分类5',\nNARRATIVE STRING comment '摘要',\nINTERNAL_IND STRING comment '是否为内部客户',\nTAXABLE_IND STRING comment '是否收税',\nCLIENT_SPREAD DECIMAL(15,8) comment '客户汇率优惠比例',\nRISK_WEIGHT DECIMAL(5,2) comment '风险权重',\nSTATUS_INFO STRING comment '状态描述',\nCLIENT_STATUS STRING comment '客户状态',\nTRAN_STATUS STRING comment '客户交易状态',\nCLOSED_DATE STRING comment '关闭日期',\nCLIENT_INDICATOR STRING not null comment '客户标识',\nDISTRICT STRING comment '地区',\nPOSTAL_CODE STRING comment '邮政代码',\nCONTROL_DEPT STRING comment '部门',\nSOURCE_TYPE STRING comment '渠道',\nWRITTEN_LANGUAGE STRING comment '书写语言',\nSPOKEN_LANGUAGE STRING comment '交流语言',\nPRINT_LANGUAGE STRING comment '打印语言',\nINLAND_OFFSHORE STRING comment '境内境外',\nTEMP_CLIENT STRING comment '是否为临时客户',\nPEP_IND STRING comment '资料不全标识',\nINFO_LACK STRING comment 'PEP标识',\nCLASS_LEVEL STRING comment '综合评级',\nCLASS_LEVEL_DATE STRING comment '评级日期',\nOLD_CLIENT_NO STRING comment '原系统客户号',\nCREATION_USER_ID STRING comment '创建用户',\nCREATION_DATE STRING comment '创建日期',\nLAST_CHANGE_USER_ID STRING comment '更新用户',\nLAST_CHANGE_DATE STRING comment '更新日期',\nBLACKLIST_IND STRING comment '是否黑名单客户',\nCOMPANY STRING comment '法人代码',\nINDUSTRY STRING comment '通用行业代码',\nBUSINESS STRING comment '行业代码',\nCR_RATING STRING comment '客户等级',\nVOUCHER_TYPE STRING comment '开票类型',\nTAXPAYER_TYPE STRING comment '纳税人类型',\nIS_FORMAL STRING comment '是否弱实名客户',\nTRAN_TIMESTAMP STRING comment '交易时间戳',\nTRAN_TIME DECIMAL(11) comment '交易时间',\nROUTER_KEY STRING comment '分库路由关键字') \nCOMMENT '客户信息表' \nCLUSTERED BY (CLIENT_KEY) INTO 11 BUCKETS \nstored as orc \nTBLPROPERTIES ('transactional'='true');\n\n"]
+[INFO 2020-07-23 17:48:21,532 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:265 init_load_tab] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/load_omi_orc_tab.sql
+[DEBUG 2020-07-23 17:48:25,195 13409 /Users/wangdabin1216/git/dw/src/init/operate_os.py:72 compile_inceptor_file] 文件-/Users/wangdabin1216/git/dw/sql/load_omi_orc_tab.sql编译执行成功
+[DEBUG 2020-07-23 17:48:25,195 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:213 init_load_tab] 调用方法-init_load_tab
+[DEBUG 2020-07-23 17:48:25,200 13409 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select concat(sys,'_',tab_name) from etl_load_table where is_create=1 and is_valid=1 ;.
+[INFO 2020-07-23 17:48:25,201 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:239 init_load_tab] 获取本次待创建的表列表如下：['CB_CIF_CLIENT'],共1张表.
+[DEBUG 2020-07-23 17:48:25,208 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:30 update_cols_type] 调用方法-update_cols_type
+[INFO 2020-07-23 17:48:25,273 13409 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:42 execute_sql] 执行事务类SQL成功,sql：update         etl_load_column a,         (         select t1.tab_name, t1.col_name, 			( case when t2.trans_mode = '1' then t2.tar_col_type when t2.trans_mode = '0' and t1.col_type = 'NUMBER' then 'DECIMAL(38,0)' 			  else concat( left( t2.tar_col_type, locate( '(', t2.tar_col_type )- 1 ), substring( t1.col_type, locate( '(', t1.col_type ))) 			  end ) as tar_col_type         from 			( select distinct( 						case when col_type like '%char%' then 'VARCHAR' 							when col_type like '%number%' then 'NUMBER' 							else col_type end ) as coltype, 					sys, col_type, col_name, tab_name 				from etl_load_column 			) t1  			inner join etl_load_system t3  			on t1.sys = t3.sys  			inner join etl_meta_type_convert t2  			on upper( t1.coltype )= upper( t2.col_type ) 			and upper( t2.db_type )= upper( t3.db_type )         ) b         set         a.mapping_col_type = b.tar_col_type         where         a.tab_name = b.tab_name         and a.col_name = b.col_name;.
+[DEBUG 2020-07-23 17:48:25,284 13409 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:66 commit] 提交事务类操作成功.
+[INFO 2020-07-23 17:48:25,290 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:62 update_cols_type] 更新etl_load_column表中的mapping_col_type字段成功
+[DEBUG 2020-07-23 17:48:25,291 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:157 assemble_sql] 调用方法-assemble_sql
+[DEBUG 2020-07-23 17:48:25,291 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:130 get_tab_info] 调用方法-get_tab_info
+[DEBUG 2020-07-23 17:48:25,303 13409 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select tab_cn_name,col_separator,trans_path,11 as dk_num from etl_load_table where lower(concat(sys,'_',tab_name))='cb_cif_client';.
+[DEBUG 2020-07-23 17:48:25,303 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:149 get_tab_info] 表CB_CIF_CLIENT信息获取完成：{'tab_name': 'CB_CIF_CLIENT', 'tab_cn_name': '客户信息表', 'col_separator': '~@~', 'trans_path': '/dw/tbo/cb/cb_cif_client', 'dk_num': '11'}
+[DEBUG 2020-07-23 17:48:25,303 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:68 get_cols_info] 调用方法-get_cols_info
+[DEBUG 2020-07-23 17:48:25,317 13409 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select col_name,col_cn_name,is_pk,is_null,default_val,is_dk,mapping_col_type from etl_load_column where lower(concat(sys,'_',tab_name))='cb_cif_client' order by col_seq;.
+[DEBUG 2020-07-23 17:48:25,318 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:122 get_cols_info] 获取表的字段信息,字段子句成功:{'cols_txt': "CLIENT_KEY DECIMAL(15) not null comment '内部Key',\nCLIENT_NO STRING comment '客户号',\nCLIENT_TYPE STRING comment '客户类型',\nCATEGORY_TYPE STRING comment '客户细分类型',\nCLIENT_GRP STRING comment '客户组',\nCLIENT_SHORT STRING not null comment '客户简称',\nCH_CLIENT_NAME STRING comment '客户名称（中）',\nCLIENT_NAME STRING comment '客户名称（英）',\nNAME_SUFFIX STRING comment '客户名后缀',\nCLIENT_MNEMONIC STRING comment '助记名称',\nCLIENT_ALIAS STRING comment '别名',\nADDRESS STRING comment '地址',\nACCT_EXEC STRING comment '客户经理',\nCOUNTRY_LOC STRING comment '国籍',\nSTATE_LOC STRING comment '省州',\nCLIENT_CITY STRING comment '城市代码',\nCOUNTRY_CITIZEN STRING comment '居住国家',\nCOUNTRY_RISK STRING comment '风险控制国家',\nCTRL_BRANCH STRING comment '控制分行',\nPROFIT_CENTRE STRING comment '利润中心',\nCLASS_1 STRING comment '分类1',\nCLASS_2 STRING comment '分类2',\nCLASS_3 STRING comment '分类3',\nCLASS_4 STRING comment '分类4',\nCLASS_5 STRING comment '分类5',\nNARRATIVE STRING comment '摘要',\nINTERNAL_IND STRING comment '是否为内部客户',\nTAXABLE_IND STRING comment '是否收税',\nCLIENT_SPREAD DECIMAL(15,8) comment '客户汇率优惠比例',\nRISK_WEIGHT DECIMAL(5,2) comment '风险权重',\nSTATUS_INFO STRING comment '状态描述',\nCLIENT_STATUS STRING comment '客户状态',\nTRAN_STATUS STRING comment '客户交易状态',\nCLOSED_DATE STRING comment '关闭日期',\nCLIENT_INDICATOR STRING not null comment '客户标识',\nDISTRICT STRING comment '地区',\nPOSTAL_CODE STRING comment '邮政代码',\nCONTROL_DEPT STRING comment '部门',\nSOURCE_TYPE STRING comment '渠道',\nWRITTEN_LANGUAGE STRING comment '书写语言',\nSPOKEN_LANGUAGE STRING comment '交流语言',\nPRINT_LANGUAGE STRING comment '打印语言',\nINLAND_OFFSHORE STRING comment '境内境外',\nTEMP_CLIENT STRING comment '是否为临时客户',\nPEP_IND STRING comment '资料不全标识',\nINFO_LACK STRING comment 'PEP标识',\nCLASS_LEVEL STRING comment '综合评级',\nCLASS_LEVEL_DATE STRING comment '评级日期',\nOLD_CLIENT_NO STRING comment '原系统客户号',\nCREATION_USER_ID STRING comment '创建用户',\nCREATION_DATE STRING comment '创建日期',\nLAST_CHANGE_USER_ID STRING comment '更新用户',\nLAST_CHANGE_DATE STRING comment '更新日期',\nBLACKLIST_IND STRING comment '是否黑名单客户',\nCOMPANY STRING comment '法人代码',\nINDUSTRY STRING comment '通用行业代码',\nBUSINESS STRING comment '行业代码',\nCR_RATING STRING comment '客户等级',\nVOUCHER_TYPE STRING comment '开票类型',\nTAXPAYER_TYPE STRING comment '纳税人类型',\nIS_FORMAL STRING comment '是否弱实名客户',\nTRAN_TIMESTAMP STRING comment '交易时间戳',\nTRAN_TIME DECIMAL(11) comment '交易时间',\nROUTER_KEY STRING comment '分库路由关键字'", 'pk_txt': 'CLIENT_KEY', 'dk_txt': 'CLUSTERED BY (CLIENT_KEY)'}
+[DEBUG 2020-07-23 17:48:25,318 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:186 assemble_sql] 执行ORCHS类型拼装.
+[DEBUG 2020-07-23 17:48:25,318 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:191 assemble_sql] OMI.CB_CIF_CLIENT_HS
+[DEBUG 2020-07-23 17:48:25,318 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:193 assemble_sql] CREATE TABLE OMI.CB_CIF_CLIENT_HS ( 
+ BEGNDT DATE comment '生效日期',
+OVERDT DATE comment '失效日期' , 
+
+[DEBUG 2020-07-23 17:48:25,319 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:198 assemble_sql] ) 
+COMMENT '客户信息表' 
+partitioned by (partid string) 
+CLUSTERED BY (CLIENT_KEY) INTO 11 BUCKETS 
+stored as orc 
+TBLPROPERTIES ('transactional'='true');
+[DEBUG 2020-07-23 17:48:25,319 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:199 assemble_sql] orc历史表OMI.CB_CIF_CLIENT_HS的结构语句拼接完成.
+[INFO 2020-07-23 17:48:25,319 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:208 assemble_sql] 表OMI.CB_CIF_CLIENT_HS的结构语句组装完成.
+[DEBUG 2020-07-23 17:48:25,319 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:254 init_load_tab] ["----TABLE:CB_CIF_CLIENT---------\nDROP TABLE IF EXISTS OMI.CB_CIF_CLIENT_HS;\nCREATE TABLE OMI.CB_CIF_CLIENT_HS ( \n BEGNDT DATE comment '生效日期',\nOVERDT DATE comment '失效日期' , \nCLIENT_KEY DECIMAL(15) not null comment '内部Key',\nCLIENT_NO STRING comment '客户号',\nCLIENT_TYPE STRING comment '客户类型',\nCATEGORY_TYPE STRING comment '客户细分类型',\nCLIENT_GRP STRING comment '客户组',\nCLIENT_SHORT STRING not null comment '客户简称',\nCH_CLIENT_NAME STRING comment '客户名称（中）',\nCLIENT_NAME STRING comment '客户名称（英）',\nNAME_SUFFIX STRING comment '客户名后缀',\nCLIENT_MNEMONIC STRING comment '助记名称',\nCLIENT_ALIAS STRING comment '别名',\nADDRESS STRING comment '地址',\nACCT_EXEC STRING comment '客户经理',\nCOUNTRY_LOC STRING comment '国籍',\nSTATE_LOC STRING comment '省州',\nCLIENT_CITY STRING comment '城市代码',\nCOUNTRY_CITIZEN STRING comment '居住国家',\nCOUNTRY_RISK STRING comment '风险控制国家',\nCTRL_BRANCH STRING comment '控制分行',\nPROFIT_CENTRE STRING comment '利润中心',\nCLASS_1 STRING comment '分类1',\nCLASS_2 STRING comment '分类2',\nCLASS_3 STRING comment '分类3',\nCLASS_4 STRING comment '分类4',\nCLASS_5 STRING comment '分类5',\nNARRATIVE STRING comment '摘要',\nINTERNAL_IND STRING comment '是否为内部客户',\nTAXABLE_IND STRING comment '是否收税',\nCLIENT_SPREAD DECIMAL(15,8) comment '客户汇率优惠比例',\nRISK_WEIGHT DECIMAL(5,2) comment '风险权重',\nSTATUS_INFO STRING comment '状态描述',\nCLIENT_STATUS STRING comment '客户状态',\nTRAN_STATUS STRING comment '客户交易状态',\nCLOSED_DATE STRING comment '关闭日期',\nCLIENT_INDICATOR STRING not null comment '客户标识',\nDISTRICT STRING comment '地区',\nPOSTAL_CODE STRING comment '邮政代码',\nCONTROL_DEPT STRING comment '部门',\nSOURCE_TYPE STRING comment '渠道',\nWRITTEN_LANGUAGE STRING comment '书写语言',\nSPOKEN_LANGUAGE STRING comment '交流语言',\nPRINT_LANGUAGE STRING comment '打印语言',\nINLAND_OFFSHORE STRING comment '境内境外',\nTEMP_CLIENT STRING comment '是否为临时客户',\nPEP_IND STRING comment '资料不全标识',\nINFO_LACK STRING comment 'PEP标识',\nCLASS_LEVEL STRING comment '综合评级',\nCLASS_LEVEL_DATE STRING comment '评级日期',\nOLD_CLIENT_NO STRING comment '原系统客户号',\nCREATION_USER_ID STRING comment '创建用户',\nCREATION_DATE STRING comment '创建日期',\nLAST_CHANGE_USER_ID STRING comment '更新用户',\nLAST_CHANGE_DATE STRING comment '更新日期',\nBLACKLIST_IND STRING comment '是否黑名单客户',\nCOMPANY STRING comment '法人代码',\nINDUSTRY STRING comment '通用行业代码',\nBUSINESS STRING comment '行业代码',\nCR_RATING STRING comment '客户等级',\nVOUCHER_TYPE STRING comment '开票类型',\nTAXPAYER_TYPE STRING comment '纳税人类型',\nIS_FORMAL STRING comment '是否弱实名客户',\nTRAN_TIMESTAMP STRING comment '交易时间戳',\nTRAN_TIME DECIMAL(11) comment '交易时间',\nROUTER_KEY STRING comment '分库路由关键字') \nCOMMENT '客户信息表' \npartitioned by (partid string) \nCLUSTERED BY (CLIENT_KEY) INTO 11 BUCKETS \nstored as orc \nTBLPROPERTIES ('transactional'='true');\n\n"]
+[INFO 2020-07-23 17:48:25,321 13409 /Users/wangdabin1216/git/dw/src/init/init_load_tab.py:265 init_load_tab] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/load_omi_orchs_tab.sql
+[DEBUG 2020-07-23 17:48:37,600 13409 /Users/wangdabin1216/git/dw/src/init/operate_os.py:72 compile_inceptor_file] 文件-/Users/wangdabin1216/git/dw/sql/load_omi_orchs_tab.sql编译执行成功
+[INFO 2020-07-23 17:53:02,905 14498 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:30 conn_mysql] 数据库初始化连接创建成功.
+[INFO 2020-07-23 17:53:02,908 14498 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:42 execute_sql] 执行事务类SQL成功,sql：update etl_load_table set is_create = 0 ;.
+[INFO 2020-07-23 17:53:02,908 14498 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:42 execute_sql] 执行事务类SQL成功,sql：update etl_load_table set is_create = 1 where is_valid=1 ;.
+[DEBUG 2020-07-23 17:53:02,914 14498 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:66 commit] 提交事务类操作成功.
+[DEBUG 2020-07-23 17:53:02,918 14498 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select concat(sys,'_',tab_name) from etl_load_table where is_valid=1 and  is_create = 1;.
+[DEBUG 2020-07-23 17:53:02,918 14498 /Users/wangdabin1216/git/dw/src/init/init_hist_data.py:88 init_hist_data] 调用方法-init_hist_data
+[DEBUG 2020-07-23 17:53:02,926 14498 /Users/wangdabin1216/git/dw/src/init/operate_os.py:60 exec_cmd] 系统命令-mysql -u root -ptoor -h 10.211.55.4 -D etl --default-character-set=utf8 -N -e "  set session group_concat_max_len=102400000;select concat('tbo.',lower(t.sys),'_',lower(t.tab_name)),lower(t.sys),concat('omi.',lower(t.sys),'_',lower(t.tab_name),'_hs'),lower(t1.FIELDS),lower(coalesce(t2.pk,'')),lower(coalesce(t.partition_set,'yyyymm')),lower(coalesce(t.chain_type,'chain_all')),coalesce(t.cond,'none') ,'2'     	from etl_load_table t     	left join (select sys, tab_name,group_concat(col_name) AS fields from etl_load_column  group by sys,tab_name order by col_seq) t1      	on t.tab_name = t1.tab_name AND t.sys=t1.sys     	left join (select sys, tab_name,group_concat(col_name) AS pk from etl_load_column WHERE is_pk = 1 group by sys,tab_name order by col_seq) t2     	on t.sys=t2.sys AND t.tab_name=t2.tab_name     	where lower(t.sys)='cb' and lower(t.tab_name)='cif_client';  ">>/data/put/init/dw_sm_hist_ext.txt执行成功
+[DEBUG 2020-07-23 17:53:02,974 14498 /Users/wangdabin1216/git/dw/src/init/operate_os.py:60 exec_cmd] 系统命令-perl -p -i -e 's/	/\|/g;s/[ ]*\|/\|/g;s/\|\|/\|\\N\|/g;s/\|\|/\|\\N\|/g;s/NULL/\\N/g' /data/put/init/dw_sm_hist_ext.txt >/dev/null 2>&1执行成功
+[INFO 2020-07-23 17:53:02,975 14498 /Users/wangdabin1216/git/dw/src/init/init_hist_data.py:47 gen_load_insert] 写入dw_sm_hist_ext.txt文件成功
+[INFO 2020-07-23 17:53:02,975 14498 /Users/wangdabin1216/git/dw/src/init/init_hist_data.py:98 init_hist_data] 执行Main方法成功
+[DEBUG 2020-07-23 17:53:02,975 14498 /Users/wangdabin1216/git/dw/src/init/init_hist_data.py:103 init_exec_pro] 调用方法-init_exec_pro
+[DEBUG 2020-07-23 17:53:03,007 14498 /Users/wangdabin1216/git/dw/src/init/operate_os.py:60 exec_cmd] 系统命令-kinit dw -kt /Users/wangdabin1216/git/dw/conf/dw.keytab执行成功
+[DEBUG 2020-07-23 17:53:03,013 14498 /Users/wangdabin1216/git/dw/src/init/operate_os.py:60 exec_cmd] 系统命令-hdfs dfs -rm /dw/cc/dw_sm_hist_ext/*执行成功
+[DEBUG 2020-07-23 17:53:03,016 14498 /Users/wangdabin1216/git/dw/src/init/operate_os.py:60 exec_cmd] 系统命令-hdfs dfs -put /data/put/init/dw_sm_hist_ext.txt /dw/cc/dw_sm_hist_ext/dw_sm_hist_ext.txt执行成功
+[DEBUG 2020-07-23 17:53:03,019 14498 /Users/wangdabin1216/git/dw/src/init/operate_os.py:60 exec_cmd] 系统命令-beeline -u "jdbc:hive2://bjhqtdh04:10000/cc;" -n dw -p dw  --outputformat=csv --silent=true --showHeader=true  -e " begin cc.pkg_dw_util.pro_sync_cc_data('dw_sm_hist_ext','dw_sm_hist') end " 执行成功
+[INFO 2020-07-23 17:54:12,431 14780 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:30 conn_mysql] 数据库初始化连接创建成功.
+[INFO 2020-07-23 17:54:12,438 14780 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:42 execute_sql] 执行事务类SQL成功,sql：update etl_load_table set is_create = 0 ;.
+[INFO 2020-07-23 17:54:12,439 14780 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:42 execute_sql] 执行事务类SQL成功,sql：update etl_load_table set is_create = 1 where is_valid=1 ;.
+[DEBUG 2020-07-23 17:54:12,500 14780 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:66 commit] 提交事务类操作成功.
+[DEBUG 2020-07-23 17:54:25,235 14780 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select concat(sys,'_',tab_name) from etl_load_table where is_valid=1 and  is_create = 1;.
+[DEBUG 2020-07-23 17:54:41,676 14780 /Users/wangdabin1216/git/dw/src/init/init_hist_data.py:88 init_hist_data] 调用方法-init_hist_data
+[DEBUG 2020-07-23 17:54:41,698 14780 /Users/wangdabin1216/git/dw/src/init/operate_os.py:60 exec_cmd] 系统命令-mysql -u root -ptoor -h 10.211.55.4 -D etl --default-character-set=utf8 -N -e "  set session group_concat_max_len=102400000;select concat('tbo.',lower(t.sys),'_',lower(t.tab_name)),lower(t.sys),concat('omi.',lower(t.sys),'_',lower(t.tab_name),'_hs'),lower(t1.FIELDS),lower(coalesce(t2.pk,'')),lower(coalesce(t.partition_set,'yyyymm')),lower(coalesce(t.chain_type,'chain_all')),coalesce(t.cond,'none') ,'2'     	from etl_load_table t     	left join (select sys, tab_name,group_concat(col_name) AS fields from etl_load_column  group by sys,tab_name order by col_seq) t1      	on t.tab_name = t1.tab_name AND t.sys=t1.sys     	left join (select sys, tab_name,group_concat(col_name) AS pk from etl_load_column WHERE is_pk = 1 group by sys,tab_name order by col_seq) t2     	on t.sys=t2.sys AND t.tab_name=t2.tab_name     	where lower(t.sys)='cb' and lower(t.tab_name)='cif_client';  ">>/data/put/init/dw_sm_hist_ext.txt执行成功
+[DEBUG 2020-07-23 17:54:41,736 14780 /Users/wangdabin1216/git/dw/src/init/operate_os.py:60 exec_cmd] 系统命令-perl -p -i -e 's/	/\|/g;s/[ ]*\|/\|/g;s/\|\|/\|\\N\|/g;s/\|\|/\|\\N\|/g;s/NULL/\\N/g' /data/put/init/dw_sm_hist_ext.txt >/dev/null 2>&1执行成功
+[INFO 2020-07-23 17:54:41,737 14780 /Users/wangdabin1216/git/dw/src/init/init_hist_data.py:47 gen_load_insert] 写入dw_sm_hist_ext.txt文件成功
+[INFO 2020-07-23 17:54:41,738 14780 /Users/wangdabin1216/git/dw/src/init/init_hist_data.py:98 init_hist_data] 执行Main方法成功
+[DEBUG 2020-07-23 17:55:03,058 14780 /Users/wangdabin1216/git/dw/src/init/init_hist_data.py:103 init_exec_pro] 调用方法-init_exec_pro
+[DEBUG 2020-07-23 17:55:03,094 14780 /Users/wangdabin1216/git/dw/src/init/operate_os.py:60 exec_cmd] 系统命令-kinit dw -kt /Users/wangdabin1216/git/dw/conf/dw.keytab执行成功
+[DEBUG 2020-07-23 17:55:03,101 14780 /Users/wangdabin1216/git/dw/src/init/operate_os.py:60 exec_cmd] 系统命令-hdfs dfs -rm /dw/cc/dw_sm_hist_ext/*执行成功
+[INFO 2020-07-24 15:22:42,313 49166 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:30 conn_mysql] 数据库初始化连接创建成功.
+[INFO 2020-07-24 15:22:42,314 49166 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:47 init_meta_data] 调用方法 - init_meta_data
+[DEBUG 2020-07-24 15:22:42,320 49166 /Users/wangdabin1216/git/dw/src/init/operate_os.py:26 delete_file] 文件/Users/wangdabin1216/git/dw/sql/meta_data.sql已删除
+[INFO 2020-07-24 15:22:42,670 49166 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:30 get_tab_cols] 调用方法 - get_tab_cols
+[DEBUG 2020-07-24 15:22:42,674 49166 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select column_name from information_schema.columns where table_name= 'etl_load_system' order by ordinal_position ;.
+[INFO 2020-07-24 15:22:42,675 49166 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:39 get_tab_cols] 获取表etl_load_system字段结构列表成功,字段列表：[]
+[INFO 2020-07-24 15:22:42,675 49166 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:60 init_meta_data] 表 etl_load_system 开始组装数据初始化语句...... 
+[DEBUG 2020-07-24 15:22:42,675 49166 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:86 init_meta_data] 删除语句：delete from etl_load_system where 1=1;
+[ERROR 2020-07-24 15:22:42,681 49166 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:45 execute_sql] 执行事务类SQL失败,sql：delete from etl_load_system where 1=1;.
+(1146, u"Table 'etl.etl_load_system' doesn't exist")
+[INFO 2020-07-24 15:36:35,901 52137 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:30 conn_mysql] 数据库初始化连接创建成功.
+[INFO 2020-07-24 15:36:35,902 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:51 init_meta_struct] 方法调用 - init_meta_struct
+[DEBUG 2020-07-24 15:36:35,903 52137 /Users/wangdabin1216/git/dw/src/init/operate_os.py:26 delete_file] 文件/Users/wangdabin1216/git/dw/sql/meta_struct.sql已删除
+[INFO 2020-07-24 15:36:36,163 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:28 get_init_sql] 方法调用 - get_init_sql
+[DEBUG 2020-07-24 15:36:36,163 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:46 get_init_sql] sql:create table etl_meta_tables( 
+ tab_name varchar(128),col_name varchar(128),col_type varchar(128),col_seq int,default_val varchar(32),tab_cn_name varchar(2048),col_cn_name varchar(2048),is_pk int,key_name varchar(256),remark varchar(128) 
+ ); 
+
+
+[INFO 2020-07-24 15:36:36,164 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:85 init_meta_struct] 表DDL已写入文件:/Users/wangdabin1216/git/dw/sql/meta_struct.sql
+[INFO 2020-07-24 15:36:36,176 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:28 get_init_sql] 方法调用 - get_init_sql
+[DEBUG 2020-07-24 15:36:36,177 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:46 get_init_sql] sql:create table etl_meta_args( 
+ parameter varchar(256),para_type varchar(128),para_val varchar(512),remark varchar(512) 
+ ); 
+
+
+[INFO 2020-07-24 15:36:36,177 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:85 init_meta_struct] 表DDL已写入文件:/Users/wangdabin1216/git/dw/sql/meta_struct.sql
+[INFO 2020-07-24 15:36:36,188 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:28 get_init_sql] 方法调用 - get_init_sql
+[DEBUG 2020-07-24 15:36:36,188 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:46 get_init_sql] sql:create table etl_meta_type_convert( 
+ db_type varchar(128),col_type varchar(128),tar_db_type varchar(128),tar_col_type varchar(128),length int,default_val varchar(1024),format varchar(1024),trans_mode int 
+ ); 
+
+
+[INFO 2020-07-24 15:36:36,188 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:85 init_meta_struct] 表DDL已写入文件:/Users/wangdabin1216/git/dw/sql/meta_struct.sql
+[INFO 2020-07-24 15:36:36,199 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:28 get_init_sql] 方法调用 - get_init_sql
+[DEBUG 2020-07-24 15:36:36,200 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:46 get_init_sql] sql:create table etl_load_system( 
+ sys varchar(128),sys_name varchar(128),db_type varchar(128),db_version varchar(128),flag int,mode varchar(128),db_name varchar(128),schema_name varchar(128),charset varchar(1024),ip_addr varchar(512),port varchar(128),user varchar(128),password varchar(128),remark varchar(2048),is_compress varchar(128),is_fix_length varchar(128),is_exist_check_file varchar(128),is_exist_ready_file varchar(128) 
+ ); 
+
+
+[INFO 2020-07-24 15:36:36,200 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:85 init_meta_struct] 表DDL已写入文件:/Users/wangdabin1216/git/dw/sql/meta_struct.sql
+[INFO 2020-07-24 15:36:36,212 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:28 get_init_sql] 方法调用 - get_init_sql
+[DEBUG 2020-07-24 15:36:36,212 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:46 get_init_sql] sql:create table etl_load_table( 
+ sys varchar(128),tab_name varchar(128),tab_cn_name varchar(128),cond varchar(512),if_flag varchar(128),tab_type varchar(128),chain_type varchar(128),collect_mode varchar(128),file_name varchar(128),check_file varchar(128),file_format varchar(128),encode_format varchar(128),col_separator varchar(128),record_separator varchar(128),trans_path varchar(1024),remark varchar(1024),is_col_separator int,partition_set varchar(128),is_valid int,is_create int 
+ ); 
+
+
+[INFO 2020-07-24 15:36:36,213 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:85 init_meta_struct] 表DDL已写入文件:/Users/wangdabin1216/git/dw/sql/meta_struct.sql
+[INFO 2020-07-24 15:36:36,230 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:28 get_init_sql] 方法调用 - get_init_sql
+[DEBUG 2020-07-24 15:36:36,231 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:46 get_init_sql] sql:create table etl_load_column( 
+ sys varchar(128),tab_name varchar(128),col_seq int,col_name varchar(128),col_type varchar(128),col_cn_name varchar(256),is_pk int,is_null int,default_val varchar(128),trans_statement varchar(1024),is_dk int,mapping_col_type varchar(256),is_sk int 
+ ); 
+
+
+[INFO 2020-07-24 15:36:36,231 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:85 init_meta_struct] 表DDL已写入文件:/Users/wangdabin1216/git/dw/sql/meta_struct.sql
+[INFO 2020-07-24 15:36:36,244 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:28 get_init_sql] 方法调用 - get_init_sql
+[DEBUG 2020-07-24 15:36:36,244 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:46 get_init_sql] sql:create table etl_trans_desc( 
+ sys varchar(128),tab_name varchar(128),tab_cn_name varchar(128),func_desc varchar(128),comp_pers varchar(128),comp_date varchar(128),modif_record varchar(3000) 
+ ); 
+
+
+[INFO 2020-07-24 15:36:36,244 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:85 init_meta_struct] 表DDL已写入文件:/Users/wangdabin1216/git/dw/sql/meta_struct.sql
+[INFO 2020-07-24 15:36:36,256 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:28 get_init_sql] 方法调用 - get_init_sql
+[DEBUG 2020-07-24 15:36:36,257 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:46 get_init_sql] sql:create table etl_trans_table( 
+ sys varchar(128),tab_name varchar(256),tab_cn_name varchar(128),chain_type varchar(128),if_mark varchar(128),tab_type varchar(128),format_type varchar(128),partition_set varchar(128),data_size varchar(128),col_num int,is_valid int,is_create int 
+ ); 
+
+
+[INFO 2020-07-24 15:36:36,257 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:85 init_meta_struct] 表DDL已写入文件:/Users/wangdabin1216/git/dw/sql/meta_struct.sql
+[INFO 2020-07-24 15:36:36,277 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:28 get_init_sql] 方法调用 - get_init_sql
+[DEBUG 2020-07-24 15:36:36,277 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:46 get_init_sql] sql:create table etl_trans_column( 
+ sys varchar(128),tab_name varchar(128),col_seq varchar(128),col_name varchar(128),mapping_col_type varchar(128),col_cn_name varchar(256),is_pk int,is_not_null int,is_dk int,is_sk int,default_val varchar(128),data_dict varchar(129) 
+ ); 
+
+
+[INFO 2020-07-24 15:36:36,278 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:85 init_meta_struct] 表DDL已写入文件:/Users/wangdabin1216/git/dw/sql/meta_struct.sql
+[INFO 2020-07-24 15:36:36,289 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:28 get_init_sql] 方法调用 - get_init_sql
+[DEBUG 2020-07-24 15:36:36,289 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:46 get_init_sql] sql:create table etl_trans_mapping( 
+ tab_name varchar(128),group_id int,group_desc varchar(128),part_id int,part_desc varchar(128),aim_db_name varchar(128),aim_tab_name varchar(128),aim_tab_cn_name varchar(256),part_col_id int,aim_col_name varchar(128),aim_col_cn_name varchar(256),aim_col_type varchar(128),sour_sys varchar(128),sour_db_name varchar(128),sour_tab_name varchar(128),sour_tab_cn_name varchar(256),sour_col_name varchar(128),sour_col_cn_name varchar(256),sour_col_type varchar(128),mapping varchar(128),main_tab varchar(128),main_tab_oth varchar(128),minor_tab varchar(128),minor_tab_oth varchar(128),part_type varchar(128),join_type varchar(128),on_term varchar(128),on_term_desc varchar(256),where_term varchar(128),where_term_desc varchar(256),var_name varchar(128),var_value varchar(128),var_desc varchar(256) 
+ ); 
+
+
+[INFO 2020-07-24 15:36:36,290 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:85 init_meta_struct] 表DDL已写入文件:/Users/wangdabin1216/git/dw/sql/meta_struct.sql
+[INFO 2020-07-24 15:36:36,302 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:28 get_init_sql] 方法调用 - get_init_sql
+[DEBUG 2020-07-24 15:36:36,302 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:46 get_init_sql] sql:create table etl_serve_view( 
+ view_name varchar(256),view_schema varchar(256),view_chn varchar(256),tab_name varchar(256),constriant varchar(2048),mapping_mode varchar(256),status varchar(128),is_create varchar(128) 
+ ); 
+
+
+[INFO 2020-07-24 15:36:36,302 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:85 init_meta_struct] 表DDL已写入文件:/Users/wangdabin1216/git/dw/sql/meta_struct.sql
+[INFO 2020-07-24 15:36:36,316 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:28 get_init_sql] 方法调用 - get_init_sql
+[DEBUG 2020-07-24 15:36:36,316 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:46 get_init_sql] sql:create table etl_serve_view_mapping( 
+ view_name varchar(128),col_no varchar(128),col_name varchar(128),col_chn varchar(128),map_col varchar(128),fun_meth varchar(128),des_type varchar(128) 
+ ); 
+
+
+[INFO 2020-07-24 15:36:36,316 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:85 init_meta_struct] 表DDL已写入文件:/Users/wangdabin1216/git/dw/sql/meta_struct.sql
+[INFO 2020-07-24 15:36:36,329 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:28 get_init_sql] 方法调用 - get_init_sql
+[DEBUG 2020-07-24 15:36:36,329 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:46 get_init_sql] sql:create table etl_serve_unload( 
+ table_name varchar(128),file_seq varchar(128),sep varchar(128),fields varchar(2048),cond varchar(128),status varchar(128),is_create varchar(128) 
+ ); 
+
+
+[INFO 2020-07-24 15:36:36,330 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:85 init_meta_struct] 表DDL已写入文件:/Users/wangdabin1216/git/dw/sql/meta_struct.sql
+[INFO 2020-07-24 15:36:36,345 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:28 get_init_sql] 方法调用 - get_init_sql
+[DEBUG 2020-07-24 15:36:36,346 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:46 get_init_sql] sql:create table etl_serve_distribute( 
+ system_flag varchar(128),tar_file_seq varchar(128),tar_file_name varchar(128),tar_file_check_name varchar(128),tar_feed_ways varchar(128),tar_file_code varchar(128),tar_file_source_type varchar(128),source_name varchar(128),source_file_name varchar(128),source_file_path varchar(512),source_file_code varchar(128),status varchar(128),is_create varchar(128) 
+ ); 
+
+
+[INFO 2020-07-24 15:36:36,349 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:85 init_meta_struct] 表DDL已写入文件:/Users/wangdabin1216/git/dw/sql/meta_struct.sql
+[INFO 2020-07-24 15:36:36,368 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:28 get_init_sql] 方法调用 - get_init_sql
+[DEBUG 2020-07-24 15:36:36,368 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:46 get_init_sql] sql:create table etl_check_quality_rules( 
+ rule_no varchar(128),rule_expr varchar(512),rule_desc varchar(512) 
+ ); 
+
+
+[INFO 2020-07-24 15:36:36,369 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:85 init_meta_struct] 表DDL已写入文件:/Users/wangdabin1216/git/dw/sql/meta_struct.sql
+[INFO 2020-07-24 15:36:36,381 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:28 get_init_sql] 方法调用 - get_init_sql
+[DEBUG 2020-07-24 15:36:36,381 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:46 get_init_sql] sql:create table etl_check_cols_rule( 
+ table_name varchar(128),col_name varchar(128),rule_no varchar(128),std_result varchar(512) 
+ ); 
+
+
+[INFO 2020-07-24 15:36:36,381 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:85 init_meta_struct] 表DDL已写入文件:/Users/wangdabin1216/git/dw/sql/meta_struct.sql
+[INFO 2020-07-24 15:36:36,392 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:28 get_init_sql] 方法调用 - get_init_sql
+[DEBUG 2020-07-24 15:36:36,392 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:46 get_init_sql] sql:create table etl_trans_std_dict( 
+ lp_code varchar(128),data_std_code varchar(128),std_dict_type varchar(128),std_dict_type_name varchar(1024),std_dict_value varchar(128),std_dict_value_name varchar(1024),rem varchar(1024),start_date DATE,due_date DATE 
+ ); 
+
+
+[INFO 2020-07-24 15:36:36,393 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:85 init_meta_struct] 表DDL已写入文件:/Users/wangdabin1216/git/dw/sql/meta_struct.sql
+[INFO 2020-07-24 15:36:36,403 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:28 get_init_sql] 方法调用 - get_init_sql
+[DEBUG 2020-07-24 15:36:36,404 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:46 get_init_sql] sql:create table etl_trans_colm_dict( 
+ lp_code varchar(128),table_name varchar(128),column_name varchar(128),std_dict_type varchar(128),src_dict_type varchar(128),src_system_no varchar(128),one_to_one_sign varchar(128),start_date DATE,due_date DATE 
+ ); 
+
+
+[INFO 2020-07-24 15:36:36,404 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:85 init_meta_struct] 表DDL已写入文件:/Users/wangdabin1216/git/dw/sql/meta_struct.sql
+[INFO 2020-07-24 15:36:36,416 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:28 get_init_sql] 方法调用 - get_init_sql
+[DEBUG 2020-07-24 15:36:36,416 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:46 get_init_sql] sql:create table etl_trans_dict_mapp( 
+ lp_code varchar(128),std_dict_type varchar(128),std_dict_value varchar(128),src_dict_type varchar(128),src_dict_type_name varchar(128),src_dict_value varchar(128),src_dict_value_name varchar(128),src_system_no varchar(128),mappg_type varchar(128),start_date DATE,due_date DATE 
+ ); 
+
+
+[INFO 2020-07-24 15:36:36,416 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:85 init_meta_struct] 表DDL已写入文件:/Users/wangdabin1216/git/dw/sql/meta_struct.sql
+[INFO 2020-07-24 15:36:36,416 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_struct.py:89 init_meta_struct] 所有待初始化元表DDL写入成功. 
+[DEBUG 2020-07-24 15:36:36,816 52137 /Users/wangdabin1216/git/dw/src/init/operate_os.py:83 compile_mysql_file] 文件-/Users/wangdabin1216/git/dw/sql/meta_struct.sql编译执行成功
+[INFO 2020-07-24 15:36:36,816 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:47 init_meta_data] 调用方法 - init_meta_data
+[DEBUG 2020-07-24 15:36:36,818 52137 /Users/wangdabin1216/git/dw/src/init/operate_os.py:26 delete_file] 文件/Users/wangdabin1216/git/dw/sql/meta_data.sql已删除
+[INFO 2020-07-24 15:36:37,042 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:30 get_tab_cols] 调用方法 - get_tab_cols
+[DEBUG 2020-07-24 15:36:37,044 52137 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select column_name from information_schema.columns where table_name= 'etl_meta_tables' order by ordinal_position ;.
+[INFO 2020-07-24 15:36:37,045 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:39 get_tab_cols] 获取表etl_meta_tables字段结构列表成功,字段列表：['tab_name', 'col_name', 'col_type', 'col_seq', 'default_val', 'tab_cn_name', 'col_cn_name', 'is_pk', 'key_name', 'remark']
+[INFO 2020-07-24 15:36:37,045 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:60 init_meta_data] 表 etl_meta_tables 开始组装数据初始化语句...... 
+[DEBUG 2020-07-24 15:36:37,056 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:86 init_meta_data] 删除语句：delete from etl_meta_tables where 1=1;
+[INFO 2020-07-24 15:36:37,057 52137 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:42 execute_sql] 执行事务类SQL成功,sql：delete from etl_meta_tables where 1=1;.
+[DEBUG 2020-07-24 15:36:37,058 52137 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:66 commit] 提交事务类操作成功.
+[INFO 2020-07-24 15:36:37,059 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:89 init_meta_data] 表 etl_meta_tables 存在,数据删除成功. 
+[INFO 2020-07-24 15:36:37,059 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,060 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_tables','tab_name','varchar(128)',1,Null,'知识库元数据表','表名',1,'meta_tab_name',Null);完成.
+[INFO 2020-07-24 15:36:37,060 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,060 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_tables','col_name','varchar(128)',2,Null,'知识库元数据表','字段名',1,'meta_col_name',Null);完成.
+[INFO 2020-07-24 15:36:37,060 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,060 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_tables','col_type','varchar(128)',3,Null,'知识库元数据表','字段类型',0,'meta_col_type',Null);完成.
+[INFO 2020-07-24 15:36:37,061 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,061 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_tables','col_seq','int',4,Null,'知识库元数据表','字段序号',0,'meta_col_seq',Null);完成.
+[INFO 2020-07-24 15:36:37,061 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,061 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_tables','default_val','varchar(32)',5,Null,'知识库元数据表','默认值',0,'meta_default_val',Null);完成.
+[INFO 2020-07-24 15:36:37,062 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,062 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_tables','tab_cn_name','varchar(2048)',6,Null,'知识库元数据表','表中文名',0,'meta_tab_cn_name',Null);完成.
+[INFO 2020-07-24 15:36:37,062 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,062 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_tables','col_cn_name','varchar(2048)',7,Null,'知识库元数据表','字段中文名',0,'meta_col_cn_name',Null);完成.
+[INFO 2020-07-24 15:36:37,063 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,063 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_tables','is_pk','int',8,Null,'知识库元数据表','是否主键',0,'meta_is_pk',Null);完成.
+[INFO 2020-07-24 15:36:37,063 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,063 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_tables','key_name','varchar(256)',9,Null,'知识库元数据表','Key名称',0,'meta_key_name',Null);完成.
+[INFO 2020-07-24 15:36:37,064 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,064 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_tables','remark','varchar(128)',10,Null,'知识库元数据表','备注',0,'meta_remark',Null);完成.
+[INFO 2020-07-24 15:36:37,064 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,064 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_args','parameter','varchar(256)',1,Null,'全局参数表','参数名',1,'meta_parameter',Null);完成.
+[INFO 2020-07-24 15:36:37,065 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,065 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_args','para_type','varchar(128)',2,Null,'全局参数表','参数类型',0,'meta_para_type',Null);完成.
+[INFO 2020-07-24 15:36:37,065 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,065 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_args','para_val','varchar(512)',3,Null,'全局参数表','参数值',0,'meta_para_val',Null);完成.
+[INFO 2020-07-24 15:36:37,066 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,066 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_args','remark','varchar(512)',4,Null,'全局参数表','备注',0,'meta_remark',Null);完成.
+[INFO 2020-07-24 15:36:37,066 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,066 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_type_convert','db_type','varchar(128)',1,Null,'异构数据库字段类型映射表','源数据库类型',1,'meta_db_type',Null);完成.
+[INFO 2020-07-24 15:36:37,067 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,067 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_type_convert','col_type','varchar(128)',2,Null,'异构数据库字段类型映射表','源字段类型',1,'meta_col_type',Null);完成.
+[INFO 2020-07-24 15:36:37,067 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,067 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_type_convert','tar_db_type','varchar(128)',3,Null,'异构数据库字段类型映射表','目标数据库类型',1,'meta_tar_db_type',Null);完成.
+[INFO 2020-07-24 15:36:37,067 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,067 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_type_convert','tar_col_type','varchar(128)',4,Null,'异构数据库字段类型映射表','目标字段类型',1,'meta_tar_col_type',Null);完成.
+[INFO 2020-07-24 15:36:37,068 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,068 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_type_convert','length','int',5,Null,'异构数据库字段类型映射表','长度',0,'meta_length',Null);完成.
+[INFO 2020-07-24 15:36:37,068 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,068 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_type_convert','default_val','varchar(1024)',6,Null,'异构数据库字段类型映射表','默认值',0,'meta_default_val',Null);完成.
+[INFO 2020-07-24 15:36:37,069 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,069 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_type_convert','format','varchar(1024)',7,Null,'异构数据库字段类型映射表','格式化',0,'meta_format',Null);完成.
+[INFO 2020-07-24 15:36:37,069 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,070 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_meta_type_convert','trans_mode','int',8,Null,'异构数据库字段类型映射表','转换方式(0:替换关键字,1:替换全部)',0,'meta_trans_mode',Null);完成.
+[INFO 2020-07-24 15:36:37,070 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,070 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_system','sys','varchar(128)',1,Null,'数据采集系统级信息','系统简称',1,'sys_sys',Null);完成.
+[INFO 2020-07-24 15:36:37,070 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,070 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_system','sys_name','varchar(128)',2,Null,'数据采集系统级信息','系统名称',0,'sys_sys_name',Null);完成.
+[INFO 2020-07-24 15:36:37,071 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,071 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_system','db_type','varchar(128)',3,Null,'数据采集系统级信息','数据库类型',0,'sys_db_type',Null);完成.
+[INFO 2020-07-24 15:36:37,071 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,071 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_system','db_version','varchar(128)',4,Null,'数据采集系统级信息','版本',0,'sys_db_version',Null);完成.
+[INFO 2020-07-24 15:36:37,071 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,072 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_system','flag','int',5,Null,'数据采集系统级信息','上下游标识',0,'sys_flag',Null);完成.
+[INFO 2020-07-24 15:36:37,072 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,072 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_system','mode','varchar(128)',6,Null,'数据采集系统级信息','对接方式',0,'sys_mode',Null);完成.
+[INFO 2020-07-24 15:36:37,073 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,073 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_system','db_name','varchar(128)',7,Null,'数据采集系统级信息','数据库名',0,'sys_db_name',Null);完成.
+[INFO 2020-07-24 15:36:37,073 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,073 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_system','schema_name','varchar(128)',8,Null,'数据采集系统级信息','模式名',0,'sys_schema_name',Null);完成.
+[INFO 2020-07-24 15:36:37,073 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,073 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_system','charset','varchar(1024)',9,Null,'数据采集系统级信息','字符集',0,'sys_charset',Null);完成.
+[INFO 2020-07-24 15:36:37,074 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,074 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_system','ip_addr','varchar(512)',10,Null,'数据采集系统级信息','IP地址',0,'sys_ip_addr',Null);完成.
+[INFO 2020-07-24 15:36:37,074 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,074 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_system','port','varchar(128)',11,Null,'数据采集系统级信息','端口',0,'sys_port',Null);完成.
+[INFO 2020-07-24 15:36:37,074 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,074 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_system','user','varchar(128)',12,Null,'数据采集系统级信息','用户名',0,'sys_user',Null);完成.
+[INFO 2020-07-24 15:36:37,075 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,075 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_system','password','varchar(128)',13,Null,'数据采集系统级信息','密码',0,'sys_password',Null);完成.
+[INFO 2020-07-24 15:36:37,075 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,075 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_system','remark','varchar(2048)',14,Null,'数据采集系统级信息','备注',0,'sys_remark',Null);完成.
+[INFO 2020-07-24 15:36:37,075 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,075 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_system','is_compress','varchar(128)',15,Null,'数据采集系统级信息','是否压缩(1是0否)',0,'sys_is_compress',Null);完成.
+[INFO 2020-07-24 15:36:37,075 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,076 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_system','is_fix_length','varchar(128)',16,Null,'数据采集系统级信息','文件定长(1是0否)',0,'sys_is_fix_length',Null);完成.
+[INFO 2020-07-24 15:36:37,076 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,076 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_system','is_exist_check_file','varchar(128)',17,Null,'数据采集系统级信息','检核文件(1是0否)',0,'sys_is_exist_check_file',Null);完成.
+[INFO 2020-07-24 15:36:37,076 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,076 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_system','is_exist_ready_file','varchar(128)',18,Null,'数据采集系统级信息','Ready文件(1是0否)',0,'sys_is_exist_ready_file',Null);完成.
+[INFO 2020-07-24 15:36:37,076 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,076 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_table','sys','varchar(128)',1,Null,'数据采集表级信息','源系统简称',1,'load_sys',Null);完成.
+[INFO 2020-07-24 15:36:37,076 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,077 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_table','tab_name','varchar(128)',2,Null,'数据采集表级信息','源表名',1,'load_tab_name',Null);完成.
+[INFO 2020-07-24 15:36:37,077 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,077 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_table','tab_cn_name','varchar(128)',3,Null,'数据采集表级信息','源表中文名',0,'load_tab_cn_name',Null);完成.
+[INFO 2020-07-24 15:36:37,077 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,077 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_table','cond','varchar(512)',4,Null,'数据采集表级信息','增量条件',0,'load_cond',Null);完成.
+[INFO 2020-07-24 15:36:37,077 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,077 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_table','if_flag','varchar(128)',5,Null,'数据采集表级信息','增全量标志,I或F',0,'load_if_flag',Null);完成.
+[INFO 2020-07-24 15:36:37,078 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,078 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_table','tab_type','varchar(128)',6,Null,'数据采集表级信息','源表类型,状态表(ST)或流水表(EV)',0,'load_tab_type',Null);完成.
+[INFO 2020-07-24 15:36:37,078 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,078 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_table','chain_type','varchar(128)',7,Null,'数据采集表级信息','拉链类型',0,'load_chain_type',Null);完成.
+[INFO 2020-07-24 15:36:37,078 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,078 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_table','collect_mode','varchar(128)',8,Null,'数据采集表级信息','采集方式',0,'load_collect_mode',Null);完成.
+[INFO 2020-07-24 15:36:37,078 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,078 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_table','file_name','varchar(128)',9,Null,'数据采集表级信息','文件名',0,'load_file_name',Null);完成.
+[INFO 2020-07-24 15:36:37,079 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,079 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_table','check_file','varchar(128)',10,Null,'数据采集表级信息','检核文件名',0,'load_check_file',Null);完成.
+[INFO 2020-07-24 15:36:37,079 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,079 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_table','file_format','varchar(128)',11,Null,'数据采集表级信息','文件格式',0,'load_file_format',Null);完成.
+[INFO 2020-07-24 15:36:37,079 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,080 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_table','encode_format','varchar(128)',12,Null,'数据采集表级信息','编码格式',0,'load_encode_format',Null);完成.
+[INFO 2020-07-24 15:36:37,080 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,080 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_table','col_separator','varchar(128)',13,Null,'数据采集表级信息','字段分隔符',0,'load_col_separator',Null);完成.
+[INFO 2020-07-24 15:36:37,080 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,080 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_table','record_separator','varchar(128)',14,Null,'数据采集表级信息','记录分隔符',0,'load_record_separator',Null);完成.
+[INFO 2020-07-24 15:36:37,081 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,081 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_table','trans_path','varchar(1024)',15,Null,'数据采集表级信息','传输路径',0,'load_trans_path',Null);完成.
+[INFO 2020-07-24 15:36:37,081 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,081 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_table','remark','varchar(1024)',16,Null,'数据采集表级信息','备注',0,'load_remark',Null);完成.
+[INFO 2020-07-24 15:36:37,081 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,081 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_table','is_col_separator','int',17,Null,'数据采集表级信息','文件末尾是否存在分隔符1是0否',0,'load_is_col_separator',Null);完成.
+[INFO 2020-07-24 15:36:37,081 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,081 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_table','partition_set','varchar(128)',18,Null,'数据采集表级信息','分区设置',0,'load_partition_set',Null);完成.
+[INFO 2020-07-24 15:36:37,082 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,082 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_table','is_valid','int',19,Null,'数据采集表级信息','是否有效',0,'load_is_valid',Null);完成.
+[INFO 2020-07-24 15:36:37,082 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,082 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_table','is_create','int',20,Null,'数据采集表级信息','是否创建',0,'load_is_create',Null);完成.
+[INFO 2020-07-24 15:36:37,082 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,082 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_column','sys','varchar(128)',1,Null,'数据采集字段级信息','系统名称',1,'load_sys',Null);完成.
+[INFO 2020-07-24 15:36:37,082 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,082 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_column','tab_name','varchar(128)',2,Null,'数据采集字段级信息','源表名',1,'load_tab_name',Null);完成.
+[INFO 2020-07-24 15:36:37,083 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,083 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_column','col_seq','int',3,Null,'数据采集字段级信息','源字段序号',0,'load_col_seq',Null);完成.
+[INFO 2020-07-24 15:36:37,083 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,083 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_column','col_name','varchar(128)',4,Null,'数据采集字段级信息','源字段名称',1,'load_col_name',Null);完成.
+[INFO 2020-07-24 15:36:37,083 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,084 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_column','col_type','varchar(128)',5,Null,'数据采集字段级信息','源字段类型',0,'load_col_type',Null);完成.
+[INFO 2020-07-24 15:36:37,084 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,084 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_column','col_cn_name','varchar(256)',6,Null,'数据采集字段级信息','源字段中文名',0,'load_col_cn_name',Null);完成.
+[INFO 2020-07-24 15:36:37,084 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,084 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_column','is_pk','int',7,Null,'数据采集字段级信息','是否主键',0,'load_is_pk',Null);完成.
+[INFO 2020-07-24 15:36:37,084 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,085 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_column','is_null','int',8,Null,'数据采集字段级信息','是否不为空',0,'load_is_null',Null);完成.
+[INFO 2020-07-24 15:36:37,085 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,085 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_column','default_val','varchar(128)',9,Null,'数据采集字段级信息','默认值',0,'load_default_val',Null);完成.
+[INFO 2020-07-24 15:36:37,085 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,085 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_column','trans_statement','varchar(1024)',10,Null,'数据采集字段级信息','格式转换语句',0,'load_trans_statement',Null);完成.
+[INFO 2020-07-24 15:36:37,085 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,086 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_column','is_dk','int',11,Null,'数据采集字段级信息','是否分布键(nz),分桶键(hive)',0,'load_is_dk',Null);完成.
+[INFO 2020-07-24 15:36:37,086 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,086 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_column','mapping_col_type','varchar(256)',12,Null,'数据采集字段级信息','映射字段类型',0,'load_mapping_col_type',Null);完成.
+[INFO 2020-07-24 15:36:37,086 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,086 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_load_column','is_sk','int',13,Null,'数据采集字段级信息','是否分区键',0,'load_is_sk',Null);完成.
+[INFO 2020-07-24 15:36:37,086 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,086 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_desc','sys','varchar(128)',1,Null,'数据模型表描述信息','数据库名',1,'trans_sys',Null);完成.
+[INFO 2020-07-24 15:36:37,087 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,087 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_desc','tab_name','varchar(128)',2,Null,'数据模型表描述信息','表名',1,'trans_tab_name',Null);完成.
+[INFO 2020-07-24 15:36:37,087 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,087 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_desc','tab_cn_name','varchar(128)',3,Null,'数据模型表描述信息','中文名称',0,'trans_tab_cn_name',Null);完成.
+[INFO 2020-07-24 15:36:37,087 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,087 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_desc','func_desc','varchar(128)',4,Null,'数据模型表描述信息','功能描述',0,'trans_func_desc',Null);完成.
+[INFO 2020-07-24 15:36:37,088 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,088 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_desc','comp_pers','varchar(128)',5,Null,'数据模型表描述信息','编写人',0,'trans_comp_pers',Null);完成.
+[INFO 2020-07-24 15:36:37,088 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,088 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_desc','comp_date','varchar(128)',6,Null,'数据模型表描述信息','编写日期',0,'trans_comp_date',Null);完成.
+[INFO 2020-07-24 15:36:37,088 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,088 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_desc','modif_record','varchar(3000)',7,Null,'数据模型表描述信息','修改记录',0,'trans_modif_record',Null);完成.
+[INFO 2020-07-24 15:36:37,088 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,088 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_table','sys','varchar(128)',1,Null,'数据模型表信息','数据库名',1,'trans_db_name',Null);完成.
+[INFO 2020-07-24 15:36:37,089 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,089 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_table','tab_name','varchar(256)',2,Null,'数据模型表信息','表名',1,'trans_tab_name',Null);完成.
+[INFO 2020-07-24 15:36:37,089 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,089 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_table','tab_cn_name','varchar(128)',3,Null,'数据模型表信息','表中文名',0,'trans_tab_cn_name',Null);完成.
+[INFO 2020-07-24 15:36:37,089 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,089 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_table','chain_type','varchar(128)',4,Null,'数据模型表信息','拉链类型',0,'trans_chain_type',Null);完成.
+[INFO 2020-07-24 15:36:37,089 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,089 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_table','if_mark','varchar(128)',5,Null,'数据模型表信息','增全量标志，I或F',0,'trans_if_mark',Null);完成.
+[INFO 2020-07-24 15:36:37,090 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,090 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_table','tab_type','varchar(128)',6,Null,'数据模型表信息','源表类型,状态表(ST)或流水表(EV)',0,'trans_tab_type',Null);完成.
+[INFO 2020-07-24 15:36:37,090 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,090 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_table','format_type','varchar(128)',7,Null,'数据模型表信息','格式类型',0,'trans_format_type',Null);完成.
+[INFO 2020-07-24 15:36:37,090 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,090 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_table','partition_set','varchar(128)',8,Null,'数据模型表信息','分区设置',0,'trans_partition_set',Null);完成.
+[INFO 2020-07-24 15:36:37,091 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,091 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_table','data_size','varchar(128)',9,Null,'数据模型表信息','数据量预估',0,'trans_data_size',Null);完成.
+[INFO 2020-07-24 15:36:37,091 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,091 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_table','col_num','int',10,Null,'数据模型表信息','字段个数',0,'trans_col_num',Null);完成.
+[INFO 2020-07-24 15:36:37,091 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,091 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_table','is_valid','int',11,Null,'数据模型表信息','是否有效',0,'trans_is_valid',Null);完成.
+[INFO 2020-07-24 15:36:37,091 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,091 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_table','is_create','int',12,Null,'数据模型表信息','是否创建',0,'trans_is_create',Null);完成.
+[INFO 2020-07-24 15:36:37,091 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,092 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_column','sys','varchar(128)',1,Null,'数据模型表字段信息','系统名称',1,'trans_sys',Null);完成.
+[INFO 2020-07-24 15:36:37,092 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,092 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_column','tab_name','varchar(128)',2,Null,'数据模型表字段信息','表名',1,'trans_tab_name',Null);完成.
+[INFO 2020-07-24 15:36:37,092 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,092 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_column','col_seq','varchar(128)',3,Null,'数据模型表字段信息','字段序号',0,'trans_col_seq',Null);完成.
+[INFO 2020-07-24 15:36:37,092 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,092 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_column','col_name','varchar(128)',4,Null,'数据模型表字段信息','字段名称',1,'trans_col_name',Null);完成.
+[INFO 2020-07-24 15:36:37,092 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,093 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_column','mapping_col_type','varchar(128)',5,Null,'数据模型表字段信息','字段类型',0,'trans_col_type',Null);完成.
+[INFO 2020-07-24 15:36:37,093 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,093 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_column','col_cn_name','varchar(256)',6,Null,'数据模型表字段信息','字段中文名',0,'trans_col_cn_name',Null);完成.
+[INFO 2020-07-24 15:36:37,093 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,093 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_column','is_pk','int',7,Null,'数据模型表字段信息','是否主键',0,'trans_is_pk',Null);完成.
+[INFO 2020-07-24 15:36:37,094 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,094 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_column','is_not_null','int',8,Null,'数据模型表字段信息','是否不可为空',0,'trans_is_not_null',Null);完成.
+[INFO 2020-07-24 15:36:37,094 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,094 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_column','is_dk','int',9,Null,'数据模型表字段信息','分桶字段',0,'trans_is_dk',Null);完成.
+[INFO 2020-07-24 15:36:37,095 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,095 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_column','is_sk','int',10,Null,'数据模型表字段信息','是否分区键',0,'trans_is_sk',Null);完成.
+[INFO 2020-07-24 15:36:37,095 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,095 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_column','default_val','varchar(128)',11,Null,'数据模型表字段信息','默认值',0,'trans_default_val',Null);完成.
+[INFO 2020-07-24 15:36:37,096 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,096 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_column','data_dict','varchar(129)',12,Null,'数据模型表字段信息','数据字典',0,'trans_data_dict',Null);完成.
+[INFO 2020-07-24 15:36:37,096 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,097 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','tab_name','varchar(128)',1,Null,'数据模型表映射信息','模型表名',1,'trans_tab_name',Null);完成.
+[INFO 2020-07-24 15:36:37,097 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,097 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','group_id','int',2,Null,'数据模型表映射信息','组序号',1,'trans_group_id',Null);完成.
+[INFO 2020-07-24 15:36:37,098 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,098 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','group_desc','varchar(128)',3,Null,'数据模型表映射信息','组注释',0,'trans_group_desc',Null);完成.
+[INFO 2020-07-24 15:36:37,098 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,098 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','part_id','int',4,Null,'数据模型表映射信息','段序号',1,'trans_part_id',Null);完成.
+[INFO 2020-07-24 15:36:37,099 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,099 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','part_desc','varchar(128)',5,Null,'数据模型表映射信息','段注释',0,'trans_part_desc',Null);完成.
+[INFO 2020-07-24 15:36:37,099 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,099 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','aim_db_name','varchar(128)',6,Null,'数据模型表映射信息','数据库名',0,'trans_aim_db_name',Null);完成.
+[INFO 2020-07-24 15:36:37,100 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,100 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','aim_tab_name','varchar(128)',7,Null,'数据模型表映射信息','目标表英文名',0,'trans_aim_tab_name',Null);完成.
+[INFO 2020-07-24 15:36:37,101 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,101 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','aim_tab_cn_name','varchar(256)',8,Null,'数据模型表映射信息','目标表中文名',0,'trans_aim_tab_cn_name',Null);完成.
+[INFO 2020-07-24 15:36:37,101 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,101 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','part_col_id','int',9,Null,'数据模型表映射信息','段属性序号',1,'trans_part_col_id',Null);完成.
+[INFO 2020-07-24 15:36:37,102 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,102 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','aim_col_name','varchar(128)',10,Null,'数据模型表映射信息','属性英文名',0,'trans_aim_col_name',Null);完成.
+[INFO 2020-07-24 15:36:37,103 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,103 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','aim_col_cn_name','varchar(256)',11,Null,'数据模型表映射信息','属性中文名',0,'trans_aim_col_cn_name',Null);完成.
+[INFO 2020-07-24 15:36:37,105 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,105 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','aim_col_type','varchar(128)',12,Null,'数据模型表映射信息','字段类型',0,'trans_aim_col_type',Null);完成.
+[INFO 2020-07-24 15:36:37,105 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,105 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','sour_sys','varchar(128)',13,Null,'数据模型表映射信息','源系统',0,'trans_sour_sys',Null);完成.
+[INFO 2020-07-24 15:36:37,106 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,106 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','sour_db_name','varchar(128)',14,Null,'数据模型表映射信息','数据库名',0,'trans_sour_db_name',Null);完成.
+[INFO 2020-07-24 15:36:37,106 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,107 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','sour_tab_name','varchar(128)',15,Null,'数据模型表映射信息','源表英文名',0,'trans_sour_tab_name',Null);完成.
+[INFO 2020-07-24 15:36:37,107 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,107 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','sour_tab_cn_name','varchar(256)',16,Null,'数据模型表映射信息','源表中文名',0,'trans_sour_tab_cn_name',Null);完成.
+[INFO 2020-07-24 15:36:37,108 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,108 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','sour_col_name','varchar(128)',17,Null,'数据模型表映射信息','源表字段英文名',0,'trans_sour_col_name',Null);完成.
+[INFO 2020-07-24 15:36:37,108 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,108 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','sour_col_cn_name','varchar(256)',18,Null,'数据模型表映射信息','源表字段中文名',0,'trans_sour_col_cn_name',Null);完成.
+[INFO 2020-07-24 15:36:37,109 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,109 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','sour_col_type','varchar(128)',19,Null,'数据模型表映射信息','源表字段类型',0,'trans_sour_col_type',Null);完成.
+[INFO 2020-07-24 15:36:37,109 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,110 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','mapping','varchar(128)',20,Null,'数据模型表映射信息','映射规则',0,'trans_mapping',Null);完成.
+[INFO 2020-07-24 15:36:37,110 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,110 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','main_tab','varchar(128)',21,Null,'数据模型表映射信息','主表英文名',0,'trans_main_tab',Null);完成.
+[INFO 2020-07-24 15:36:37,110 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,110 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','main_tab_oth','varchar(128)',22,Null,'数据模型表映射信息','主表别名',0,'trans_main_tab_oth',Null);完成.
+[INFO 2020-07-24 15:36:37,111 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,111 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','minor_tab','varchar(128)',23,Null,'数据模型表映射信息','次表英文名',0,'trans_minor_tab',Null);完成.
+[INFO 2020-07-24 15:36:37,111 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,111 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','minor_tab_oth','varchar(128)',24,Null,'数据模型表映射信息','次表别名',0,'trans_minor_tab_oth',Null);完成.
+[INFO 2020-07-24 15:36:37,112 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,112 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','part_type','varchar(128)',25,Null,'数据模型表映射信息','段处理类型',0,'trans_part_type',Null);完成.
+[INFO 2020-07-24 15:36:37,112 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,113 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','join_type','varchar(128)',26,Null,'数据模型表映射信息','JOIN方式',0,'trans_join_type',Null);完成.
+[INFO 2020-07-24 15:36:37,113 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,113 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','on_term','varchar(128)',27,Null,'数据模型表映射信息','关联条件',0,'trans_on_term',Null);完成.
+[INFO 2020-07-24 15:36:37,113 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,113 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','on_term_desc','varchar(256)',28,Null,'数据模型表映射信息','关联条件描述',0,'trans_on_term_desc',Null);完成.
+[INFO 2020-07-24 15:36:37,114 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,114 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','where_term','varchar(128)',29,Null,'数据模型表映射信息','where条件',0,'trans_where_term',Null);完成.
+[INFO 2020-07-24 15:36:37,114 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,114 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','where_term_desc','varchar(256)',30,Null,'数据模型表映射信息','where条件限制描述',0,'trans_where_term_desc',Null);完成.
+[INFO 2020-07-24 15:36:37,114 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,114 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','var_name','varchar(128)',31,Null,'数据模型表映射信息','变量名',0,'trans_var_name',Null);完成.
+[INFO 2020-07-24 15:36:37,115 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,115 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','var_value','varchar(128)',32,Null,'数据模型表映射信息','变量赋值',0,'trans_var_value',Null);完成.
+[INFO 2020-07-24 15:36:37,115 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,115 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_mapping','var_desc','varchar(256)',33,Null,'数据模型表映射信息','变量描述',0,'trans_var_desc',Null);完成.
+[INFO 2020-07-24 15:36:37,115 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,115 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_view','view_name','varchar(256)',1,Null,'数据服务视图信息表','视图名称',1,'serve_view_name',Null);完成.
+[INFO 2020-07-24 15:36:37,116 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,116 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_view','view_schema','varchar(256)',2,Null,'数据服务视图信息表','数据库名',1,'serve_db_name',Null);完成.
+[INFO 2020-07-24 15:36:37,116 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,116 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_view','view_chn','varchar(256)',3,Null,'数据服务视图信息表','视图中文名称 ',0,'serve_view_cn_name',Null);完成.
+[INFO 2020-07-24 15:36:37,116 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,116 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_view','tab_name','varchar(256)',4,Null,'数据服务视图信息表','源表名称',0,'serve_tab_name',Null);完成.
+[INFO 2020-07-24 15:36:37,116 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,116 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_view','constriant','varchar(2048)',5,Null,'数据服务视图信息表','约束条件',0,'serve_constriant',Null);完成.
+[INFO 2020-07-24 15:36:37,117 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,117 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_view','mapping_mode','varchar(256)',6,Null,'数据服务视图信息表','映射方式',0,'serve_mapping_mode',Null);完成.
+[INFO 2020-07-24 15:36:37,117 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,118 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_view','status','varchar(128)',7,Null,'数据服务视图信息表','0不供数1供数2已废弃',0,'serve_status',Null);完成.
+[INFO 2020-07-24 15:36:37,118 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,118 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_view','is_create','varchar(128)',8,Null,'数据服务视图信息表','0不部署1部署',0,'server_is_create',Null);完成.
+[INFO 2020-07-24 15:36:37,118 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,119 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_view_mapping','view_name','varchar(128)',1,Null,'数据服务视图映射表','视图名',1,'server_view_name',Null);完成.
+[INFO 2020-07-24 15:36:37,119 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,119 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_view_mapping','col_no','varchar(128)',2,Null,'数据服务视图映射表','字段序号',0,'server_col_no',Null);完成.
+[INFO 2020-07-24 15:36:37,119 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,119 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_view_mapping','col_name','varchar(128)',3,Null,'数据服务视图映射表','字段名称',1,'server_col_name',Null);完成.
+[INFO 2020-07-24 15:36:37,120 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,120 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_view_mapping','col_chn','varchar(128)',4,Null,'数据服务视图映射表','字段中文名',0,'server_col_chn',Null);完成.
+[INFO 2020-07-24 15:36:37,120 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,120 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_view_mapping','map_col','varchar(128)',5,Null,'数据服务视图映射表','映射字段',0,'server_map_col',Null);完成.
+[INFO 2020-07-24 15:36:37,120 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,120 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_view_mapping','fun_meth','varchar(128)',6,Null,'数据服务视图映射表','函数/方法',0,'server_fun_meth',Null);完成.
+[INFO 2020-07-24 15:36:37,121 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,121 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_view_mapping','des_type','varchar(128)',7,Null,'数据服务视图映射表','脱敏规则',0,'server_des_type',Null);完成.
+[INFO 2020-07-24 15:36:37,121 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,121 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_unload','table_name','varchar(128)',1,Null,'数据文件卸载配置表','供数的表名',1,'serve_table_name',Null);完成.
+[INFO 2020-07-24 15:36:37,121 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,121 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_unload','file_seq','varchar(128)',2,Null,'数据文件卸载配置表','文件序号',1,'serve_file_seq',Null);完成.
+[INFO 2020-07-24 15:36:37,122 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,122 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_unload','sep','varchar(128)',3,Null,'数据文件卸载配置表','字段分隔符',0,'serve_sep',Null);完成.
+[INFO 2020-07-24 15:36:37,122 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,122 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_unload','fields','varchar(2048)',4,Null,'数据文件卸载配置表','供数的字段',0,'serve_fields',Null);完成.
+[INFO 2020-07-24 15:36:37,123 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,123 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_unload','cond','varchar(128)',5,Null,'数据文件卸载配置表','约束条件',0,'serve_cond',Null);完成.
+[INFO 2020-07-24 15:36:37,123 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,124 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_unload','status','varchar(128)',6,Null,'数据文件卸载配置表','0不供数1供数2已废弃',0,'serve_status',Null);完成.
+[INFO 2020-07-24 15:36:37,124 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,124 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_unload','is_create','varchar(128)',7,Null,'数据文件卸载配置表','0不部署1部署',0,'server_is_create',Null);完成.
+[INFO 2020-07-24 15:36:37,125 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,125 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_distribute','system_flag','varchar(128)',1,Null,'数据文件分发表','分发目标系统简称',1,'serve_sys',Null);完成.
+[INFO 2020-07-24 15:36:37,125 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,125 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_distribute','tar_file_seq','varchar(128)',2,Null,'数据文件分发表','文件序号',0,'serve_tar_file_seq',Null);完成.
+[INFO 2020-07-24 15:36:37,126 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,126 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_distribute','tar_file_name','varchar(128)',3,Null,'数据文件分发表','供数的文件名',1,'serve_tar_file_name',Null);完成.
+[INFO 2020-07-24 15:36:37,126 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,126 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_distribute','tar_file_check_name','varchar(128)',4,Null,'数据文件分发表','检验文件名',0,'serve_tar_file_check_name',Null);完成.
+[INFO 2020-07-24 15:36:37,126 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,126 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_distribute','tar_feed_ways','varchar(128)',5,Null,'数据文件分发表','分发文件供数方式',0,'serve_tar_feed_ways',Null);完成.
+[INFO 2020-07-24 15:36:37,126 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,126 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_distribute','tar_file_code','varchar(128)',6,Null,'数据文件分发表','分发文件编码格式',0,'serve_tar_file_code',Null);完成.
+[INFO 2020-07-24 15:36:37,127 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,127 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_distribute','tar_file_source_type','varchar(128)',7,Null,'数据文件分发表','文件来源类型',0,'serve_tar_file_source_type',Null);完成.
+[INFO 2020-07-24 15:36:37,127 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,127 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_distribute','source_name','varchar(128)',8,Null,'数据文件分发表','源系统简称',0,'serve_source_name',Null);完成.
+[INFO 2020-07-24 15:36:37,128 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,128 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_distribute','source_file_name','varchar(128)',9,Null,'数据文件分发表','源文件名',0,'serve_source_file_name',Null);完成.
+[INFO 2020-07-24 15:36:37,128 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,128 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_distribute','source_file_path','varchar(512)',10,Null,'数据文件分发表','源文件路径',0,'serve_source_file_path',Null);完成.
+[INFO 2020-07-24 15:36:37,128 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,128 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_distribute','source_file_code','varchar(128)',11,Null,'数据文件分发表','源文件编码格式',0,'serve_source_file_code',Null);完成.
+[INFO 2020-07-24 15:36:37,128 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,128 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_distribute','status','varchar(128)',12,Null,'数据文件分发表','配置状态',0,'serve_status',Null);完成.
+[INFO 2020-07-24 15:36:37,129 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,129 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_serve_distribute','is_create','varchar(128)',13,Null,'数据文件分发表','0不部署1部署',0,'server_is_create',Null);完成.
+[INFO 2020-07-24 15:36:37,129 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,129 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_check_quality_rules','rule_no','varchar(128)',1,Null,'检核规则配置表','校验规则编号',1,'check_rule_no',Null);完成.
+[INFO 2020-07-24 15:36:37,129 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,129 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_check_quality_rules','rule_expr','varchar(512)',2,Null,'检核规则配置表','校验规则表达式',0,'check_rule_expr',Null);完成.
+[INFO 2020-07-24 15:36:37,129 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,129 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_check_quality_rules','rule_desc','varchar(512)',3,Null,'检核规则配置表','校验规则描述',0,'check_rule_desc',Null);完成.
+[INFO 2020-07-24 15:36:37,130 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,130 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_check_cols_rule','table_name','varchar(128)',1,Null,'检核规则字段配置表','表名',1,'check_table_name',Null);完成.
+[INFO 2020-07-24 15:36:37,130 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,130 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_check_cols_rule','col_name','varchar(128)',2,Null,'检核规则字段配置表','字段名',1,'check_col_name',Null);完成.
+[INFO 2020-07-24 15:36:37,130 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,130 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_check_cols_rule','rule_no','varchar(128)',3,Null,'检核规则字段配置表','校验规则编号',1,'check_rule_no',Null);完成.
+[INFO 2020-07-24 15:36:37,131 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,131 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_check_cols_rule','std_result','varchar(512)',4,Null,'检核规则字段配置表','阈值',0,'check_std_result',Null);完成.
+[INFO 2020-07-24 15:36:37,131 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,131 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_std_dict','lp_code','varchar(128)',1,Null,'标准字典信息','法人代码',1,'trans_lp_code',Null);完成.
+[INFO 2020-07-24 15:36:37,131 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,131 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_std_dict','data_std_code','varchar(128)',2,Null,'标准字典信息','数标编码',0,'trans_data_std_code',Null);完成.
+[INFO 2020-07-24 15:36:37,131 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,131 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_std_dict','std_dict_type','varchar(128)',3,Null,'标准字典信息','标准字典类别',1,'trans_std_dict_type',Null);完成.
+[INFO 2020-07-24 15:36:37,132 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,132 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_std_dict','std_dict_type_name','varchar(1024)',4,Null,'标准字典信息','标准字典类别名称',0,'trans_std_dict_type_name',Null);完成.
+[INFO 2020-07-24 15:36:37,132 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,132 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_std_dict','std_dict_value','varchar(128)',5,Null,'标准字典信息','标准字典值',1,'trans_std_dict_value',Null);完成.
+[INFO 2020-07-24 15:36:37,132 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,132 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_std_dict','std_dict_value_name','varchar(1024)',6,Null,'标准字典信息','标准字典值名称',0,'trans_std_dict_value_name',Null);完成.
+[INFO 2020-07-24 15:36:37,132 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,132 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_std_dict','rem','varchar(1024)',7,Null,'标准字典信息','备注',0,'trans_rem',Null);完成.
+[INFO 2020-07-24 15:36:37,133 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,133 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_std_dict','start_date','DATE',8,Null,'标准字典信息','起始日期',1,'trans_start_date',Null);完成.
+[INFO 2020-07-24 15:36:37,133 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,133 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_std_dict','due_date','DATE',9,Null,'标准字典信息','到期日期',1,'trans_due_date',Null);完成.
+[INFO 2020-07-24 15:36:37,133 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,133 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_colm_dict','lp_code','varchar(128)',1,Null,'表字段字典信息','法人代码',1,'trans_lp_code',Null);完成.
+[INFO 2020-07-24 15:36:37,133 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,134 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_colm_dict','table_name','varchar(128)',2,Null,'表字段字典信息','表名',1,'trans_table_name',Null);完成.
+[INFO 2020-07-24 15:36:37,134 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,134 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_colm_dict','column_name','varchar(128)',3,Null,'表字段字典信息','字段名',1,'trans_column_name',Null);完成.
+[INFO 2020-07-24 15:36:37,134 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,134 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_colm_dict','std_dict_type','varchar(128)',4,Null,'表字段字典信息','标准字典类别',1,'trans_std_dict_type',Null);完成.
+[INFO 2020-07-24 15:36:37,134 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,135 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_colm_dict','src_dict_type','varchar(128)',5,Null,'表字段字典信息','源字典类别',1,'trans_src_dict_type',Null);完成.
+[INFO 2020-07-24 15:36:37,135 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,135 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_colm_dict','src_system_no','varchar(128)',6,Null,'表字段字典信息','源系统号',1,'trans_src_system_no',Null);完成.
+[INFO 2020-07-24 15:36:37,136 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,136 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_colm_dict','one_to_one_sign','varchar(128)',7,Null,'表字段字典信息','一对一标识码',0,'trans_one_to_one_sign',Null);完成.
+[INFO 2020-07-24 15:36:37,136 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,136 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_colm_dict','start_date','DATE',8,Null,'表字段字典信息','起始日期',1,'trans_start_date',Null);完成.
+[INFO 2020-07-24 15:36:37,137 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,137 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_colm_dict','due_date','DATE',9,Null,'表字段字典信息','到期日期',1,'trans_due_date',Null);完成.
+[INFO 2020-07-24 15:36:37,137 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,137 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_dict_mapp','lp_code','varchar(128)',1,Null,'字典对照信息','法人代码',1,'trans_lp_code',Null);完成.
+[INFO 2020-07-24 15:36:37,137 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,137 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_dict_mapp','std_dict_type','varchar(128)',2,Null,'字典对照信息','标准字典类别',1,'trans_std_dict_type',Null);完成.
+[INFO 2020-07-24 15:36:37,138 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,138 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_dict_mapp','std_dict_value','varchar(128)',3,Null,'字典对照信息','标准字典值',1,'trans_std_dict_value',Null);完成.
+[INFO 2020-07-24 15:36:37,138 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,138 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_dict_mapp','src_dict_type','varchar(128)',4,Null,'字典对照信息','源字典类别',0,'trans_src_dict_type',Null);完成.
+[INFO 2020-07-24 15:36:37,138 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,138 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_dict_mapp','src_dict_type_name','varchar(128)',5,Null,'字典对照信息','源字典类别名称',0,'trans_src_dict_type_name',Null);完成.
+[INFO 2020-07-24 15:36:37,139 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,139 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_dict_mapp','src_dict_value','varchar(128)',6,Null,'字典对照信息','源字典值',1,'trans_src_dict_value',Null);完成.
+[INFO 2020-07-24 15:36:37,139 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,139 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_dict_mapp','src_dict_value_name','varchar(128)',7,Null,'字典对照信息','源字典值名称',0,'trans_src_dict_value_name',Null);完成.
+[INFO 2020-07-24 15:36:37,139 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,140 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_dict_mapp','src_system_no','varchar(128)',8,Null,'字典对照信息','源系统号',1,'trans_src_system_no',Null);完成.
+[INFO 2020-07-24 15:36:37,140 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,140 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_dict_mapp','mappg_type','varchar(128)',9,Null,'字典对照信息','映射类型',0,'trans_mappg_type',Null);完成.
+[INFO 2020-07-24 15:36:37,140 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,140 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_dict_mapp','start_date','DATE',10,Null,'字典对照信息','起始日期',1,'trans_start_date',Null);完成.
+[INFO 2020-07-24 15:36:37,141 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,141 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_tables  values ('etl_trans_dict_mapp','due_date','DATE',11,Null,'字典对照信息','到期日期',1,'trans_due_date',Null);完成.
+[INFO 2020-07-24 15:36:37,141 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:100 init_meta_data] 表etl_meta_tables数据初始化插入成功. 
+[DEBUG 2020-07-24 15:36:37,604 52137 /Users/wangdabin1216/git/dw/src/init/operate_os.py:83 compile_mysql_file] 文件-/Users/wangdabin1216/git/dw/sql/meta_data.sql编译执行成功
+[INFO 2020-07-24 15:36:37,604 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:47 init_meta_data] 调用方法 - init_meta_data
+[DEBUG 2020-07-24 15:36:37,605 52137 /Users/wangdabin1216/git/dw/src/init/operate_os.py:26 delete_file] 文件/Users/wangdabin1216/git/dw/sql/meta_data.sql已删除
+[INFO 2020-07-24 15:36:37,855 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:30 get_tab_cols] 调用方法 - get_tab_cols
+[DEBUG 2020-07-24 15:36:37,858 52137 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select column_name from information_schema.columns where table_name= 'etl_meta_args' order by ordinal_position ;.
+[INFO 2020-07-24 15:36:37,859 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:39 get_tab_cols] 获取表etl_meta_args字段结构列表成功,字段列表：['parameter', 'para_type', 'para_val', 'remark']
+[INFO 2020-07-24 15:36:37,859 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:60 init_meta_data] 表 etl_meta_args 开始组装数据初始化语句...... 
+[DEBUG 2020-07-24 15:36:37,860 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:86 init_meta_data] 删除语句：delete from etl_meta_args where 1=1;
+[INFO 2020-07-24 15:36:37,867 52137 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:42 execute_sql] 执行事务类SQL成功,sql：delete from etl_meta_args where 1=1;.
+[DEBUG 2020-07-24 15:36:37,875 52137 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:66 commit] 提交事务类操作成功.
+[INFO 2020-07-24 15:36:37,875 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:89 init_meta_data] 表 etl_meta_args 存在,数据删除成功. 
+[INFO 2020-07-24 15:36:37,875 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,875 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('etl.home','global','/etl','etl根目录');完成.
+[INFO 2020-07-24 15:36:37,876 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,876 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('load.log.path','load','/etl/dw/log/load','数据加载日志文件路径');完成.
+[INFO 2020-07-24 15:36:37,876 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,876 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('load.src.path','load','/data/src','ETL源系统数据文件存放目录');完成.
+[INFO 2020-07-24 15:36:37,877 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,877 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('load.tar.path','load','/data/put','ETL转换源系统文件存放目录');完成.
+[INFO 2020-07-24 15:36:37,877 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,877 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.copy.single.audt','dsa','yes','本系统数据分发copy时是否生成标识文件');完成.
+[INFO 2020-07-24 15:36:37,878 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,878 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.copy.zip.afcr','dsa','yes','本系统数据分发copy时是否压缩文件');完成.
+[INFO 2020-07-24 15:36:37,878 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,878 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.move.zip.afcr','dsa','yes','本系统数据分发move时是否压缩文件');完成.
+[INFO 2020-07-24 15:36:37,878 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,878 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.dis.path','dsa','/data/dsa','ETL下发文件目录');完成.
+[INFO 2020-07-24 15:36:37,879 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,879 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('serve.log.path','serve','/etl/dw/log/serve','数据卸载日志文件路径');完成.
+[INFO 2020-07-24 15:36:37,879 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,879 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('unload.hdfs.path','unload','/dw/dsa','数据卸载hdfs路径');完成.
+[INFO 2020-07-24 15:36:37,879 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,879 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('sche.jcm.oracle.ip','sche','**.***.**.***','ORACLE服务器IP地址');完成.
+[INFO 2020-07-24 15:36:37,880 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,880 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('sche.jcm.oracle.port','sche',1521,'ORACLE服务器端口');完成.
+[INFO 2020-07-24 15:36:37,880 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,880 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('sche.jcm.oracle.username','sche','xxxxx','ORACLE服务器用户名');完成.
+[INFO 2020-07-24 15:36:37,880 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,880 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('sche.jcm.oracle.pwd','sche','xxxxx','ORACLE服务器密码');完成.
+[INFO 2020-07-24 15:36:37,881 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,881 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('sche.jcm.oracle.sid','sche','xxxxx','ORACLE服务器sid');完成.
+[INFO 2020-07-24 15:36:37,881 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,881 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('unload.file.path','unload','/data/dsa/unld','数据卸载本地文件路径');完成.
+[INFO 2020-07-24 15:36:37,881 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,881 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('load.rdy.file.path','load','/etl/listener/ok','生成OK文件存放目录');完成.
+[INFO 2020-07-24 15:36:37,882 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,882 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('load.sys.data.file','load','$srctablename$currdt.txt','数据加载数据文件格式');完成.
+[INFO 2020-07-24 15:36:37,882 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,882 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.ftp.mid.ip','serve','10.0.72.10','数据服务FTP中间机IP');完成.
+[INFO 2020-07-24 15:36:37,882 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,882 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.ftp.mid.user','serve','root','数据服务FTP中间机用户名');完成.
+[INFO 2020-07-24 15:36:37,883 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,883 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.ftp.mid.pwd','serve','1qaz@WSX','数据服务FTP中间机密码');完成.
+[INFO 2020-07-24 15:36:37,886 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,886 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.ftp.mid.spath','serve','/data/dsa/ext/$sys/$currdt','数据服务FTP中间机源路径');完成.
+[INFO 2020-07-24 15:36:37,886 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,886 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.ftp.mid.tpath','serve','/root','数据服务FTP中间机目标路径');完成.
+[INFO 2020-07-24 15:36:37,886 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,886 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.ftp.tar.ip','serve','10.4.11.110','数据服务FTP目标机IP');完成.
+[INFO 2020-07-24 15:36:37,887 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,887 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.ftp.tar.user','serve','root','数据服务FTP目标机用户名');完成.
+[INFO 2020-07-24 15:36:37,887 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,887 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.ftp.tar.pwd','serve','root123','数据服务FTP目标机密码');完成.
+[INFO 2020-07-24 15:36:37,887 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,888 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.ftp.tar.spath','serve','/data/dsa/ext/$sys/$currdt','数据服务FTP目标机源路径');完成.
+[INFO 2020-07-24 15:36:37,888 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:37,888 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_args  values ('dsa.ftp.tar.tpath','serve','/data/bigdata','数据服务FTP目标机目标路径');完成.
+[INFO 2020-07-24 15:36:37,888 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:100 init_meta_data] 表etl_meta_args数据初始化插入成功. 
+[DEBUG 2020-07-24 15:36:38,011 52137 /Users/wangdabin1216/git/dw/src/init/operate_os.py:83 compile_mysql_file] 文件-/Users/wangdabin1216/git/dw/sql/meta_data.sql编译执行成功
+[INFO 2020-07-24 15:36:38,011 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:47 init_meta_data] 调用方法 - init_meta_data
+[DEBUG 2020-07-24 15:36:38,012 52137 /Users/wangdabin1216/git/dw/src/init/operate_os.py:26 delete_file] 文件/Users/wangdabin1216/git/dw/sql/meta_data.sql已删除
+[INFO 2020-07-24 15:36:38,183 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:30 get_tab_cols] 调用方法 - get_tab_cols
+[DEBUG 2020-07-24 15:36:38,184 52137 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select column_name from information_schema.columns where table_name= 'etl_meta_type_convert' order by ordinal_position ;.
+[INFO 2020-07-24 15:36:38,185 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:39 get_tab_cols] 获取表etl_meta_type_convert字段结构列表成功,字段列表：['db_type', 'col_type', 'tar_db_type', 'tar_col_type', 'length', 'default_val', 'format', 'trans_mode']
+[INFO 2020-07-24 15:36:38,185 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:60 init_meta_data] 表 etl_meta_type_convert 开始组装数据初始化语句...... 
+[DEBUG 2020-07-24 15:36:38,186 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:86 init_meta_data] 删除语句：delete from etl_meta_type_convert where 1=1;
+[INFO 2020-07-24 15:36:38,187 52137 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:42 execute_sql] 执行事务类SQL成功,sql：delete from etl_meta_type_convert where 1=1;.
+[DEBUG 2020-07-24 15:36:38,188 52137 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:66 commit] 提交事务类操作成功.
+[INFO 2020-07-24 15:36:38,188 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:89 init_meta_data] 表 etl_meta_type_convert 存在,数据删除成功. 
+[INFO 2020-07-24 15:36:38,188 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,188 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','CHAR','INCEPTOR','STRING',4000,'''''','trim(column_name)',1);完成.
+[INFO 2020-07-24 15:36:38,189 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,189 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','VARCHAR','INCEPTOR','STRING',4000,'''''','trim(column_name)',1);完成.
+[INFO 2020-07-24 15:36:38,189 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,189 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','NCHAR','INCEPTOR','STRING',4000,'''''','trim(column_name)',1);完成.
+[INFO 2020-07-24 15:36:38,190 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,190 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','VARCHAR2','INCEPTOR','STRING',4000,'''''','trim(column_name)',1);完成.
+[INFO 2020-07-24 15:36:38,190 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,190 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','NVARCHAR2','INCEPTOR','STRING',4000,'''''','trim(column_name)',1);完成.
+[INFO 2020-07-24 15:36:38,190 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,190 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','NUMBER(P,S)','INCEPTOR','DECIMAL(P,S)',100,0,Null,0);完成.
+[INFO 2020-07-24 15:36:38,190 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,191 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','NUMBER','INCEPTOR','DECIMAL(38,0)',100,0,Null,0);完成.
+[INFO 2020-07-24 15:36:38,191 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,191 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','NUMBER(P)','INCEPTOR','DECIMAL(P,0)',100,0,Null,0);完成.
+[INFO 2020-07-24 15:36:38,191 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,191 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','DECIMAL','INCEPTOR','DECIMAL',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,191 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,191 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','BIT','INCEPTOR','BOOLEAN',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,192 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,192 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','BOOLEAN','INCEPTOR','BOOLEAN',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,192 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,192 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','TINYINT','INCEPTOR','TINYINT',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,192 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,193 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','SMALLINT','INCEPTOR','SMALLINT',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,193 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,193 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','INTEGER','INCEPTOR','INT',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,193 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,193 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','LONG','INCEPTOR','BIGINT',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,193 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,194 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','LONG RAW','INCEPTOR','BIGINT',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,194 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,195 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','RAW','INCEPTOR','BINARY',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,195 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,195 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','FLOAT','INCEPTOR','FLOAT',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,195 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,195 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','BINARYFLOAT','INCEPTOR','FLOAT',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,195 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,196 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','DOUBLE','INCEPTOR','DOUBLE',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,196 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,196 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','BINARYDOUBLE','INCEPTOR','DOUBLE',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,196 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,196 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','CLOB','INCEPTOR','CLOB',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,196 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,196 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','NCLOB','INCEPTOR','CLOB',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,197 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,197 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','BLOB','INCEPTOR','BLOB',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,197 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,197 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','BFILE','INCEPTOR','N/A',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,197 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,197 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','DATE','INCEPTOR','DATE',19,'cast(from_unixtime(unix_timestamp(''00010101'' , ''yyyyMMdd'')) as date)','cast(from_unixtime(unix_timestamp(trim(column_name) , ''yyyy-MM-dd HH:mm:ss'')) as date)',1);完成.
+[INFO 2020-07-24 15:36:38,197 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,198 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','TIMESTAMP','INCEPTOR','TIMESTAMP',26,'cast(from_unixtime(unix_timestamp(''00010101'' , ''yyyyMMdd'')) as timestamp)','cast(from_unixtime(unix_timestamp(trim(column_name) , ''yyyy-MM-dd HH:mm:ss.FFFFFF'')) as timestamp)',1);完成.
+[INFO 2020-07-24 15:36:38,198 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,198 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','TIMESTAMP WITH TIMEZONE','INCEPTOR','N/A',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,198 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,198 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','TIMESTAMP WITH LOCAL TIMEZONE','INCEPTOR','N/A',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,198 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,199 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','INTERVAL YEAR TO MONTH','INCEPTOR','INTERVAL_YEAR_MONTH',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,199 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,199 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','INTERVAL DAY TO SECOND','INCEPTOR','INTERVAL_DAY_TIME',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,199 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,199 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','STRUCT','INCEPTOR','STRUCT',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,199 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,199 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','ARRAY','INCEPTOR','ARRAY',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,200 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,200 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','ROWID','INCEPTOR','N/A',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,200 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,200 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('ORACLE','UROWID','INCEPTOR','N/A',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,200 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,200 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','BIGINT(P)','INCEPTOR','DECIMAL(2P,0)',100,Null,Null,0);完成.
+[INFO 2020-07-24 15:36:38,200 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,201 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','BINARY','INCEPTOR','BINARY',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,201 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,201 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','BIT(P)','INCEPTOR','DECIMAL(2P,0)',100,Null,Null,0);完成.
+[INFO 2020-07-24 15:36:38,201 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,201 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','CHAR ','INCEPTOR','STRING',4000,'''''','trim(column_name)',1);完成.
+[INFO 2020-07-24 15:36:38,201 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,201 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','DATETIME','INCEPTOR','DATE',19,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,202 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,202 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','DECIMAL(P)','INCEPTOR','DECIMAL(2P,0)',100,Null,Null,0);完成.
+[INFO 2020-07-24 15:36:38,202 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,202 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','FLOAT','INCEPTOR','DOUBLE',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,202 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,202 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','IMAGE','INCEPTOR','BINARY',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,202 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,202 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','INT(P)  ','INCEPTOR','DECIMAL(2P,0)',100,0,Null,0);完成.
+[INFO 2020-07-24 15:36:38,203 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,203 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','NCHAR','INCEPTOR','STRING',4000,'''''','trim(column_name)',1);完成.
+[INFO 2020-07-24 15:36:38,203 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,203 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','NTEXT','INCEPTOR','BINARY',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,203 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,203 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','NUMERIC(P)','INCEPTOR','DECIMAL(2P,0)',100,Null,Null,0);完成.
+[INFO 2020-07-24 15:36:38,204 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,204 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','NVARCHAR','INCEPTOR','STRING',4000,'''''','trim(column_name)',1);完成.
+[INFO 2020-07-24 15:36:38,204 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,204 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','REAL','INCEPTOR','FLOAT',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,204 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,204 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','SMALLDATETIME','INCEPTOR','DATE',19,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,205 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,205 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','SMALLINT(P)','INCEPTOR','DECIMAL(P,0)',100,Null,Null,0);完成.
+[INFO 2020-07-24 15:36:38,205 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,205 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','SQL_VARIANT','INCEPTOR','BINARY',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,205 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,205 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','TEXT','INCEPTOR','BINARY',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,205 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,205 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','TIMESTAMP','INCEPTOR','BINARY',100,'cast(from_unixtime(unix_timestamp(''00010101'' , ''yyyyMMdd'')) as timestamp)','cast(from_unixtime(unix_timestamp(trim(column_name) , ''yyyy-MM-dd HH:mm:ss.FFFFFF'')) as timestamp)',1);完成.
+[INFO 2020-07-24 15:36:38,206 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,206 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','TINYINT(P)','INCEPTOR','DECIMAL(P,0)',100,Null,Null,0);完成.
+[INFO 2020-07-24 15:36:38,206 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,206 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','UNIQUEIDENTIFIER','INCEPTOR','BINARY',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,206 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,206 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','VARBINARY','INCEPTOR','BINARY',100,Null,Null,1);完成.
+[INFO 2020-07-24 15:36:38,206 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,207 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_meta_type_convert  values ('SQLSERVER','VARCHAR','INCEPTOR','STRING',4000,'''''','trim(column_name)',1);完成.
+[INFO 2020-07-24 15:36:38,207 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:100 init_meta_data] 表etl_meta_type_convert数据初始化插入成功. 
+[DEBUG 2020-07-24 15:36:38,337 52137 /Users/wangdabin1216/git/dw/src/init/operate_os.py:83 compile_mysql_file] 文件-/Users/wangdabin1216/git/dw/sql/meta_data.sql编译执行成功
+[INFO 2020-07-24 15:36:38,337 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:47 init_meta_data] 调用方法 - init_meta_data
+[DEBUG 2020-07-24 15:36:38,337 52137 /Users/wangdabin1216/git/dw/src/init/operate_os.py:26 delete_file] 文件/Users/wangdabin1216/git/dw/sql/meta_data.sql已删除
+[INFO 2020-07-24 15:36:38,548 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:30 get_tab_cols] 调用方法 - get_tab_cols
+[DEBUG 2020-07-24 15:36:38,551 52137 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select column_name from information_schema.columns where table_name= 'etl_load_system' order by ordinal_position ;.
+[INFO 2020-07-24 15:36:38,551 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:39 get_tab_cols] 获取表etl_load_system字段结构列表成功,字段列表：['sys', 'sys_name', 'db_type', 'db_version', 'flag', 'mode', 'db_name', 'schema_name', 'charset', 'ip_addr', 'port', 'user', 'password', 'remark', 'is_compress', 'is_fix_length', 'is_exist_check_file', 'is_exist_ready_file']
+[INFO 2020-07-24 15:36:38,551 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:60 init_meta_data] 表 etl_load_system 开始组装数据初始化语句...... 
+[DEBUG 2020-07-24 15:36:38,551 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:86 init_meta_data] 删除语句：delete from etl_load_system where 1=1;
+[INFO 2020-07-24 15:36:38,552 52137 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:42 execute_sql] 执行事务类SQL成功,sql：delete from etl_load_system where 1=1;.
+[DEBUG 2020-07-24 15:36:38,553 52137 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:66 commit] 提交事务类操作成功.
+[INFO 2020-07-24 15:36:38,553 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:89 init_meta_data] 表 etl_load_system 存在,数据删除成功. 
+[INFO 2020-07-24 15:36:38,554 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:36:38,554 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_load_system  values ('CB','核心系统','oracle','11.2.0.4.0',1,'file','dr2_hexindb','ensemble','utf8','10.0.128.106',1521,'bdata','dataonly1','1是0否',0,0,0,0);完成.
+[INFO 2020-07-24 15:36:38,554 52137 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:100 init_meta_data] 表etl_load_system数据初始化插入成功. 
+[DEBUG 2020-07-24 15:36:38,619 52137 /Users/wangdabin1216/git/dw/src/init/operate_os.py:83 compile_mysql_file] 文件-/Users/wangdabin1216/git/dw/sql/meta_data.sql编译执行成功
+[INFO 2020-07-24 15:37:27,551 52326 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:30 conn_mysql] 数据库初始化连接创建成功.
+[INFO 2020-07-24 15:37:27,552 52326 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:47 init_meta_data] 调用方法 - init_meta_data
+[DEBUG 2020-07-24 15:37:27,553 52326 /Users/wangdabin1216/git/dw/src/init/operate_os.py:26 delete_file] 文件/Users/wangdabin1216/git/dw/sql/meta_data.sql已删除
+[INFO 2020-07-24 15:37:27,629 52326 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:30 get_tab_cols] 调用方法 - get_tab_cols
+[DEBUG 2020-07-24 15:37:27,632 52326 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select column_name from information_schema.columns where table_name= 'etl_load_table' order by ordinal_position ;.
+[INFO 2020-07-24 15:37:27,632 52326 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:39 get_tab_cols] 获取表etl_load_table字段结构列表成功,字段列表：['sys', 'tab_name', 'tab_cn_name', 'cond', 'if_flag', 'tab_type', 'chain_type', 'collect_mode', 'file_name', 'check_file', 'file_format', 'encode_format', 'col_separator', 'record_separator', 'trans_path', 'remark', 'is_col_separator', 'partition_set', 'is_valid', 'is_create']
+[INFO 2020-07-24 15:37:27,632 52326 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:60 init_meta_data] 表 etl_load_table 开始组装数据初始化语句...... 
+[INFO 2020-07-24 15:37:31,037 52342 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:30 conn_mysql] 数据库初始化连接创建成功.
+[INFO 2020-07-24 15:37:31,037 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:47 init_meta_data] 调用方法 - init_meta_data
+[INFO 2020-07-24 15:37:31,118 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:30 get_tab_cols] 调用方法 - get_tab_cols
+[DEBUG 2020-07-24 15:37:31,120 52342 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select column_name from information_schema.columns where table_name= 'etl_load_table' order by ordinal_position ;.
+[INFO 2020-07-24 15:37:31,120 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:39 get_tab_cols] 获取表etl_load_table字段结构列表成功,字段列表：['sys', 'tab_name', 'tab_cn_name', 'cond', 'if_flag', 'tab_type', 'chain_type', 'collect_mode', 'file_name', 'check_file', 'file_format', 'encode_format', 'col_separator', 'record_separator', 'trans_path', 'remark', 'is_col_separator', 'partition_set', 'is_valid', 'is_create']
+[INFO 2020-07-24 15:37:31,120 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:60 init_meta_data] 表 etl_load_table 开始组装数据初始化语句...... 
+[DEBUG 2020-07-24 15:37:31,121 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:86 init_meta_data] 删除语句：delete from etl_load_table where upper(sys) = 'CB';
+[INFO 2020-07-24 15:37:31,122 52342 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:42 execute_sql] 执行事务类SQL成功,sql：delete from etl_load_table where upper(sys) = 'CB';.
+[DEBUG 2020-07-24 15:37:31,122 52342 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:66 commit] 提交事务类操作成功.
+[INFO 2020-07-24 15:37:31,125 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:89 init_meta_data] 表 etl_load_table 存在,数据删除成功. 
+[INFO 2020-07-24 15:37:31,126 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:37:31,126 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_load_table  values ('CB','CIF_CLIENT','客户信息表','LAST_CHANGE_DATE','I','ST','chain_add','file','CB_CIF_CLIENT$currdt.txt',Null,'txt','UTF-8','~@~','\\n','/dw/tbo/cb/cb_cif_client',Null,0,Null,1,1);完成.
+[INFO 2020-07-24 15:37:31,126 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:100 init_meta_data] 表etl_load_table数据初始化插入成功. 
+[DEBUG 2020-07-24 15:37:31,220 52342 /Users/wangdabin1216/git/dw/src/init/operate_os.py:83 compile_mysql_file] 文件-/Users/wangdabin1216/git/dw/sql/meta_data.sql编译执行成功
+[INFO 2020-07-24 15:37:31,220 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:47 init_meta_data] 调用方法 - init_meta_data
+[DEBUG 2020-07-24 15:37:31,220 52342 /Users/wangdabin1216/git/dw/src/init/operate_os.py:26 delete_file] 文件/Users/wangdabin1216/git/dw/sql/meta_data.sql已删除
+[INFO 2020-07-24 15:37:31,278 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:30 get_tab_cols] 调用方法 - get_tab_cols
+[DEBUG 2020-07-24 15:37:31,280 52342 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:54 search] 查询sql成功,sql：select column_name from information_schema.columns where table_name= 'etl_load_column' order by ordinal_position ;.
+[INFO 2020-07-24 15:37:31,280 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:39 get_tab_cols] 获取表etl_load_column字段结构列表成功,字段列表：['sys', 'tab_name', 'col_seq', 'col_name', 'col_type', 'col_cn_name', 'is_pk', 'is_null', 'default_val', 'trans_statement', 'is_dk', 'mapping_col_type', 'is_sk']
+[INFO 2020-07-24 15:37:31,280 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:60 init_meta_data] 表 etl_load_column 开始组装数据初始化语句...... 
+[DEBUG 2020-07-24 15:37:31,281 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:86 init_meta_data] 删除语句：delete from etl_load_column where upper(sys) = 'CB';
+[INFO 2020-07-24 15:37:31,282 52342 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:42 execute_sql] 执行事务类SQL成功,sql：delete from etl_load_column where upper(sys) = 'CB';.
+[DEBUG 2020-07-24 15:37:31,283 52342 /Users/wangdabin1216/git/dw/src/init/operate_mysql.py:66 commit] 提交事务类操作成功.
+[INFO 2020-07-24 15:37:31,283 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:89 init_meta_data] 表 etl_load_column 存在,数据删除成功. 
+[INFO 2020-07-24 15:37:31,283 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:37:31,283 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_load_column  values ('CB','CIF_CLIENT',1,'CLIENT_KEY','NUMBER(15)','内部Key',1,1,Null,Null,1,Null,Null);完成.
+[INFO 2020-07-24 15:37:31,284 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:37:31,284 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_load_column  values ('CB','CIF_CLIENT',2,'CLIENT_NO','VARCHAR2(20)','客户号',0,0,Null,Null,Null,Null,Null);完成.
+[INFO 2020-07-24 15:37:31,284 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:37:31,284 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_load_column  values ('CB','CIF_CLIENT',3,'CLIENT_TYPE','VARCHAR2(3)','客户类型',0,0,Null,Null,Null,Null,Null);完成.
+[INFO 2020-07-24 15:37:31,285 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:37:31,285 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_load_column  values ('CB','CIF_CLIENT',4,'CATEGORY_TYPE','VARCHAR2(3)','客户细分类型',0,0,Null,Null,Null,Null,Null);完成.
+[INFO 2020-07-24 15:37:31,285 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:37:31,285 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_load_column  values ('CB','CIF_CLIENT',5,'LAST_CHANGE_DATE','VARCHAR2(8)','更新日期',0,0,Null,Null,Null,Null,Null);完成.
+[INFO 2020-07-24 15:37:31,285 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:94 init_meta_data] 写入完成,所有sql已写入文件:/Users/wangdabin1216/git/dw/sql/meta_data.sql
+[DEBUG 2020-07-24 15:37:31,286 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:95 init_meta_data] 执行sql:insert into etl_load_column  values ('CB','CIF_CLIENT',6,'ROUTER_KEY','VARCHAR2(100)','分库路由关键字',0,0,Null,Null,Null,Null,Null);完成.
+[INFO 2020-07-24 15:37:31,286 52342 /Users/wangdabin1216/git/dw/src/init/init_meta_data.py:100 init_meta_data] 表etl_load_column数据初始化插入成功. 
+[DEBUG 2020-07-24 15:37:31,375 52342 /Users/wangdabin1216/git/dw/src/init/operate_os.py:83 compile_mysql_file] 文件-/Users/wangdabin1216/git/dw/sql/meta_data.sql编译执行成功

@@ -1,0 +1,13 @@
+http://support.transwarp.io/t/tdh5-0-odbc/1624
+
+9.2.2. 在Linux下安装
+9.2.2.1. 安装Linux ODBC Driver Manager 1. 下载Driver Manager
+由于Linux系统没有提供ODBC Driver Manager,需要自行下载，星环信息科技(上海)有限公司推荐使 用2.0 以上的unixODBC，使用下面命令下载:
+     wget ftp://ftp.unixodbc.org/pub/unixODBC/unixODBC-2.3.4.tar.gz
+2. 安装ODBC Driver Manager 运行如下命令:
+     tar -xvzf unixODBC-2.3.4.tar.gz
+     cd unixODBC-2.3.4/
+     ./configure --sysconfdir=/etc
+     make
+make install
+3. 配置PATH和LD_LIBRARY_PATH 运行如下命令:

@@ -1,0 +1,192 @@
+1.ods:10.4.3.20 odsetl/odsetl  /share/ods 按照下游系统创建的目录
+
+
+2.验证大数据平台能否连接以及权限等信息
+beeline -u "jdbc:hive2://10.4.11.101:10000/dw" -n dw -p dw
+
+BEELINE_CMD = "beeline -u \"jdbc:hive2://bg1:10000/cc;principal=hive/bg1@TDH;authentication=kerberos;kuser=dw@TDH;keytab=/home/appop/Users/wangdabin1216/git/dwtool/conf/dw.keytab;krb5conf=/home/appop/Users/wangdabin1216/git/TDH-Client/conf/inceptor1/krb5.conf\" --outputformat=csv --silent=true --showHeader=true "
+beeline -u "jdbc:hive2://bjuattdh02:10000/default" -n dw -p dw
+
+
+3.大数据平台创建对应的SCHEMA
+CREATE SCHEMA tbo; 
+CREATE SCHEMA fmi;
+CREATE SCHEMA cmi;
+CREATE SCHEMA dmm;
+CREATE SCHEMA dsa;
+CREATE SCHEMA omi;
+grant all to user dw;
+4.测试对应的表
+CREATE TABLE omi.test2(name STRING ) CLUSTERED BY (name) INTO 5 BUCKETS STORED AS ORC TBLPROPERTIES("transactional"="true");
+create external table omi.test(name string) 
+
+beeline -u "jdbc:hive2://bjuattdh02:10000/cc" -n dw -p dw -f pkg_dw_util_body.sql 
+beeline -u "jdbc:hive2://bjuattdh02:10000/omi" -n dw -p dw -f create_pro20191210.sql
+hdfs dfs -put /home/uetl/dw/data/src/irs/check_20190901/a_ibs_prdt_base_info_20190901_000_000.dat /dw/sa/prdt_base_info/prdt_base_info.txt
+beeline -u "jdbc:hive2://bjuattdh02:10000/default" -n dw -p dw -f test.sql
+
+beeline -u "jdbc:hive2://bjuattdh02:10000/default" -n dw -p dw -e "begin set_env('transaction.type','inceptor'); set_env('mapred.reduce.tasks','5');insert overwrite directory '/dw/dsa/test' row format delimited fields terminated by '|+|' select * from omi.test2 distribute by rand() end"
+
+
+CREATE  TABLE omi.dual(
+  dummy string DEFAULT NULL COMMENT ''
+);
+INSERT INTO omi.dual SELECT 'TDH' FROM system.dual;
+
+--存储过程日志表 dw_sm_trlg
+CREATE SCHEMA cc
+DROP TABLE IF EXISTS cc.dw_sm_trlg;
+create table cc.dw_sm_trlg(
+  key struct<unix_time:int,log_object:string,log_seq:int> comment '主键:unix_time+对象+序号',
+  system_flag string  comment '系统标识',
+  begin_time timestamp comment '操作的开始时间',
+  end_time timestamp comment '操作的结束时间',
+  time_cost  int comment '操作耗时',
+  pro_name string comment '存储过程的名字',
+  log_object string comment '操作对象的名字',
+  log_action string comment '操作的动作',
+  row_count int comment '处理的行数',
+  log_code string comment '错误的代码',
+  log_desc string comment '错误的描述',
+  etl_date date comment '处理日期',
+  status string comment '表处理的状态'
+)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.hbase.HBaseSerDe' 
+STORED BY 
+  'org.apache.hadoop.hive.hbase.HBaseStorageHandler' 
+WITH SERDEPROPERTIES ( 
+  'colelction.delim'='|', 
+  'serialization.format'='1',    
+  'hbase.columns.mapping'=':key,f0:system_flag,f0:begin_time,f0:end_time,f0:time_cost,f0:pro_name,f0:log_object,f0:log_action,f0:row_count,f0:log_code,f0:log_desc,f0:etl_date,f0:status')
+TBLPROPERTIES (
+  'hbase.table.name'='dw_sm_trlg'); 
+
+SELECT * FROM cc.dw_sm_trlg
+INSERT INTO cc.dw_sm_trlg values(named_struct('unix_time','333','log_object','chain2','log_seq','2'),'kn',sysdate,sysdate,4,'pro1','chain','insert into',200,'200','test error',SYSDATE,'1');
+
+
+日期函数
+卸载脚本测试
+月季年的跑批定时调度
+监控OK文件的循环脚本
+
+i_bd_tablename_date_000_000.dat
+
+
+dt=`beeline -u "jdbc:hive2://bjuattdh02:10000/default" -n dw -p dw -e "SELECT omi.fun_get_date('2019-09-17','M') FROM omi.dual union all SELECT omi.fun_get_date('2019-09-17','M') FROM omi.dual" --outputformat=csv --silent=true --showHeader=true`
+month_end=`beeline -u "jdbc:hive2://bjuattdh02:10000/default" -n dw -p dw -e "SELECT omi.fun_get_date('2019-09-17','M') FROM omi.dual" --outputformat=csv --silent=true --showHeader=true`
+
+20181128 之前是全量，之后在增量
+监管集市20191231结束，出一个人天数
+调度服务器申请
+
+1、导出逻辑中增加导出的where条件，需要判断月末、季末、年底的日期分别执行导出
+2、导出脚本中生成ok文件的语句放到run_daily.sh 中生成
+
+500/30=16
+
+
+
+
+
+yum clean all
+yum makecache
+yum -y install nfs-utils rpcbind
+yum -y install telnet-server.x86_64
+yum -y install telnet.x86_64
+yum -y install xinetd.x86_64
+yum -y install iptables
+yum -y install iptables-services
+yum install -y unzip zip
+yum install perl*
+yum install sysstat-10.1.5-17.el7.x86_64.rpm 
+yum install sysstat
+yum -y install vim-common*
+yum -y install vim-enhanced*
+yum -y install lrzsz
+
+
+
+
+ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+hwclock --set --date '2019-09-17 10:58:01'
+hwclock --hctosys
+
+--上线变更
+
+你好：
+       为了降低ods与大数据平台数据交互对生产环境整体批量时间的影响，需要进行以下修改：
+source_path=/etldatapool/ods/etl
+           /share/ods/Users/wangdabin1216/git/yyyymmdd 
+1、ods下发给大数据平台的数据文件目录修改为：share/ods/Users/wangdabin1216/git/yyyymmdd （其中yyyymmdd 为批量日期）；
+
+2、该目录下的数据文件名称修改为etl_yyyymmdd.tar（其中yyyymmdd 为批量日期）
+ok文件名字修改为etl_yyyymmdd.ok（其中yyyymmdd 为批量日期）
+
+3、ods从大数据取数的路径和文件名不做修改，仍然是：
+/share/dsa/yyyymmdd（其中yyyymmdd 为批量日期）
+etl_yyyymmdd.ok  （其中yyyymmdd 为批量日期）
+
+
+
+
+
+
+
+
+mysql -u etl -petl -h 10.4.0.156 -D etl <meta_data.sql
+mysql -u etl -petl -h 10.4.0.156 -D etl --default-character-set=utf8 -N -e "select * from etl_load_table" > /data/put/init/etl_load_table.txt
+
+mysql -u etl -petl -h 10.4.0.156 -D etl --default-character-set=utf8 -N -e "select * from cmsdb.ent_relative" > /data/src/cm/20191224/cm_ent_relative20191224.txt
+
+select * from etl_load_table into outfile '/data/put/init/etl_load_table.txt' fields terminated by '|' lines terminated by '\n'
+
+
+hdfs dfs -cat /inceptor1/user/hive/warehouse/cc.db/dw/test_chain/delta_0018902_0018902/bucket_00000
+hdfs dfs -ls /inceptor1/user/hive/warehouse/cc.db/dw/test_chain_hs/partid=201903/delta_0018900_0018900/bucket_00000
+hdfs dfs -cat /inceptor1/user/hive/warehouse/cc.db/dw/test_chain_hs/partid=201904/delta_0018912_0018912/bucket_00000 | wc -l
+
+ps -ef|grep dispturn.py
+ps -ef|grep dispatcher.py
+
+
+授信评审部测试数据库：
+10.4.11.110 neutron/neutron   服务名zgcuatdb
+数据库里包含了风控集市需求的大部分表，可作为对表、字段分析的参考。
+
+信贷系统测试环境数据库
+10.4.0.2:1521:zgcuatdb
+srcods/srcods
+实例名：cmsdb
+
+SELECT * FROM tbo.test_clob
+DROP TABLE tbo.test_clob
+CREATE EXTERNAL  TABLE tbo.test_clob(
+ID STRING,
+REQUESTCONTENT CLOB,
+RESPONSECONTENT CLOB,
+CREDITQUERY_ID STRING
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' 
+STORED AS TEXTFILE LOCATION '/dw/tbo/cm/test_clob';
+
+MB_DRAWDOWN	--贷款发放表  --放款，核心的dw相当于互金的借据
+MB_ACCT_SETTLE --账户配置表，会配置贷款户的还款和放款账户
+MB_ACCT_SCHEDULE 1:1 MB_DRAWDOWN 一条贷款对应一条记录，还款计划可能还会修改
+MB_ACCT_SCHEDULE_DETAIL	账户还款计划明细表，会删除数据,没有出账的数据在，按照END_DATE='当天'的数据删除，然后移到MB_INVOICE表，由计划变单据，TRAN_TIMESTAMP取增量
+MB_INVOICE	--单据表 核心跑批的结果，从计划变成单据，从MB_ACCT_SCHEDULE_DETAIL表move到 invoice表中，互金8点17点跑2次批
+MB_RECEIPT_DETAIL	回收明细表
+
+客户需要有核心和互金客户号，有一张关系对照表ECIF_CIF_NO_REL，取增量用REL_TIME字段
+select distinct REL_sys from ECIF_CIF_NO_REL where rel_sys='CORE'
+
+逾期只关注本金逾期，不关注利息逾期
+
+MB_INVOICE 表不考虑宽限期，以due_date为主，TRAN_DATE是insert表的日期，可能与due_date相等；LAST_CHANGE_DATE（抽数用的）与FINAL_SETTLE_DATE应该是一样的
+借据维度期次为4，还款维度就有1234条记录
+
+
+D:\zgcbank\大数据平台建设项目\基于星环数据平台建设合作方服务费统计报表项目\01_项目管理\06_培训
+
+

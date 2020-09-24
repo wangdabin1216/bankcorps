@@ -1,0 +1,21 @@
+
+LOAD DATA
+        CHARACTERSET UTF8
+        INFILE '/data/bigdata/tmp/rm_jinjzb_hs.txt'
+        truncate
+        INTO TABLE sds.rm_jinjzb_hs FIELDS TERMINATED BY "~"
+        TRAILING NULLCOLS
+        (
+DATA_DT DATE'YYYY-MM-DD',
+APPLY_DATE DATE'YYYY-MM-DD',
+CIF_NO,
+APPLY_NO,
+PRDT_NO,
+JJL,
+CHECK_NUM,
+REJECT_NUM,
+CANCEL_NUM,
+D_COUNT,
+APPR_LIMIT,
+LIMIT_AMT
+)

@@ -1,0 +1,31 @@
+
+LOAD DATA
+        CHARACTERSET UTF8
+        INFILE '/data/bigdata/tmp/rm_khzb_hs.txt'
+        truncate
+        INTO TABLE sds.rm_khzb_hs FIELDS TERMINATED BY "~"
+        TRAILING NULLCOLS
+        (
+DATA_DT DATE'YYYY-MM-DD',
+CIF_NO,
+CLIENT_NO,
+PRDT_NUM ,
+LIMIT_AMT,
+CURR_USE_AMT  ,
+SUM_APPLY_NUM ,
+SUM_CHECK_NUM ,
+SUM_REJECT_NUM,
+SUM_DUE_NUM   ,
+SUM_DUE_AMT   ,
+ZDYE,
+ZDBJ,
+ZDLX,
+ZDBS,
+ZDCPS,
+YQBS,
+YQBJ,
+JQBS,
+JQBJ,
+ZCZDBS,
+ZCZDBJ
+)

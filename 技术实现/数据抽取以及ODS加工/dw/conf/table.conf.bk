@@ -1,0 +1,9 @@
+a_cb_mb_acct_${currdt}_000_000,mb_acct
+a_cb_mb_acct_balance_${currdt}_000_000,mb_acct_balance
+a_ibs_ln_due_mst_${currdt}_000_000,ln_due_mst
+a_ibs_ln_pay_plan_${currdt}_000_000,ln_pay_plan
+a_ibs_prdt_base_info_${currdt}_000_000,prdt_base_info
+a_unipay_tpay_protocol_${currdt}_000_000,tpay_protocol
+a_ibs_ln_repay_list_${currdt}_000_000,ln_repay_list
+i_unipay_tpay_main_${currdt}_000_000,tpay_main
+a_cb_mb_acct_int_detail_split_${currdt}_000_000,mb_acc_int_det_spl

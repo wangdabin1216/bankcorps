@@ -33,10 +33,12 @@
 ## 数据同步方案
 
 1. 离线数据同步方案
+https://cloud.tencent.com/developer/article/1450499
 2. 实时数据同步方案
-
+https://zhuanlan.zhihu.com/p/38527834
 
 ## 数据仓库建设
+https://www.oracle.com/technetwork/cn/community/developer-day/2-financial-industry-data-plan-1533690-zhs.pdf
 
 |  层级  | 英文名称  | 中文名称 |
 |  ----  | ----  | ----  |

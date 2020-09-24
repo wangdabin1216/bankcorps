@@ -1,0 +1,624 @@
+--add
+CIF_CLIENT
+CIF_CLIENT_INDVL
+CIF_CLIENT_CORP
+CIF_CLIENT_DOCUMENT
+LN_CONT_MST
+LN_DUE_MST
+MB_INVOICE
+MB_ACCT_SCHEDULE_DETAIL
+LN_CREDIT_APPLY_MST
+MB_DRAWDOWN
+MB_RECEIPT_DETAIL
+MB_ACCT
+--all
+ECIF_CERT_INFO
+ECIF_CIF_NO_REL
+LN_CIF_LIMIT
+
+--pk
+select client_key,count(1) from CIF_CLIENT group by client_key having count(1)>1 
+select client_no,count(1) from CIF_CLIENT_INDVL group by client_no having count(1)>1 
+select client_no,count(1) from CIF_CLIENT_CORP group by client_no having count(1)>1 
+select client_no,iss_country,document_type,document_id,count(1) from CIF_CLIENT_DOCUMENT group by client_no,iss_country,document_type,document_id having count(1)>1 
+select cont_no,count(1) from LN_CONT_MST group by cont_no having count(1)>1
+select due_no,count(1) from LN_DUE_MST group by due_no having count(1)>1
+select invoice_tran_no,count(1) from MB_INVOICE group by invoice_tran_no having count(1)>1
+select sched_seq_no,count(1) from MB_ACCT_SCHEDULE_DETAIL group by sched_seq_no having count(1)>1
+select credit_apply_no,count(1) from LN_CREDIT_APPLY_MST group by credit_apply_no having count(1)>1
+select internal_key,counter,count(1) from MB_DRAWDOWN group by internal_key,counter  having count(1)>1
+select receipt_no,invoice_tran_no,count(1) from MB_RECEIPT_DETAIL group by receipt_no,invoice_tran_no having count(1)>1
+select internal_key,count(1) from MB_ACCT group by internal_key having count(1)>1
+select cert_type,cert_no,count(1) from ECIF_CERT_INFO group by cert_type,cert_no having count(1)>1
+select cif_no,rel_sys,br_no,count(1) from ECIF_CIF_NO_REL group by cif_no,rel_sys,br_no having count(1)>1
+select cert_type,cert_no,ptner_id,prdt_no,count(1) from LN_CIF_LIMIT group by cert_type,cert_no,ptner_id,prdt_no having count(1)>1
+
+--增量字段
+select LAST_CHANGE_DATE,count(1) from CIF_CLIENT group by LAST_CHANGE_DATE order by LAST_CHANGE_DATE desc 
+select LAST_CHANGE_DATE,count(1) from CIF_CLIENT_INDVL group by LAST_CHANGE_DATE order by LAST_CHANGE_DATE desc 
+select LAST_CHANGE_DATE,count(1) from CIF_CLIENT_CORP group by LAST_CHANGE_DATE order by LAST_CHANGE_DATE desc 
+select LAST_CHANGE_DATE,count(1) from CIF_CLIENT_DOCUMENT group by LAST_CHANGE_DATE order by LAST_CHANGE_DATE desc 
+select UP_DATE,count(1) from LN_CONT_MST group by UP_DATE order by UP_DATE desc 
+select UP_DATE,count(1) from LN_DUE_MST group by UP_DATE order by UP_DATE desc 
+select TRAN_DATE,count(1) from MB_INVOICE group by TRAN_DATE order by TRAN_DATE desc 
+select SUBSTR(TRAN_TIMESTAMP,0,8),count(1) from MB_ACCT_SCHEDULE_DETAIL group by SUBSTR(TRAN_TIMESTAMP,0,8) order by SUBSTR(TRAN_TIMESTAMP,0,8) desc 
+select UP_DATE,count(1) from LN_CREDIT_APPLY_MST group by UP_DATE order by UP_DATE desc 
+select TRAN_DATE,count(1) from MB_DRAWDOWN group by TRAN_DATE order by TRAN_DATE desc 
+select SUBSTR(TRAN_TIMESTAMP,0,8),count(1) from MB_RECEIPT_DETAIL group by SUBSTR(TRAN_TIMESTAMP,0,8) order by SUBSTR(TRAN_TIMESTAMP,0,8) desc 
+select LAST_CHANGE_DATE,count(1) from MB_ACCT group by LAST_CHANGE_DATE order by LAST_CHANGE_DATE desc 
+
+
+MySQL [etl]> select sys,tab_name,chain_type,if_flag,cond from etl_load_table where is_valid=1 order by sys,if_flag; 
++------+-------------------------+------------+---------+----------------------------+
+| sys  | tab_name                | chain_type | if_flag | cond                       |
++------+-------------------------+------------+---------+----------------------------+
+| CB   | CIF_CLIENT              | chain_add  | I       | LAST_CHANGE_DATE           |
+| CB   | MB_ACCT                 | chain_add  | I       | LAST_CHANGE_DATE           |
+| CB   | MB_ACCT_SCHEDULE_DETAIL | chain_add  | I       | SUBSTR(TRAN_TIMESTAMP,0,8) |
+| CB   | MB_INVOICE              | chain_add  | I       | TRAN_DATE                  |
+| CB   | MB_DRAWDOWN             | chain_add  | I       | TRAN_DATE                  |
+| CB   | MB_RECEIPT_DETAIL       | chain_add  | I       | SUBSTR(TRAN_TIMESTAMP,0,8) |
+| CB   | CIF_CLIENT_INDVL        | chain_add  | I       | LAST_CHANGE_DATE           |
+| CB   | CIF_CLIENT_CORP         | chain_add  | I       | LAST_CHANGE_DATE           |
+| CB   | CIF_CLIENT_DOCUMENT     | chain_add  | I       | LAST_CHANGE_DATE           |
+| IB   | LN_CIF_LIMIT            | chain_all  | F       | NULL                       |
+| IB   | ECIF_CERT_INFO          | chain_all  | F       | NULL                       |
+| IB   | ECIF_CIF_NO_REL         | chain_all  | F       | NULL                       |
+| IB   | LN_CONT_MST             | chain_add  | I       | UP_DATE                    |
+| IB   | LN_DUE_MST              | chain_add  | I       | UP_DATE                    |
+| IB   | LN_CREDIT_APPLY_MST     | chain_add  | I       | UP_DATE                    |
++------+-------------------------+------------+---------+----------------------------+
+
+| IB   | 互金系统     | oracle  | 11.2.0.4.0 |    1 | file | zgcuatdb | neutron     | utf8    | 10.4.11.110 | 1521 | neutron | neutron  | 1是0否   | 0           | 0             | 0                   | 0                   |
+| CB   | 核心系统     | oracle  | 11.2.0.4.0 |    1 | file | zgcuatdb | neutron     | utf8    | 10.4.11.110 | 1521 | neutron | neutron  | 1是0否   | 0           | 0             | 0                   | 0                   |
+| CM   | 信贷系统     | oracle  | 11.2.0.4.0 |    1 | file | zgcuatdb | neutron     | utf8    | 10.4.11.110 | 1521 | neutron | neutron  | 1是0否   | 0           | 0             | 0                   | 0                   |
+| RC   | 风控系统     | oracle  | 11.2.0.4.0 |    1 | file | zgcuatdb | neutron     | utf8    | 10.4.11.110 | 1521 | neutron | neutron  | 1是0否   | 0           | 0             | 0                   | 0                   |
+| UP   | 支付系统     | oracle  | 11.2.0.4.0 |    1 | file | zgcuatdb | neutron     | utf8    | 10.4.11.110 | 1521 | neutron | neutron  | 1是0否   | 0           | 0             | 0                   | 0                   |
+| BI   | 报表系统     | oracle  | 11.2.0.4.0 |    1 | file | zgcuatdb | epimage     | utf8    | 10.4.0.169  | 1521 | epimage | epimage  | 1是0否   | 0 
+
+SELECT * FROM tbo.ib_ln_due_mst
+SELECT * FROM tbo.ib_ln_credit_apply_mst
+SELECT * FROM tbo.ib_ln_cif_limit
+SELECT * FROM tbo.ib_ecif_cert_info WHERE cert_name LIKE '%%'
+SELECT * FROM tbo.ib_ln_cont_mst
+SELECT * FROM tbo.cb_mb_drawdown
+SELECT * FROM tbo.cb_cif_client_document
+SELECT * FROM tbo.cb_mb_invoice
+SELECT * FROM tbo.cb_cif_client
+SELECT * FROM tbo.cb_mb_acct_schedule_detail
+SELECT * FROM tbo.cb_cif_client_indvl
+SELECT * FROM tbo.cb_cif_client_corp
+SELECT * FROM tbo.cb_mb_receipt_detail
+SELECT * FROM tbo.cb_mb_acct
+SELECT * FROM tbo.ib_ecif_cif_no_rel
+
+SELECT count(1) FROM omi.ib_ln_due_mst_hs
+SELECT count(1) FROM omi.ib_ln_credit_apply_mst_hs
+SELECT count(1) FROM omi.ib_ln_cif_limit_hs
+SELECT count(1) FROM omi.ib_ecif_cert_info_hs
+SELECT count(1) FROM omi.ib_ln_cont_mst_hs
+SELECT count(1) FROM omi.cb_mb_drawdown_hs
+SELECT count(1) FROM omi.cb_cif_client_document_hs
+SELECT count(1) FROM omi.cb_mb_invoice_hs
+SELECT count(1) FROM omi.cb_cif_client_hs
+SELECT count(1) FROM omi.cb_mb_acct_schedule_detail_hs
+SELECT count(1) FROM omi.cb_cif_client_indvl_hs
+SELECT count(1) FROM omi.cb_cif_client_corp_hs
+SELECT count(1) FROM omi.cb_mb_receipt_detail_hs
+SELECT count(1) FROM omi.cb_mb_acct_hs
+SELECT count(1) FROM omi.ib_ecif_cif_no_rel_hs
+
+SELECT 'ln_due_mst','tbo',count(1) FROM tbo.ib_ln_due_mst
+union all
+SELECT 'ln_credit_apply_mst','tbo',count(1) FROM tbo.ib_ln_credit_apply_mst
+union all
+SELECT 'ln_cif_limit','tbo',count(1) FROM tbo.ib_ln_cif_limit
+union all
+SELECT 'ecif_cert_info','tbo',count(1) FROM tbo.ib_ecif_cert_info
+union all
+SELECT 'ln_cont_mst','tbo',count(1) FROM tbo.ib_ln_cont_mst
+union all
+SELECT 'mb_drawdown','tbo',count(1) FROM tbo.cb_mb_drawdown
+union all
+SELECT 'cif_client_document','tbo',count(1) FROM tbo.cb_cif_client_document
+union all
+SELECT 'mb_invoice','tbo',count(1) FROM tbo.cb_mb_invoice
+union all
+SELECT 'cif_client','tbo',count(1) FROM tbo.cb_cif_client
+union all
+SELECT 'mb_acct_schedule_detail','tbo',count(1) FROM tbo.cb_mb_acct_schedule_detail
+union all
+SELECT 'cif_client_indvl','tbo',count(1) FROM tbo.cb_cif_client_indvl
+union all
+SELECT 'cif_client_corp','tbo',count(1) FROM tbo.cb_cif_client_corp
+union all
+SELECT 'mb_receipt_detail','tbo',count(1) FROM tbo.cb_mb_receipt_detail
+union all
+SELECT 'mb_acct','tbo',count(1) FROM tbo.cb_mb_acct
+union all
+SELECT 'ecif_cif_no_rel','tbo',count(1) FROM tbo.ib_ecif_cif_no_rel
+
+
+SELECT 'ln_due_mst','omi',count(1) FROM omi.ib_ln_due_mst_hs WHERE overdt='20991231'
+union all
+SELECT 'ln_credit_apply_mst','omi',count(1) FROM omi.ib_ln_credit_apply_mst_hs WHERE overdt='20991231'
+union all
+SELECT 'ln_cif_limit','omi',count(1) FROM omi.ib_ln_cif_limit_hs WHERE overdt='20991231'
+union all
+SELECT 'ecif_cert_info','omi',count(1) FROM omi.ib_ecif_cert_info_hs WHERE overdt='20991231'
+union all
+SELECT 'ln_cont_mst','omi',count(1) FROM omi.ib_ln_cont_mst_hs WHERE overdt='20991231'
+union all
+SELECT 'mb_drawdown','omi',count(1) FROM omi.cb_mb_drawdown_hs WHERE overdt='20991231'
+union all
+SELECT 'cif_client_document','omi',count(1) FROM omi.cb_cif_client_document_hs WHERE overdt='20991231'
+union all
+SELECT 'mb_invoice','omi',count(1) FROM omi.cb_mb_invoice_hs WHERE overdt='20991231'
+union all
+SELECT 'cif_client','omi',count(1) FROM omi.cb_cif_client_hs WHERE overdt='20991231' 
+union all
+SELECT 'mb_acct_schedule_detail','omi',count(1) FROM omi.cb_mb_acct_schedule_detail_hs WHERE overdt='20991231'
+union all
+SELECT 'cif_client_indvl','omi',count(1) FROM omi.cb_cif_client_indvl_hs WHERE overdt='20991231'
+union all
+SELECT 'cif_client_corp','omi',count(1) FROM omi.cb_cif_client_corp_hs WHERE overdt='20991231'
+union all
+SELECT 'mb_receipt_detail','omi',count(1) FROM omi.cb_mb_receipt_detail_hs WHERE overdt='20991231'
+union all
+SELECT 'mb_acct','omi',count(1) FROM omi.cb_mb_acct_hs WHERE overdt='20991231'
+union all
+SELECT 'ecif_cif_no_rel','omi',count(1) FROM omi.ib_ecif_cif_no_rel_hs WHERE overdt='20991231'
+
+
+SELECT 'ln_due_mst','omi',count(1) FROM omi.ib_ln_due_mst_hs
+union all
+SELECT 'ln_credit_apply_mst','omi',count(1) FROM omi.ib_ln_credit_apply_mst_hs
+union all
+SELECT 'ln_cif_limit','omi',count(1) FROM omi.ib_ln_cif_limit_hs
+union all
+SELECT 'ecif_cert_info','omi',count(1) FROM omi.ib_ecif_cert_info_hs
+union all
+SELECT 'ln_cont_mst','omi',count(1) FROM omi.ib_ln_cont_mst_hs
+union all
+SELECT 'mb_drawdown','omi',count(1) FROM omi.cb_mb_drawdown_hs
+union all
+SELECT 'cif_client_document','omi',count(1) FROM omi.cb_cif_client_document_hs
+union all
+SELECT 'mb_invoice','omi',count(1) FROM omi.cb_mb_invoice_hs
+union all
+SELECT 'cif_client','omi',count(1) FROM omi.cb_cif_client_hs
+union all
+SELECT 'mb_acct_schedule_detail','omi',count(1) FROM omi.cb_mb_acct_schedule_detail_hs
+union all
+SELECT 'cif_client_indvl','omi',count(1) FROM omi.cb_cif_client_indvl_hs
+union all
+SELECT 'cif_client_corp','omi',count(1) FROM omi.cb_cif_client_corp_hs
+union all
+SELECT 'mb_receipt_detail','omi',count(1) FROM omi.cb_mb_receipt_detail_hs
+union all
+SELECT 'mb_acct','omi',count(1) FROM omi.cb_mb_acct_hs
+union all
+SELECT 'ecif_cif_no_rel','omi',count(1) FROM omi.ib_ecif_cif_no_rel_hs
+
+SELECT 'ln_due_mst','orc',count(1)  FROM ln_due_mst
+union all
+SELECT 'ln_credit_apply_mst','orc',count(1)  FROM ln_credit_apply_mst
+union all
+SELECT 'ln_cif_limit','orc',count(1)  FROM ln_cif_limit
+union all
+SELECT 'ecif_cert_info','orc',count(1)  FROM ecif_cert_info
+union all
+SELECT 'ln_cont_mst','orc',count(1)  FROM ln_cont_mst
+union all
+SELECT 'mb_drawdown','orc',count(1)  FROM mb_drawdown
+union all
+SELECT 'cif_client_document','orc',count(1)  FROM cif_client_document
+union all
+SELECT 'mb_invoice','orc',count(1)  FROM mb_invoice
+union all
+SELECT 'cif_client','orc',count(1)  FROM cif_client
+union all
+SELECT 'mb_acct_schedule_detail','orc',count(1)  FROM mb_acct_schedule_detail
+union all
+SELECT 'cif_client_indvl','orc',count(1)  FROM cif_client_indvl
+union all
+SELECT 'cif_client_corp','orc',count(1)  FROM cif_client_corp
+union all
+SELECT 'mb_receipt_detail','orc',count(1)  FROM mb_receipt_detail
+union all
+SELECT 'mb_acct','orc',count(1)  FROM mb_acct
+union all
+SELECT 'ecif_cif_no_rel','orc',count(1)  FROM ecif_cif_no_rel
+
+
+SELECT 'ln_due_mst','orc',count(1)  FROM ln_due_mst where UP_DATE<='20200310' 
+union all
+SELECT 'ln_credit_apply_mst','orc',count(1)  FROM ln_credit_apply_mst  where UP_DATE<='20200310'
+union all
+SELECT 'ln_cif_limit','orc',count(1)  FROM ln_cif_limit
+union all
+SELECT 'ecif_cert_info','orc',count(1)  FROM ecif_cert_info
+union all
+SELECT 'ln_cont_mst','orc',count(1)  FROM ln_cont_mst where UP_DATE<='20200310'
+union all
+SELECT 'mb_drawdown','orc',count(1)  FROM mb_drawdown  where TRAN_DATE<='20200310'
+union all
+SELECT 'cif_client_document','orc',count(1)  FROM cif_client_document  where LAST_CHANGE_DATE<='20200310'
+union all
+SELECT 'mb_invoice','orc',count(1)  FROM mb_invoice where TRAN_DATE<='20200310'
+union all
+SELECT 'cif_client','orc',count(1)  FROM cif_client where LAST_CHANGE_DATE<='20200310'
+union all
+SELECT 'mb_acct_schedule_detail','orc',count(1)  FROM mb_acct_schedule_detail   where SUBSTR(TRAN_TIMESTAMP,0,8)<='20200310'
+union all
+SELECT 'cif_client_indvl','orc',count(1)  FROM cif_client_indvl  where LAST_CHANGE_DATE<='20200310'
+union all
+SELECT 'cif_client_corp','orc',count(1)  FROM cif_client_corp  where LAST_CHANGE_DATE<='20200310'
+union all
+SELECT 'mb_receipt_detail','orc',count(1)  FROM mb_receipt_detail  where SUBSTR(TRAN_TIMESTAMP,0,8)<='20200310'
+union all
+SELECT 'mb_acct','orc',count(1)  FROM mb_acct  where LAST_CHANGE_DATE<='20200310'
+union all
+SELECT 'ecif_cif_no_rel','orc',count(1)  FROM ecif_cif_no_rel
+
+
+sh load_sqluldr_data.sh ib_ln_credit_apply_mst 20200310
+sh load_sqluldr_data.sh ib_ln_due_mst 20200310
+sh load_sqluldr_data.sh ib_ecif_cert_info 20200310
+sh load_sqluldr_data.sh ib_ln_cif_limit 20200310
+sh load_sqluldr_data.sh ib_ln_cont_mst 20200310
+sh load_sqluldr_data.sh cb_mb_drawdown 20200310
+sh load_sqluldr_data.sh cb_cif_client_document 20200310
+sh load_sqluldr_data.sh cb_mb_invoice 20200310
+sh load_sqluldr_data.sh cb_cif_client 20200310
+sh load_sqluldr_data.sh cb_mb_acct_schedule_detail 20200310
+sh load_sqluldr_data.sh cb_cif_client_indvl 20200310
+sh load_sqluldr_data.sh cb_cif_client_corp 20200310
+sh load_sqluldr_data.sh cb_mb_receipt_detail 20200310
+sh load_sqluldr_data.sh cb_mb_acct 20200310
+sh load_sqluldr_data.sh ib_ecif_cif_no_rel 20200310
+
+sh load_call_chain_pro.sh tbo.ib_ln_credit_apply_mst 20200310
+sh load_call_chain_pro.sh tbo.ib_ln_due_mst 20200310
+sh load_call_chain_pro.sh tbo.ib_ecif_cert_info 20200310
+sh load_call_chain_pro.sh tbo.ib_ln_cif_limit 20200310
+sh load_call_chain_pro.sh tbo.ib_ln_cont_mst 20200310
+sh load_call_chain_pro.sh tbo.cb_mb_drawdown 20200310
+sh load_call_chain_pro.sh tbo.cb_cif_client_document 20200310
+sh load_call_chain_pro.sh tbo.cb_mb_invoice 20200310
+sh load_call_chain_pro.sh tbo.cb_cif_client 20200310
+sh load_call_chain_pro.sh tbo.cb_mb_acct_schedule_detail 20200310
+sh load_call_chain_pro.sh tbo.cb_cif_client_indvl 20200310
+sh load_call_chain_pro.sh tbo.cb_cif_client_corp 20200310
+sh load_call_chain_pro.sh tbo.cb_mb_receipt_detail 20200310
+sh load_call_chain_pro.sh tbo.cb_mb_acct 20200310
+sh load_call_chain_pro.sh tbo.ib_ecif_cif_no_rel 20200310
+
+truncate table omi.ib_ln_due_mst_hs;
+truncate table omi.ib_ln_credit_apply_mst_hs;
+truncate table omi.ib_ln_cif_limit_hs;
+truncate table omi.ib_ecif_cert_info_hs;
+truncate table omi.ib_ln_cont_mst_hs;
+truncate table omi.cb_mb_drawdown_hs;
+truncate table omi.cb_cif_client_document_hs;
+truncate table omi.cb_mb_invoice_hs;
+truncate table omi.cb_cif_client_hs;
+truncate table omi.cb_mb_acct_schedule_detail_hs;
+truncate table omi.cb_cif_client_indvl_hs;
+truncate table omi.cb_cif_client_corp_hs;
+truncate table omi.cb_mb_receipt_detail_hs;
+truncate table omi.cb_mb_acct_hs;
+truncate table omi.ib_ecif_cif_no_rel_hs;
+
+--tdh获取表字段
+SELECT table_name,group_concat(column_name,',') FROM (
+SELECT database_name||'.'||table_name table_name,column_name FROM system.columns_v 
+WHERE database_name||'.'||table_name in(
+'omi.ib_ln_due_mst_hs'
+,'omi.ib_ln_credit_apply_mst_hs'
+,'omi.ib_ln_cif_limit_hs'
+,'omi.ib_ecif_cert_info_hs'
+,'omi.ib_ln_cont_mst_hs'
+,'omi.cb_mb_drawdown_hs'
+,'omi.cb_cif_client_document_hs'
+,'omi.cb_mb_invoice_hs'
+,'omi.cb_cif_client_hs'
+,'omi.cb_mb_acct_schedule_detail_hs'
+,'omi.cb_cif_client_indvl_hs'
+,'omi.cb_cif_client_corp_hs'
+,'omi.cb_mb_receipt_detail_hs'
+,'omi.cb_mb_acct_hs'
+,'omi.ib_ecif_cif_no_rel_hs'
+,'dmm.rm_jinjwd_hs'
+,'dmm.rm_hkzb_hs'
+,'dmm.rm_khzb_hs'
+,'dmm.rm_jiejwd_hs'
+,'dmm.rm_jiejzb_hs'
+,'dmm.rm_jinjzb_hs'
+,'dmm.rm_hkwd_hs'
+,'dmm.rm_khwd_hs')
+ORDER BY column_id
+)
+GROUP BY table_name
+
+
+
+
+--铺底数据全量抽取，需要将增量的if_flag改成F，才会全量抽取
+select * from etl_load_table
+update etl_load_table set if_flag='F' 
+where tab_name in (
+'CIF_CLIENT'
+,'MB_ACCT_SCHEDULE_DETAIL'
+,'MB_INVOICE'
+,'MB_DRAWDOWN'
+,'MB_RECEIPT_DETAIL'
+,'CIF_CLIENT_INDVL'
+,'CIF_CLIENT_CORP'
+,'CIF_CLIENT_DOCUMENT'
+,'LN_CONT_MST'
+,'LN_DUE_MST'
+,'LN_CREDIT_APPLY_MST'
+)
+
+
+
+-- load_sqlldr_data.sh 脚本测试
+neutron,neutron,zgcuatdb,10.4.11.110
+select * from fxjs_ln_due_mst
+create table fxjs_ln_due_mst(
+ app_sts varchar2(100),
+ cont_no varchar2(100),
+ due_no varchar2(100),
+ cif_no varchar2(100),
+ cif_name varchar2(100),
+ app_no varchar2(100),
+ note_no varchar2(100)
+)
+
+insert into :table_hs_name partition(partid='202003') (begndt,overdt,:fields) select :acct_date as begndt,:next_date as overdt, :fields from :table_name
+
+load_check_batch_finish.sh -> load_sqluldr_data.sh(load_put_file.sh) -> load_call_chain_pro.sh -> load_call_rm_pro.sh 
+ -> dsa_file_unload.sh -> dsa_file_distribute.sh ->  dsa_file_ftp.sh(dsa_file_expect.sh) -> load_sqlldr_data.sh
+
+导出数据生成的检核文件是一个表一个文件，check文件-表级,数据文件-表级,ready文件-系统级,压缩文件格式-系统级
+ssh root@10.4.0.156
+ssh uetl@10.4.2.55
+$ip $user $pwd $ftppath
+10.4.2.55 etl
+10.4.0.156 中间机 root/1qaz@WSX
+10.4.11.110 目标机
+
+expect expect.sh root 1qaz@WSX 10.4.0.156 /root
+
+REPLACE(REPLACE(TRIM(BUSINESS_SCOPE),CHR(10),''''),CHR(13),'''') 
+
+--sftp
+yum install expect
+sh dsa_file_ftp.sh fxjs 20200102
+expect expect.sh root 1qaz@WSX 10.4.0.156 /data/dsa/ext/fxjs fxjs 20200102
+
+2020313 周五跑 20200311 20200312 两天的数据，其他表跑20200312
+--cb_mb_acct 少数据
+SELECT internal_key,last_change_date,tran_timestamp,SUBSTRING(tran_timestamp,9,14) FROM tbo.cb_mb_acct WHERE internal_key IN (
+SELECT t1.internal_key FROM omi.cb_mb_acct_hs t
+ FULL JOIN tbo.cb_mb_acct t1
+ ON t.internal_key = t1.internal_key
+WHERE t.internal_key IS NULL 
+)
+--233503308	200611993
+SELECT max(SUBSTRING(tran_timestamp,9,14)),min(SUBSTRING(tran_timestamp,9,14)) FROM tbo.cb_mb_acct WHERE internal_key IN (
+SELECT t1.internal_key FROM omi.cb_mb_acct_hs t
+ FULL JOIN tbo.cb_mb_acct t1
+ ON t.internal_key = t1.internal_key
+WHERE t.internal_key IS NULL 
+)
+
+--cb_mb_acct_schedule_detail 源系统是不是会删除数据
+SELECT t.sched_seq_no,t1.sched_seq_no FROM omi.cb_mb_acct_schedule_detail_hs t
+ FULL JOIN tbo.cb_mb_acct_schedule_detail t1
+ ON t.sched_seq_no = t1.sched_seq_no
+WHERE t1.sched_seq_no IS NULL 
+
+SELECT sched_seq_no FROM omi.cb_mb_acct_schedule_detail_hs WHERE sched_seq_no IN (
+SELECT t.sched_seq_no FROM omi.cb_mb_acct_schedule_detail_hs t
+ FULL JOIN tbo.cb_mb_acct_schedule_detail t1
+ ON t.sched_seq_no = t1.sched_seq_no
+WHERE t1.sched_seq_no IS NULL 
+)
+
+20200320
+1、调度Excel，将156机器当做中间机，测试联调脚本
+3、调用集市拉链脚本
+4、TDH生成ctl文件,后面补
+
+贾老师，你好：
+       因风险集市需求，需要在测试环境准备：
+1、	测试环境Oracle数据库中创建存储拉链表和集市表的schema，业务提出最好分开创建；
+已发陈倩，等她确认
+
+2、	登录测试环境Oracle数据库服务器的linux用户名和密码及存储数据文件的路径，脚本的路径；
+10.4.11.110 root/root123 可su到oracle操作，数据文件存储/data/bigdata/日期，脚本存储/data/bigdata/script
+3、	中间机登录用户和密码，FTP路径；
+这个目前还没确定，需要等下周将机器放到中金后，再进行创建。
+
+select * from user_tables;
+10.4.11.110
+拉链层：用户名：dds，权限：仅查权限
+集市层：用户名：sds，权限：仅查权限
+
+sh dsa_file_distribute_rm.sh rm 20200315
+sh dsa_file_ftp_tomid.sh rm 20200315
+sh load_check_from_mid.sh rm
+
+	
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/ib_ln_due_mst_hs.ctl log=/data/bigdata/log/sqlldr_ib_ln_due_mst_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/ib_ln_credit_apply_mst_hs.ctl log=/data/bigdata/log/sqlldr_ib_ln_credit_apply_mst_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/ib_ln_cif_limit_hs.ctl log=/data/bigdata/log/sqlldr_ib_ln_cif_limit_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/ib_ecif_cert_info_hs.ctl log=/data/bigdata/log/sqlldr_ib_ecif_cert_info_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/ib_ln_cont_mst_hs.ctl log=/data/bigdata/log/sqlldr_ib_ln_cont_mst_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/cb_mb_drawdown_hs.ctl log=/data/bigdata/log/sqlldr_cb_mb_drawdown_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/cb_cif_client_document_hs.ctl log=/data/bigdata/log/sqlldr_cb_cif_client_document_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/cb_mb_invoice_hs.ctl log=/data/bigdata/log/sqlldr_cb_mb_invoice_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/cb_cif_client_hs.ctl log=/data/bigdata/log/sqlldr_cb_cif_client_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/cb_mb_acct_schedule_detail_hs.ctl log=/data/bigdata/log/sqlldr_cb_mb_acct_schedule_detail_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/cb_cif_client_indvl_hs.ctl log=/data/bigdata/log/sqlldr_cb_cif_client_indvl_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/cb_cif_client_corp_hs.ctl log=/data/bigdata/log/sqlldr_cb_cif_client_corp_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/cb_mb_receipt_detail_hs.ctl log=/data/bigdata/log/sqlldr_cb_mb_receipt_detail_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/cb_mb_acct_hs.ctl log=/data/bigdata/log/sqlldr_cb_mb_acct_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/ib_ecif_cif_no_rel_hs.ctl log=/data/bigdata/log/sqlldr_ib_ecif_cif_no_rel_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/rm_jinjzb_hs.ctl log=/data/bigdata/log/sqlldr_rm_jinjzb_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/rm_jinjwd_hs.ctl log=/data/bigdata/log/sqlldr_rm_jinjwd_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/rm_jiejzb_hs.ctl log=/data/bigdata/log/sqlldr_rm_jiejzb_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/rm_jiejwd_hs.ctl log=/data/bigdata/log/sqlldr_rm_jiejwd_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/rm_hkzb_hs.ctl log=/data/bigdata/log/sqlldr_rm_hkzb_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/rm_hkwd_hs.ctl log=/data/bigdata/log/sqlldr_rm_hkwd_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/rm_khzb_hs.ctl log=/data/bigdata/log/sqlldr_rm_khzb_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/rm_khwd_hs.ctl log=/data/bigdata/log/sqlldr_rm_khwd_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+
+sh load_sqlldr_data.sh rm cb_mb_acct_hs 20200331
+sh load_sqlldr_data.sh rm cb_mb_acct_hs 20200331
+sh load_sqlldr_data.sh rm cb_mb_acct_hs 20200331
+40 23 * * * sh /home/oracle/scripts/shouxin_inc.sh >> /data/dump/shouxin_inc.log
+40 01 * * * sh /home/oracle/scripts/shouxin_RDSUSER.sh >> /data/dump/shouxin_RDSUSER.log
+00 13 * * * sh /home/oracle/scripts/shouxin_inc2.sh >> /data/dump/shouxin_inc2.log
+30 2 * * * sh /data/bigdata/script/load_check_from_mid.sh rm
+
+alter session set nls_date_format="YYYY-MM-DD"
+
+sqlldr neutron/neutron@10.4.11.110/zgcuatdb control=/data/bigdata/script/ctl/cb_mb_acct_schedule_detail_hs.ctl log=/data/bigdata/log/sqlldr_cb_mb_acct_schedule_detail_hs.log skip=0 load=200000000 errors=100 rows=1000  bindsize=33554432
+
+sqlplus neutron/neutron@10.4.11.110:1521/zgcuatdb
+
+ETL服务器-主机（10.0.128.85）需要开通访问 互金系统 和 核心系统 的ADG数据库，端口为1521，用户为只读用户
+ETL服务器-主机（10.0.128.85）需要安装sqluldr2.bin 
+ETL服务器-主机（10.0.128.85）需要开通到 中间机服务器的sftp服务，安装expect
+中间机服务器的root权限，需要安装开通到 Oracle测试服务器 的sftp服务，安装expect
+Oracle测试服务器需要root权限，Oracle的连接用户（创建表、表空间、使用sqlldr权限）
+
++----------------------------+
+ Tables_in_disp             
++----------------------------+
+select * from disp_config_loadlog_detail;
+select * from disp_depend_info where job_name like '%RM%';
+select * from disp_group_info where group_name like '%RM%';
+select * from disp_job_info where group_name like '%RM%';
+select * from disp_job_param_info where job_name like '%RM%';
+select * from disp_proc_info;
+select * from disp_job_param_info  where job_name like '%RM%';
+
+select * from disp_group  where group_name like '%RM%';
+select * from disp_job  where job_name like '%RM%';
+select * from disp_job_dep where job_name like '%RM%';
+select * from disp_job_param  where job_name like '%RM%';
+select * from disp_proc_param;
++----------------------------+
++----------------------------+
+ Tables_in_disp             
++----------------------------+
+truncate table disp_config_loadlog_detail;
+truncate table disp_depend_info;
+truncate table disp_group_info;
+truncate table disp_job_info;
+truncate table disp_job_param_info;
+truncate table disp_proc_info;
+truncate table disp_proc_param;
+
+truncate table disp_group;
+truncate table disp_job;
+truncate table disp_job_dep;
+truncate table disp_job_param;
+truncate table disp_proc_param;
++----------------------------+
+
+
+truncate table CB_CIF_CLIENT_HS;
+truncate table CB_MB_ACCT_HS;
+truncate table CB_MB_ACCT_SCHEDULE_DETAIL_HS;
+truncate table CB_MB_INVOICE_HS;
+truncate table CB_MB_DRAWDOWN_HS;
+truncate table CB_MB_RECEIPT_DETAIL_HS;
+truncate table CB_CIF_CLIENT_INDVL_HS;
+truncate table CB_CIF_CLIENT_CORP_HS;
+truncate table CB_CIF_CLIENT_DOCUMENT_HS;
+truncate table IB_LN_CONT_MST_HS;
+truncate table IB_LN_DUE_MST_HS;
+truncate table IB_LN_CREDIT_APPLY_MST_HS;
+truncate table IB_LN_CIF_LIMIT_HS;
+truncate table IB_ECIF_CERT_INFO_HS;
+truncate table IB_ECIF_CIF_NO_REL_HS;
+
+select * from disp_group_info where group_name is null or job_rate is null or first_date is null
+select * from disp_job_info where group_name is null or script_name is null or job_name is null or job_grade is null or job_type is null or data_source is null or job_enable is null;
+select * from disp_proc_info a where a.script_name not in (select script_name from disp_job_info );
+select * from disp_job_param where job_name not in (select job_name from disp_job_info);
+select * from disp_proc_param where script_name not in (select script_name from disp_job_info );
+select a.script_name, a.script_type, a.script_exec from disp_proc_info_mid a where a.script_name is null or a.script_type is null or a.script_exec is null;
+select a.script_name, a.param_no from disp_proc_param a where a.script_name is null or a.param_no is null;
+
+#tar -zcvf 20200102.tar.gz 20200102
+#tar -zxvf 20200102.tar.gz
+
+
+tar -zcvf dw_20200325.tar.gz dw
+tar -zcvf bigdata_20200325.tar.gz bigdata
+
+0、做好生产环境的备份
+1、sftp  expect
+2、/dw/init/setting.py /dw/conf/config.ini --初始化和配调度连接的 配置不一样
+3、mysql数据库，调度和ETL服务器会使用
+
+4、sqlplus 连接Oracle adg
+5、sqluldr2.bin 卸载数据
+6、sftp 测试 ETL->mid ->oracle 修改脚本路径，etl_meta_args表
+7、文档的补充
+8、
+
+1、卸载数据的存储过程，打日志报错
+2、验证数据的SQL
+3、中间机和测试机的脚本没有定时运行
+
+
+python init_meta_data.py /etl/dw/template/meta/rm_meta_initv0.1.1.xlsx disp_depend_info 1=1 1
+python init_meta_data.py /etl/dw/template/meta/rm_meta_initv0.1.1.xlsx disp_group_info 1=1 1
+python init_meta_data.py /etl/dw/template/meta/rm_meta_initv0.1.1.xlsx disp_job_info 1=1 1
+python init_meta_data.py /etl/dw/template/meta/rm_meta_initv0.1.1.xlsx disp_job_param_info 1=1 1
+python init_meta_data.py /etl/dw/template/meta/rm_meta_initv0.1.1.xlsx disp_proc_info 1=1 1
+python init_meta_data.py /etl/dw/template/meta/rm_meta_initv0.1.1.xlsx disp_proc_param 1=1 1
+python init_meta_data.py /etl/dw/template/meta/rm_meta_initv0.1.1.xlsx disp_depend_info 1=1 1
+python init_meta_data.py /etl/dw/template/meta/rm_meta_initv0.1.1.xlsx disp_group_info 1=1 1
+python init_meta_data.py /etl/dw/template/meta/rm_meta_initv0.1.1.xlsx disp_job_info 1=1 1
+python init_meta_data.py /etl/dw/template/meta/rm_meta_initv0.1.1.xlsx disp_job_param_info 1=1 1
+python init_meta_data.py /etl/dw/template/meta/rm_meta_initv0.1.1.xlsx disp_proc_info 1=1 1
+python init_meta_data.py /etl/dw/template/meta/rm_meta_initv0.1.1.xlsx disp_proc_param 1=1 1
+
+setting  MYSQL_DISP_CMD="mysql -u disp -pdisp -h 10.4.0.156 -D disp --default-character-set=utf8 -N -e"
+load_check_batch_finish_file.sh
+load_check_batch_finish_db.sh
+load_gen_sys_okfile.sh
+
+--by 20200402 会议
+--问题
+1、测试不充分
+2、针对打标问题，上线后增加了脚本
+3、源系统提前打标问题
+4、环境没有验证好
+--后续工作
+1、业务逻辑
+2、模型
+3、架构和数据对接
+4、大数据沙箱环境的搭建，不同集市需要
+5、每周五下午开例会、写周报
+6、项目文档编写
+
+
+./shutdown.sh 
+cp -r dispweb /usr/tomcat/apache-tomcat-8.5.51/webapps/
+cd /usr/tomcat/apache-tomcat-8.5.51/bin
+./startup.sh
+ps -ef | grep tomcat
+
+
+
+
