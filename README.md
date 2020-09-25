@@ -39,6 +39,8 @@ https://zhuanlan.zhihu.com/p/38527834
 
 ## 数据仓库建设
 https://www.oracle.com/technetwork/cn/community/developer-day/2-financial-industry-data-plan-1533690-zhs.pdf
+阿里云设计方案
+http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/download/pdf/DNODPS19100613_zh-CN_cn_190529171508_public_c0e5b278fe34777c03aea31461002e5b.pdf
 
 |  层级  | 英文名称  | 中文名称 |
 |  ----  | ----  | ----  |
@@ -48,7 +50,11 @@ https://www.oracle.com/technetwork/cn/community/developer-day/2-financial-indust
 | ICL  | Summary Data Mart |共性加工层|
 | DMM  | Data Mart Model|数据集市层|
 | RDB  |RISK DATAMART BASE|风险数据集市层|
+1. 拉链表设计
+https://www.jianshu.com/p/8b28719e0eea
 
+## 数据API统一管理平台
+https://developer.aliyun.com/article/751497
 
 ## 数据治理建设
 1. 数据标准
