@@ -39,6 +39,7 @@ https://zhuanlan.zhihu.com/p/38527834
 
 ## 数据仓库建设
 1. https://www.oracle.com/technetwork/cn/community/developer-day/2-financial-industry-data-plan-1533690-zhs.pdf  
+https://zhuanlan.zhihu.com/p/75070697
 阿里云设计方案
 2. http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/download/pdf/DNODPS19100613_zh-CN_cn_190529171508_public_c0e5b278fe34777c03aea31461002e5b.pdf
 
